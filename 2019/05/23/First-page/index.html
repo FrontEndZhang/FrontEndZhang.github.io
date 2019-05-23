@@ -15,21 +15,22 @@
     <meta name="keywords" content="hexo," />
   
 
-  <meta name="description" content="hexo提交命令hexo g == hexo generate  生成静态文件 hexo s == hexo server      启动服务预览(如果不想预览就可以忽略该命令)    默认情况下，访问网址：http://localhost:4000/ hexo d == hexo deploy      部署网站到github上。 hexo d 之后绑定的域名失效问题这是因为每次这个命令以后，自">
+  <meta name="description" content="一.hexo提交命令    1. hexo g == hexo generate    生成静态文件        2. hexo s == hexo server     启动服务预览(如果不想预览就可以忽略该命令)    默认情况下，访问网址：http://localhost:4000/        3. hexo d == hexo deploy         部署网站到github上">
 <meta name="keywords" content="hexo">
 <meta property="og:type" content="article">
 <meta property="og:title" content="hexo部署和部署之后域名绑定失效问题">
 <meta property="og:url" content="http://zhangjiayi.xyz/2019/05/23/First-page/index.html">
 <meta property="og:site_name" content="Yi">
-<meta property="og:description" content="hexo提交命令hexo g == hexo generate  生成静态文件 hexo s == hexo server      启动服务预览(如果不想预览就可以忽略该命令)    默认情况下，访问网址：http://localhost:4000/ hexo d == hexo deploy      部署网站到github上。 hexo d 之后绑定的域名失效问题这是因为每次这个命令以后，自">
+<meta property="og:description" content="一.hexo提交命令    1. hexo g == hexo generate    生成静态文件        2. hexo s == hexo server     启动服务预览(如果不想预览就可以忽略该命令)    默认情况下，访问网址：http://localhost:4000/        3. hexo d == hexo deploy         部署网站到github上">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://zhangjiayi.xyz/imgs/FirstPage/disaper.png">
+<meta property="og:image" content="http://zhangjiayi.xyz/imgs/FirstPage/click.png">
+<meta property="og:image" content="http://zhangjiayi.xyz/imgs/FirstPage/position.png">
 <meta property="og:image" content="http://zhangjiayi.xyz/imgs/FirstPage/write.png">
-<meta property="og:updated_time" content="2019-05-23T09:10:31.704Z">
+<meta property="og:updated_time" content="2019-05-23T12:12:04.072Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="hexo部署和部署之后域名绑定失效问题">
-<meta name="twitter:description" content="hexo提交命令hexo g == hexo generate  生成静态文件 hexo s == hexo server      启动服务预览(如果不想预览就可以忽略该命令)    默认情况下，访问网址：http://localhost:4000/ hexo d == hexo deploy      部署网站到github上。 hexo d 之后绑定的域名失效问题这是因为每次这个命令以后，自">
-<meta name="twitter:image" content="http://zhangjiayi.xyz/imgs/FirstPage/disaper.png">
+<meta name="twitter:description" content="一.hexo提交命令    1. hexo g == hexo generate    生成静态文件        2. hexo s == hexo server     启动服务预览(如果不想预览就可以忽略该命令)    默认情况下，访问网址：http://localhost:4000/        3. hexo d == hexo deploy         部署网站到github上">
+<meta name="twitter:image" content="http://zhangjiayi.xyz/imgs/FirstPage/click.png">
 
   
 
@@ -199,7 +200,7 @@ ga('send', 'pageview');
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#hexo提交命令"><span class="toc-text">hexo提交命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hexo-d-之后绑定的域名失效问题"><span class="toc-text">hexo d 之后绑定的域名失效问题</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#一-hexo提交命令"><span class="toc-text">一.hexo提交命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#二-hexo-d-部署之后，绑定的域名失效问题"><span class="toc-text">二.hexo d 部署之后，绑定的域名失效问题</span></a></li></ol>
   </div>
 
 
@@ -245,13 +246,17 @@ ga('send', 'pageview');
 
   <div class="article-content">
     
-      <h2 id="hexo提交命令"><a href="#hexo提交命令" class="headerlink" title="hexo提交命令"></a>hexo提交命令</h2><pre><code>hexo g == hexo generate  生成静态文件
-hexo s == hexo server      启动服务预览(如果不想预览就可以忽略该命令)    默认情况下，访问网址：http://localhost:4000/
-hexo d == hexo deploy      部署网站到github上。
-</code></pre><h2 id="hexo-d-之后绑定的域名失效问题"><a href="#hexo-d-之后绑定的域名失效问题" class="headerlink" title="hexo d 之后绑定的域名失效问题"></a>hexo d 之后绑定的域名失效问题</h2><pre><code>这是因为每次这个命令以后，自定义域名会重置，如图：
-</code></pre><p><img src="/imgs/FirstPage/disaper.png" alt="Alt text"></p>
-<pre><code>如果不想每次添加，就在根目录的source文件下添加 CNAME 文件,内容为你的自定义域名，如图：
-</code></pre><p><img src="/imgs/FirstPage/write.png" alt="Alt text"></p>
+      <h1 id="一-hexo提交命令"><a href="#一-hexo提交命令" class="headerlink" title="一.hexo提交命令"></a>一.hexo提交命令</h1><font size="2"><br>    1. hexo g == hexo generate    生成静态文件<br>    <br><br>    2. hexo s == hexo server     启动服务预览(如果不想预览就可以忽略该命令)    默认情况下，访问网址：<a href="http://localhost:4000/" target="_blank" rel="noopener">http://localhost:4000/</a><br>    <br><br>    3. hexo d == hexo deploy         部署网站到github上<br></font>    
+
+<h1 id="二-hexo-d-部署之后，绑定的域名失效问题"><a href="#二-hexo-d-部署之后，绑定的域名失效问题" class="headerlink" title="二.hexo d 部署之后，绑定的域名失效问题"></a>二.hexo d 部署之后，绑定的域名失效问题</h1><font size="2"><br>1.这是因为每次这个命令以后，自定义域名会重置，如图：<br><br><img src="/imgs/FirstPage/click.png" width="50%" height="50%"><br><br><br>2.如果不想每次添加，就在根目录的source文件下添加 CNAME 文件,内容为你的自定义域名，如下图：<br><br><br><img src="/imgs/FirstPage/position.png" width="50%" height="30%"><br><br><br><img src="/imgs/FirstPage/write.png" width="50%" height="50%"><br></font>    
+
+
+
+
+
+
+
+
 
     
   </div>
@@ -289,7 +294,7 @@ hexo d == hexo deploy      部署网站到github上。
 
    
   <div class="box-prev-next clearfix">
-    <a class="show pull-left" href="/2018/10/13/hello-world/">
+    <a class="hide pull-left" href="/">
         <i class="icon icon-angle-left"></i>
     </a>
     <a class="hide pull-right" href="/">
