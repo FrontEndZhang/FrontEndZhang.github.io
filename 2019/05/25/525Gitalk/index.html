@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+
+
+<head>
+
+  <meta charset="utf-8">
+  
+  <title>解决 gitalk 评论组件出现的问题 | Yi</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="hexo," />
+  
+
+  <meta name="description" content="问题一：未找到相关的 Issues 进行评论 这可能是hexo s 命令提交以后，有时候本地的页面是不正常的，但是提交到github上的时候，就会正常显示  自己配置的时候可能出问题，提供一个较好的配置文章 点我进入（有的hexo主题不需要你自己配置，主题里面的_config.yml文件有的自带了设置 gitalk 开启关闭配置，你只要改这个配置文件就可以了）   问题二：评论组件上面出现：Err">
+<meta name="keywords" content="hexo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="解决 gitalk 评论组件出现的问题">
+<meta property="og:url" content="https://www.zhangjiayi.xyz/archives/2019/05/25/525Gitalk/index.html">
+<meta property="og:site_name" content="Yi">
+<meta property="og:description" content="问题一：未找到相关的 Issues 进行评论 这可能是hexo s 命令提交以后，有时候本地的页面是不正常的，但是提交到github上的时候，就会正常显示  自己配置的时候可能出问题，提供一个较好的配置文章 点我进入（有的hexo主题不需要你自己配置，主题里面的_config.yml文件有的自带了设置 gitalk 开启关闭配置，你只要改这个配置文件就可以了）   问题二：评论组件上面出现：Err">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://www.zhangjiayi.xyz/imgs/Gitalk/ware.png">
+<meta property="og:image" content="https://www.zhangjiayi.xyz/imgs/Gitalk/req.png">
+<meta property="og:image" content="https://www.zhangjiayi.xyz/imgs/Gitalk/ip.png">
+<meta property="og:updated_time" content="2019-06-02T05:25:32.509Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="解决 gitalk 评论组件出现的问题">
+<meta name="twitter:description" content="问题一：未找到相关的 Issues 进行评论 这可能是hexo s 命令提交以后，有时候本地的页面是不正常的，但是提交到github上的时候，就会正常显示  自己配置的时候可能出问题，提供一个较好的配置文章 点我进入（有的hexo主题不需要你自己配置，主题里面的_config.yml文件有的自带了设置 gitalk 开启关闭配置，你只要改这个配置文件就可以了）   问题二：评论组件上面出现：Err">
+<meta name="twitter:image" content="https://www.zhangjiayi.xyz/imgs/Gitalk/ware.png">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-38189205-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?57e94d016e201fba3603a8a2b0263af0";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#问题一：未找到相关的-Issues-进行评论"><span class="toc-text">问题一：未找到相关的 Issues 进行评论</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#问题二：评论组件上面出现：Error-Not-Found"><span class="toc-text">问题二：评论组件上面出现：Error: Not Found</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#问题三：评论组件上面出现：Error-Validation-Failed"><span class="toc-text">问题三：评论组件上面出现：Error: Validation Failed</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#问题四：评论组件不能登录"><span class="toc-text">问题四：评论组件不能登录</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-525Gitalk" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">解决 gitalk 评论组件出现的问题</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2019.05.25</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>ZJY</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/gitalk/">gitalk</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp�ȶ� <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>��
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h1 id="问题一：未找到相关的-Issues-进行评论"><a href="#问题一：未找到相关的-Issues-进行评论" class="headerlink" title="问题一：未找到相关的 Issues 进行评论"></a>问题一：未找到相关的 Issues 进行评论</h1><ol>
+<li><p>这可能是hexo s 命令提交以后，有时候本地的页面是不正常的，但是提交到github上的时候，就会正常显示</p>
+</li>
+<li><p>自己配置的时候可能出问题，提供一个较好的配置文章 <a href="http://robinx.net/2018/01/03/fexo%E4%B8%BB%E9%A2%98%E9%9B%86%E6%88%90gitalk%E8%AF%84%E8%AE%BA%E7%BB%84%E4%BB%B6/" target="_blank" rel="noopener">点我进入</a>（有的hexo主题不需要你自己配置，主题里面的_config.yml文件有的自带了设置 gitalk 开启关闭配置，你只要改这个配置文件就可以了）</p>
+</li>
+</ol>
+<h1 id="问题二：评论组件上面出现：Error-Not-Found"><a href="#问题二：评论组件上面出现：Error-Not-Found" class="headerlink" title="问题二：评论组件上面出现：Error: Not Found"></a>问题二：评论组件上面出现：Error: Not Found</h1><ol>
+<li><p>检查你的 repo，格式为 repo: 放评论的仓库名（只需要你的创库名字就可以了，不要填xxx.github.io）</p>
+<p><img src="/imgs/Gitalk/ware.png" height="50%" width="50%"></p>
+</li>
+<li><p>检查你的 放评论的仓库 拉取请求是否开启（我就是这里弄了好久）</p>
+<p><img src="/imgs/Gitalk/req.png" height="30%" width="30%">    </p>
+</li>
+</ol>
+<h1 id="问题三：评论组件上面出现：Error-Validation-Failed"><a href="#问题三：评论组件上面出现：Error-Validation-Failed" class="headerlink" title="问题三：评论组件上面出现：Error: Validation Failed"></a>问题三：评论组件上面出现：Error: Validation Failed</h1><ol>
+<li><p>这里的文章标题是你 hexo new “文章标题” ，这个标题不能太长，你改了 source里面的 文章标题.md 文件也没有用，我是删了重新new一篇文章（这次标题改短一点就ok了） </p>
+<p>参考：<br><a href="https://github.com/gitalk/gitalk/issues/124" target="_blank" rel="noopener">文章标题名不能太长</a></p>
+</li>
+</ol>
+<h1 id="问题四：评论组件不能登录"><a href="#问题四：评论组件不能登录" class="headerlink" title="问题四：评论组件不能登录"></a>问题四：评论组件不能登录</h1><ol>
+<li>看一下你的 放评论的仓库 的github地址是否有问题，还有回调地址是否正确,找到 setings &gt; Developer settings &gt; OAuth Apps 进行更改<br>​<br><img src="/imgs/Gitalk/ip.png" height="30%" width="30%">     </li>
+</ol>
+
+    
+  </div>
+  
+
+</article>
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持forsigner</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/zfb.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2019/05/23/523First-page/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2019/05/31/531serves/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '4d3237f24fc84acecf2f',
+  clientSecret: '96144eb639eda308d4a8ef58330b404b71a9dbf2',
+  repo: 'Remark',
+  owner: 'FrontEndZhang',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: location.pathname,
+  admin: ['FrontEndZhang'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>
