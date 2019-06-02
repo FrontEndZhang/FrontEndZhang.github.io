@@ -8,12 +8,12 @@
   
   
   
-  <title>解决 gitalk 评论组件出现的问题 | Yi</title>
+  <title>请求消息格式和request获取处理请求消息 | Yi</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="gittalk,gitalk," />
+    <meta name="keywords" content="Java,Java,request," />
   
 
   <script>
@@ -223,24 +223,24 @@
 
 <div class="post">
   <h1 class="article-title">
-    <span>解决 gitalk 评论组件出现的问题</span>
+    <span>请求消息格式和request获取处理请求消息</span>
   </h1>
   <div class="article-top-meta">
     <span>
       发布 : 
-      2019-05-25
+      2019-06-01
     </span>
     
       <span>
         分类 : 
-          <a href="/categories/gittalk/">
-            gittalk
+          <a href="/categories/Java/">
+            Java
           </a>
       </span>
     
     
       <span>
-        浏览 : <span class="article-timer" data-identity="525Gitalk"></span>
+        浏览 : <span class="article-timer" data-identity="602request"></span>
       </span>
     
   </div>
@@ -249,28 +249,119 @@
 
   <div class="article-content">
     <div class="markdown-body">
-      <h1 id="问题一：未找到相关的-Issues-进行评论"><a href="#问题一：未找到相关的-Issues-进行评论" class="headerlink" title="问题一：未找到相关的 Issues 进行评论"></a>问题一：未找到相关的 Issues 进行评论</h1><ol>
-<li><p>这可能是hexo s 命令提交以后，有时候本地的页面是不正常的，但是提交到github上的时候，就会正常显示</p>
+      <h1 id="1-请求消息数据格式"><a href="#1-请求消息数据格式" class="headerlink" title="1. 请求消息数据格式"></a>1. 请求消息数据格式</h1><h3 id="1-1-请求行（GET请求请求行才有带键值对）"><a href="#1-1-请求行（GET请求请求行才有带键值对）" class="headerlink" title="1.1 请求行（GET请求请求行才有带键值对）"></a>1.1 请求行（GET请求请求行才有带键值对）</h3><p>结构： 请求方式 请求url（/虚拟目录/Servlet路径？键=值&amp;键=值…） 协议及版本</p>
+<p>例子： </p>
+<p>GET /zjy/demo?name=zhangsan&amp;age=18 HTTP/1.1  </p>
+<h3 id="1-2-请求头"><a href="#1-2-请求头" class="headerlink" title="1.2 请求头"></a>1.2 请求头</h3><p>结构： 请求头名称：请求头值</p>
+<p>例子：</p>
+<p>Host: localhost:8080</p>
+<p>//User-Agent:浏览器告诉服务器，访问你使用的浏览器版本信息（浏览器兼容）</p>
+<p><strong>User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:67.0) Gecko/20100101 Firefox/67.0</strong></p>
+<p>Accept: text/html,application/xhtml+xml,application/xml;q=0.9,<em>/</em>;q=0.8</p>
+<p>Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2</p>
+<p>Accept-Encoding: gzip, deflate</p>
+<p>//Referer:告诉服务器，当前请求从哪里来（可以用来防盗链，统计）</p>
+<p><strong>Referer: <a href="http://localhost:8080/yi/" target="_blank" rel="noopener">http://localhost:8080/yi/</a></strong></p>
+<p>Connection: keep-alive</p>
+<p>Cookie: JSESSIONID=4331C22AF24D47612A168BC5A03F7117;<br>Hm_lvt_57e94d016e201fba3603a8a2b0263af0=1558750510,1559365085,1559371381,1559371507;_ga=GA1.1.621420129.1558600984;<br>_gid=GA1.1.457930738.1559365087</p>
+<p>Upgrade-Insecure-Requests: 1</p>
+<p>Cache-Control: max-age=0</p>
+<h3 id="1-3-请求空行"><a href="#1-3-请求空行" class="headerlink" title="1.3 请求空行"></a>1.3 请求空行</h3><p>结构： 空行</p>
+<h3 id="1-4-请求体（POST方式才有）"><a href="#1-4-请求体（POST方式才有）" class="headerlink" title="1.4 请求体（POST方式才有）"></a>1.4 请求体（POST方式才有）</h3><p>结构：键值对<br>​       </p>
+<h1 id="2-请求方式"><a href="#2-请求方式" class="headerlink" title="2. 请求方式"></a>2. 请求方式</h1><ul>
+<li>HTTP协议中有七种请求方式，常用的有俩种<ul>
+<li>GET ：<ol>
+<li>请求参数在请求行中，在url后</li>
+<li>请求的url长度有限制</li>
+<li>不太安全</li>
+</ol>
 </li>
-<li><p>自己配置的时候可能出问题，提供一个较好的配置文章 <a href="http://robinx.net/2018/01/03/fexo%E4%B8%BB%E9%A2%98%E9%9B%86%E6%88%90gitalk%E8%AF%84%E8%AE%BA%E7%BB%84%E4%BB%B6/" target="_blank" rel="noopener">点我进入</a>（有的hexo主题不需要你自己配置，主题里面的_config.yml文件有的自带了设置 gitalk 开启关闭配置，你只要改这个配置文件就可以了）</p>
+<li>POST :<ol>
+<li>请求参数在请求体中</li>
+<li>请求的url长度没有限制</li>
+<li>相对安全    </li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="3-获取处理请求"><a href="#3-获取处理请求" class="headerlink" title="3. 获取处理请求"></a>3. 获取处理请求</h1><h3 id="3-1-request功能"><a href="#3-1-request功能" class="headerlink" title="3.1 request功能"></a>3.1 request功能</h3><ol>
+<li><p>获取请求行数据</p>
+<ul>
+<li>GET /zjy/demo?name=zhangsan&amp;age=18 HTTP/1.1 </li>
+<li>方法：<ol>
+<li>获取请求方式：GET<ul>
+<li>String getMethod()</li>
+</ul>
+</li>
+<li><strong>获取虚拟目录：/zjy</strong><ul>
+<li>String getConetxtPath()</li>
+</ul>
+</li>
+<li>获取Servlet路径：/demo<ul>
+<li>String getServletPath()      </li>
+</ul>
+</li>
+<li>获取get方式请求参数：name=zhangsan&amp;age=18<ul>
+<li>String getQueryString()</li>
+</ul>
+</li>
+<li><strong>获取请求URI： /zjy/demo</strong><ul>
+<li>String getRequestURI()  ：zjy/demo    </li>
+<li>StringBuffer getRequestURL() ： <a href="http://localhost:8080/yi/demo" target="_blank" rel="noopener">http://localhost:8080/yi/demo</a></li>
+</ul>
+</li>
+<li>获取协议及版本：HTTP/1.1 <ul>
+<li>String getProtocal</li>
+</ul>
+</li>
+<li>获取客户机的IP地址：<ul>
+<li>String getRemoteAddr()</li>
+</ul>
 </li>
 </ol>
-<h1 id="问题二：评论组件上面出现：Error-Not-Found"><a href="#问题二：评论组件上面出现：Error-Not-Found" class="headerlink" title="问题二：评论组件上面出现：Error: Not Found"></a>问题二：评论组件上面出现：Error: Not Found</h1><ol>
-<li><p>检查你的 repo，格式为 repo: 放评论的仓库名（只需要你的创库名字就可以了，不要填xxx.github.io）</p>
-<p><img src="/imgs/Gitalk/ware.png" height="50%" width="50%"></p>
 </li>
-<li><p>检查你的 放评论的仓库 拉取请求是否开启（我就是这里弄了好久）</p>
-<p><img src="/imgs/Gitalk/req.png" height="30%" width="30%">    </p>
+</ul>
+</li>
+<li><p>获取请求头数据</p>
+<ul>
+<li>方法： <ol>
+<li><strong>String getHeader(String key) ：通过请求头的名称来获取请求头的值</strong></li>
+<li>Enumeration<string> getHeaderName(); 获取所有请求头名称（枚举+迭代器=迭代器用法）</string></li>
+</ol>
+</li>
+</ul>
+</li>
+<li>获取请求体数据<ul>
+<li>请求体：只有POST请求方式，才有请求体，请求体中封装了POST参数</li>
+<li>方法步骤：<ol>
+<li>获取流对象<ul>
+<li>BufferReader getReader() ： 获取字符输入流，只能操作字符数据</li>
+<li>ServletInputStream getInputStream() : 获取字节输入流，可以操作所有类型</li>
+</ul>
 </li>
 </ol>
-<h1 id="问题三：评论组件上面出现：Error-Validation-Failed"><a href="#问题三：评论组件上面出现：Error-Validation-Failed" class="headerlink" title="问题三：评论组件上面出现：Error: Validation Failed"></a>问题三：评论组件上面出现：Error: Validation Failed</h1><ol>
-<li><p>这里的文章标题是你 hexo new “文章标题” ，这个标题不能太长，你改了 source里面的 文章标题.md 文件也没有用，我是删了重新new一篇文章（这次标题改短一点就ok了） </p>
-<p>参考：<br><a href="https://github.com/gitalk/gitalk/issues/124" target="_blank" rel="noopener">文章标题名不能太长</a></p>
+</li>
+</ul>
 </li>
 </ol>
-<h1 id="问题四：评论组件不能登录"><a href="#问题四：评论组件不能登录" class="headerlink" title="问题四：评论组件不能登录"></a>问题四：评论组件不能登录</h1><ol>
-<li>看一下你的 放评论的仓库 的github地址是否有问题，还有回调地址是否正确,找到 setings &gt; Developer settings &gt; OAuth Apps 进行更改<br>​<br><img src="/imgs/Gitalk/ip.png" height="30%" width="30%">     </li>
+<h3 id="3-2-其他优化通用方法"><a href="#3-2-其他优化通用方法" class="headerlink" title="3.2 其他优化通用方法"></a>3.2 其他优化通用方法</h3><ol>
+<li><strong>获取请求参数通用方式（不管是POST还是GET）</strong><ol>
+<li>String getParameter(String name) 根据参数名称获取参数值</li>
+<li>String[] getParameter(String name) : 根据参数名称获取参数值的数组</li>
+<li>Enumeration<string> getParameterNmaes() : 获取所有请求参数名称（枚举+迭代器=迭代器）</string></li>
+<li>Map&lt;String，String[]&gt; getParameterMap() : 获取所有参数的键值对集合</li>
 </ol>
+</li>
+</ol>
+<h1 id="4-中文乱码问题："><a href="#4-中文乱码问题：" class="headerlink" title="4.中文乱码问题："></a>4.中文乱码问题：</h1><ul>
+<li>get方式：tomcat 8 已经解决get方式乱码问题</li>
+<li>post方式：会乱码<ul>
+<li>解决方式：在获取1参数前，设置request的编码</li>
+<li>原因：获取流的编码和网页编码不一样（看网页的编码：&lt; meta charset=”UTF-8” &gt;） </li>
+</ul>
+</li>
+</ul>
 
     </div>
   </div>
@@ -282,7 +373,7 @@
         
           本文作者 : GODBMW <br/>
         
-        原文链接 : <a href="">https://www.zhangjiayi.xyz/archives/2019/05/25/525Gitalk/</a><br>
+        原文链接 : <a href="">https://www.zhangjiayi.xyz/archives/2019/06/01/602request/</a><br>
         版权声明 : 本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
         </blockquote>
       </div>
@@ -348,8 +439,14 @@
           <i class="iconfont icon-06tags"></i>标签: 
           
           <span class="span--tag">
-            <a href="/tags/gitalk/">
-              #gitalk
+            <a href="/tags/Java/">
+              #Java
+            </a>
+          </span>
+          
+          <span class="span--tag">
+            <a href="/tags/request/">
+              #request
             </a>
           </span>
           
@@ -374,13 +471,13 @@
       <div class="nav-pre">
         <i class="iconfont icon-prev"></i>
         上一篇:
-        <a href="/2019/05/23/523First-page/" target="_self">hexo部署和部署之后域名绑定失效问题</a>
+        <a href="/2019/06/01/601LinuxJdk/" target="_self">Linux系统jdk的安装和配置</a>
       </div>
     
     
       <div class="nav-next">
         下一篇:
-        <a href="/2019/05/31/531serves/" target="_self">远程服务器的连接和远程文件传输的软件</a>
+        <a href="/2019/06/02/602response/" target="_self">请求转发（数据共享）和重定向</a>
         <i class="iconfont icon-next"></i>
       </div>
     
