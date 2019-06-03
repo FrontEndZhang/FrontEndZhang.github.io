@@ -8,12 +8,12 @@
   
   
   
-  <title>请求转发（数据共享）和重定向 | Yi</title>
+  <title>component父子组件传值 | Yi</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="Java,Java," />
+    <meta name="keywords" content="Java,request," />
   
 
   <script>
@@ -223,7 +223,7 @@
 
 <div class="post">
   <h1 class="article-title">
-    <span>请求转发（数据共享）和重定向</span>
+    <span>component父子组件传值</span>
   </h1>
   <div class="article-top-meta">
     <span>
@@ -231,16 +231,9 @@
       2019-06-02
     </span>
     
-      <span>
-        分类 : 
-          <a href="/categories/Java/">
-            Java
-          </a>
-      </span>
-    
     
       <span>
-        浏览 : <span class="article-timer" data-identity="602response"></span>
+        浏览 : <span class="article-timer" data-identity="602Vcpt1"></span>
       </span>
     
   </div>
@@ -249,46 +242,7 @@
 
   <div class="article-content">
     <div class="markdown-body">
-      <h2 id="1-请求转发-request"><a href="#1-请求转发-request" class="headerlink" title="1.    请求转发(request)"></a>1.    请求转发(request)</h2><ol>
-<li>意思：一种在服务器<strong>内部</strong>的资源跳转方式</li>
-<li>步骤：<ol>
-<li>通过request对象获取请求转发对象：requestDispatcher getRequestDispather(String path)</li>
-<li>使用RequestDispatcher对象进行转发：forward(HttpServletRequest request, HttpServletResponse response)</li>
-</ol>
-</li>
-<li><strong>简化步骤：request.getRequestDispather(String path).foforward(HttpServletRequest request, HttpServletResponse response)</strong></li>
-<li>特点：<ol>
-<li>浏览器地址路径不会发生变化</li>
-<li>只能在当前服务器内部资源转发</li>
-<li>转发是一次请求<h2 id="2-重定向-response"><a href="#2-重定向-response" class="headerlink" title="2.    重定向(response)"></a>2.    重定向(response)</h2></li>
-</ol>
-</li>
-<li>意思：资源跳转方式</li>
-<li>步骤：<ol>
-<li>设置状态码为302 ： response.setStatus(302);</li>
-<li>响应头location：    response.setHeader(“location”,”路径”)</li>
-<li>路径：可以是<a href="https://www.baidu.com/" target="_blank" rel="noopener">https://www.baidu.com/</a> 也可以是/zjy/demo1</li>
-</ol>
-</li>
-<li><strong>简化步骤：response.sendRedirect(“路径”);</strong></li>
-<li>特点：<ol>
-<li>地址栏发生变化</li>
-<li>可以访问其他站点（服务器）的资源</li>
-<li>重定向试试俩次请求。不能使用request对象来共享数据</li>
-</ol>
-</li>
-</ol>
-<h2 id="3-共享数据（请求转发特有的）"><a href="#3-共享数据（请求转发特有的）" class="headerlink" title="3.    共享数据（请求转发特有的）"></a>3.    共享数据（请求转发特有的）</h2><ol>
-<li>域对象：一个有作用范围的对象，可以在范围内共享数据</li>
-<li>request域：代表一次请求的范围，一般用于请求转发的多个资源共享数据</li>
-<li>方法（request对象的方法）：<ol>
-<li>存储数据：void setAttribute（String name，Object obj</li>
-<li>通过键获取值：Object getAttribute(String name)</li>
-<li>移除键值对：void removeAttribute（String name）</li>
-</ol>
-</li>
-</ol>
-
+      
     </div>
   </div>
   
@@ -299,7 +253,7 @@
         
           本文作者 : Yi <br/>
         
-        原文链接 : <a href="">https://www.zhangjiayi.xyz/archives/2019/06/02/602response/</a><br>
+        原文链接 : <a href="">https://www.zhangjiayi.xyz/archives/2019/06/02/602Vcpt1/</a><br>
         版权声明 : 本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
         </blockquote>
       </div>
@@ -370,6 +324,12 @@
             </a>
           </span>
           
+          <span class="span--tag">
+            <a href="/tags/request/">
+              #request
+            </a>
+          </span>
+          
         
       </span>
     </div>
@@ -391,15 +351,9 @@
       <div class="nav-pre">
         <i class="iconfont icon-prev"></i>
         上一篇:
-        <a href="/2019/06/01/602request/" target="_self">请求消息格式和request获取处理请求消息</a>
+        <a href="/2019/06/02/602response/" target="_self">请求转发（数据共享）和重定向</a>
       </div>
     
-    
-      <div class="nav-next">
-        下一篇:
-        <a href="/2019/06/02/602Vcpt1/" target="_self">component父子组件传值</a>
-        <i class="iconfont icon-next"></i>
-      </div>
     
   </nav>
 
