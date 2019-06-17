@@ -8,12 +8,12 @@
   
   
   
-  <title>创建component组件和子父组件信息传递 | Yi</title>
+  <title>BootStrap颜色和text文本基本使用 | Yi</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="Vue,Vue,component," />
+    <meta name="keywords" content="BootStrap,BootStrap,color,text," />
   
 
   <script>
@@ -223,24 +223,24 @@
 
 <div class="post">
   <h1 class="article-title">
-    <span>创建component组件和子父组件信息传递</span>
+    <span>BootStrap颜色和text文本基本使用</span>
   </h1>
   <div class="article-top-meta">
     <span>
       发布 : 
-      2019-06-04
+      2019-06-05
     </span>
     
       <span>
         分类 : 
-          <a href="/categories/Vue/">
-            Vue
+          <a href="/categories/BootStrap/">
+            BootStrap
           </a>
       </span>
     
     
       <span>
-        浏览 : <span class="article-timer" data-identity="602Vcpt1"></span>
+        浏览 : <span class="article-timer" data-identity="bsColor"></span>
       </span>
     
   </div>
@@ -249,128 +249,38 @@
 
   <div class="article-content">
     <div class="markdown-body">
-      <h1 id="1-全局组件"><a href="#1-全局组件" class="headerlink" title="1.全局组件"></a>1.全局组件</h1><h2 id="1-1-使用Vue-extend来创建全局Vue组件"><a href="#1-1-使用Vue-extend来创建全局Vue组件" class="headerlink" title="1.1 使用Vue.extend来创建全局Vue组件"></a>1.1 使用Vue.extend来创建全局Vue组件</h2><ol>
-<li>var com1 = Vue.extend({template:’模板html’})</li>
-<li>Vue.component(‘组件名’,com1) </li>
-</ol>
-<h2 id="1-2-合并简化Vue-extend"><a href="#1-2-合并简化Vue-extend" class="headerlink" title="1.2 合并简化Vue.extend"></a>1.2 合并简化Vue.extend</h2><ol>
-<li>Vue.component(‘组件名’,Vue.extend({template : ‘模板html’}))</li>
-</ol>
-<h2 id="1-3-在被控制的vue的html标签外，使用template定义组件模板结构"><a href="#1-3-在被控制的vue的html标签外，使用template定义组件模板结构" class="headerlink" title="1.3 在被控制的vue的html标签外，使用template定义组件模板结构"></a>1.3 在被控制的vue的html标签外，使用template定义组件模板结构</h2><ol>
-<li>&lt; template id=”tem1”&gt;模板html&lt; /template&gt;</li>
-<li>Vue.conponent(‘组件名’,tem1)</li>
-</ol>
-<h1 id="1-4-注意事项"><a href="#1-4-注意事项" class="headerlink" title="1.4 注意事项"></a>1.4 注意事项</h1><ol>
-<li>模板html中，只能含有一个根元素，一般拿一个div盒子包起来裹</li>
-<li>名字如果是驼峰（myCom），引用模式为：<my-com></my-com></li>
-</ol>
-<h1 id="2-私有组件"><a href="#2-私有组件" class="headerlink" title="2.私有组件"></a>2.私有组件</h1><h2 id="2-1创建私有组件"><a href="#2-1创建私有组件" class="headerlink" title="2.1创建私有组件"></a>2.1创建私有组件</h2><ol>
-<li>componen   t : { 组件名： { template:’模板html’ } }</li>
-<li>支持以上三种全局方式</li>
-</ol>
-<h1 id="3-组件中的data和method"><a href="#3-组件中的data和method" class="headerlink" title="3. 组件中的data和method"></a>3. 组件中的data和method</h1><pre><code>Vue.component(&apos;组件名&apos;,{
-        template : &apos;html模板&apos; ,
-        data : function(){
-            return {
-                //data是一个方法，并且返回一个对象（存储数据），这个对象可以是vue实例外的对象(可以形成组件数据共享)
-            } 
-        },
-        methods : {
-            //组件中定义触发事件的方法
-        }，
-        directive：{
-            //组件中自定义属性
-        },
-        filters : {
-        },
-        components : 
-    })
-
-注：组件中的data是和父组件中的data值是分开的
-</code></pre><h1 id="4-父组件向子组件传值"><a href="#4-父组件向子组件传值" class="headerlink" title="4. 父组件向子组件传值"></a>4. 父组件向子组件传值</h1><pre><code>&lt;div id=&quot;app&quot;&gt;
-    &lt;com1 v-bind:parentmsg=&quot;msg&quot;&gt;&lt;/com1&gt; //第一步，给组件绑定自定义属性
-    &lt;p&gt;{{msg}}&lt;/p&gt;
+      <h2 id="颜色知识点"><a href="#颜色知识点" class="headerlink" title="颜色知识点"></a>颜色知识点</h2><ul>
+<li>Bootstrap4内置颜色</li>
+<li>前景色text-*</li>
+<li>背景色bg-*</li>
+</ul>
+<p>参考网页：<a href="https://v4.bootcss.com/docs/4.0/utilities/colors/" target="_blank" rel="noopener">https://v4.bootcss.com/docs/4.0/utilities/colors/</a></p>
+<h2 id="实战演习"><a href="#实战演习" class="headerlink" title="实战演习"></a>实战演习</h2><pre><code>&lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;&quot;&gt;看看我的颜色和背景&lt;/div&gt;
+        &lt;div class=&quot;bg-secondary text-white&quot;&gt;看看我的颜色和背景&lt;/div&gt;
+        &lt;div class=&quot;bg-primary text-white&quot;&gt;看看我的颜色和背景&lt;/div&gt;
+        &lt;div class=&quot;bg-success text-white&quot;&gt;看看我的颜色和背景&lt;/div&gt;
+        &lt;div class=&quot;bg-warning text-white&quot;&gt;看看我的颜色和背景&lt;/div&gt;
+        &lt;div class=&quot;bg-light text-dark&quot;&gt;看看我的颜色和背景&lt;/div&gt;
+        &lt;div class=&quot;&quot;&gt;看看我的颜色和背景&lt;/div&gt;
 &lt;/div&gt;
-&lt;template id=&quot;tem&quot;&gt;
-    &lt;div&gt;
-        &lt;p&gt;hello,{{parentmsg}}&lt;/p&gt; //第三步，使用属性,属性值为parentmsg哦！
-    &lt;/div&gt;
-&lt;/template&gt;
+</code></pre><h2 id="text知识点"><a href="#text知识点" class="headerlink" title="text知识点"></a>text知识点</h2><ul>
+<li>text-*</li>
+<li>font-*</li>
+</ul>
+<p>参考网页：<br><a href="https://v4.bootcss.com/docs/4.0/utilities/text/" target="_blank" rel="noopener">https://v4.bootcss.com/docs/4.0/utilities/text/</a></p>
+<pre><code>&lt;div class=&quot;container&quot;&gt;
+            &lt;div class=&quot;&quot;&gt;字体size和weight&lt;/div&gt;
+            &lt;div class=&quot; display-4&quot;&gt;字体size&lt;/div&gt;
+            &lt;div class=&quot;bg-primary text-white font-weight-bold&quot;&gt;weight&lt;/div&gt;
+            &lt;div class=&quot;bg-warning text-center&quot;&gt;字体居中&lt;/div&gt;
+            &lt;div class=&quot;bg-light text-right&quot;&gt;字体右边对齐&lt;/div&gt;
 
-&lt;script&gt;
-    new Vue({
-        el : &quot;#app&quot;,
-        data : {  
-            msg : &quot;嘤嘤嘤？&quot; 
-        },
-        methods: {
-
-        },
-        components: {
-            com1 : {
-                data : {
-                    //这里面的值可读可写
-                },
-                template : &apos;#tem&apos;,
-                props: [&apos;parentmsg&apos;], //第二步，绑定父组件的数据，且只读不可写。
-                directives: {
-
-                },
-                filters: {
-
-                },
-                components: {
-
-                }
-            }
-        }
-
-    })
-</code></pre><h1 id="5-父组件向子组件传方法"><a href="#5-父组件向子组件传方法" class="headerlink" title="5. 父组件向子组件传方法"></a>5. 父组件向子组件传方法</h1><pre><code>&lt;div id=&quot;app&quot;&gt;
-    &lt;com1  @func=&quot;show&quot;&gt;&lt;/com1&gt; //第一步：用v-on给子组件添加自定义事件，值为父组件的方法名,如果有参，也不用在这里添加
-    &lt;p&gt;{{msg}}&lt;/p&gt;
-&lt;/div&gt;
-&lt;template id=&quot;tem&quot;&gt;
-    &lt;div&gt;
-        &lt;p&gt;我是子组件&lt;/p&gt;
-        //第二步，给要触发的子组件标签添加v-on，触发子组件定义的方法
-        &lt;input type=&quot;button&quot; value=&quot;子组件按钮，点击触发父组件的show方法&quot; @click=&quot;myclick&quot;&gt; 
-    &lt;/div&gt;
-&lt;/template&gt;
-
-&lt;script&gt;
-    new Vue({
-        el : &quot;#app&quot;,
-        data : {
-            msg : &quot;嘤嘤嘤？&quot;,
-            formSonName : null
-        },
-        methods: {
-            show(data1){
-                console.log(&quot;我是父组件的show方法：&quot;+ data1);
-                this.formSonName = data1;
-            }
-        },
-        components: {
-
-            com1 : {
-                data : function(){
-                return {
-                    name1:&apos;Yi&apos;,
-                    age : 18      
-                    }
-                },
-                template : &apos;#tem&apos;,
-                //第三步：通过自定义方法，来触发父组件的方法，this.$emit(&apos;自定义事件&apos;,参数，...)
-                methods: {
-                    myclick(){
-                        this.$emit(&apos;func&apos;,this.name1)
-                    }
-                },
-            }
-        }
-
-    })
+            &lt;p class=&quot;text-lowercase&quot;&gt;Lowkey&lt;/p&gt;
+            &lt;p class=&quot;text-uppercase&quot;&gt;Lowkey&lt;/p&gt; 
+            &lt;!-- 首字母大写 --&gt;
+            &lt;p class=&quot;text-capitalize&quot;&gt;Lowkey&lt;/p&gt; 
+ &lt;/div&gt;
 </code></pre>
     </div>
   </div>
@@ -382,7 +292,7 @@
         
           本文作者 : Yi <br/>
         
-        原文链接 : <a href="">https://www.zhangjiayi.xyz/archives/2019/06/04/602Vcpt1/</a><br>
+        原文链接 : <a href="">https://www.zhangjiayi.xyz/archives/2019/06/05/bsColor/</a><br>
         版权声明 : 本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
         </blockquote>
       </div>
@@ -448,14 +358,20 @@
           <i class="iconfont icon-06tags"></i>标签: 
           
           <span class="span--tag">
-            <a href="/tags/Vue/">
-              #Vue
+            <a href="/tags/BootStrap/">
+              #BootStrap
             </a>
           </span>
           
           <span class="span--tag">
-            <a href="/tags/component/">
-              #component
+            <a href="/tags/color/">
+              #color
+            </a>
+          </span>
+          
+          <span class="span--tag">
+            <a href="/tags/text/">
+              #text
             </a>
           </span>
           
@@ -480,13 +396,13 @@
       <div class="nav-pre">
         <i class="iconfont icon-prev"></i>
         上一篇:
-        <a href="/2019/06/02/602response/" target="_self">请求转发（数据共享）和重定向</a>
+        <a href="/2019/06/04/602Vcpt1/" target="_self">创建component组件和子父组件信息传递</a>
       </div>
     
     
       <div class="nav-next">
         下一篇:
-        <a href="/2019/06/05/bsColor/" target="_self">BootStrap颜色和text文本基本使用</a>
+        <a href="/2019/06/05/bsSize/" target="_self">BootStrap元素size变更</a>
         <i class="iconfont icon-next"></i>
       </div>
     
