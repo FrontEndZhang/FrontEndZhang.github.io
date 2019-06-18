@@ -8,12 +8,12 @@
   
   
   
-  <title>mysql数据库和表的基本操作 | Yi</title>
+  <title>mvc模式详解 | Yi</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="mysql,MySQL,database,table," />
+    <meta name="keywords" content="Mvc,jsp,Mvc," />
   
 
   <script>
@@ -223,7 +223,7 @@
 
 <div class="post">
   <h1 class="article-title">
-    <span>mysql数据库和表的基本操作</span>
+    <span>mvc模式详解</span>
   </h1>
   <div class="article-top-meta">
     <span>
@@ -233,14 +233,14 @@
     
       <span>
         分类 : 
-          <a href="/categories/mysql/">
-            mysql
+          <a href="/categories/Mvc/">
+            Mvc
           </a>
       </span>
     
     
       <span>
-        浏览 : <span class="article-timer" data-identity="mysql01"></span>
+        浏览 : <span class="article-timer" data-identity="mvc"></span>
       </span>
     
   </div>
@@ -249,71 +249,26 @@
 
   <div class="article-content">
     <div class="markdown-body">
-      <h2 id="1-数据库的登录语句"><a href="#1-数据库的登录语句" class="headerlink" title="1.数据库的登录语句"></a>1.数据库的登录语句</h2><ul>
-<li>mysql -u root -p </li>
-</ul>
-<h2 id="2-MySQL库的增删改查和使用（进入库）"><a href="#2-MySQL库的增删改查和使用（进入库）" class="headerlink" title="2.MySQL库的增删改查和使用（进入库）"></a>2.MySQL库的增删改查和使用（进入库）</h2><h3 id="一-库查询"><a href="#一-库查询" class="headerlink" title="一.库查询"></a>一.库查询</h3><pre><code>1. 查询所有的数据库名称:
-* show databases；
-2. 查询对应的数据库名称:
-* show create database 数据库名称;
-</code></pre><h3 id="二-库创建"><a href="#二-库创建" class="headerlink" title="二.库创建"></a>二.库创建</h3><pre><code>1. 创建：
-* create database 数据库名称;
-2. 判断数据库是否存在:    
-* create database if not exiest 数据库名称
-3.指定数据库字符集:
-* create database 数据库名称 character set 字符集名称;
-</code></pre><h3 id="三-合并查询创建语句"><a href="#三-合并查询创建语句" class="headerlink" title="三.合并查询创建语句"></a>三.合并查询创建语句</h3><pre><code>* create database if not exists 数据库名称 charcter set 字符集名称;
-</code></pre><h3 id="四-删除数据库"><a href="#四-删除数据库" class="headerlink" title="四.删除数据库"></a>四.删除数据库</h3><pre><code>1. 删除数据库：    
-* drop database 数据库名称;
-2. 判断数据库是否存在，存在再删除： 
-* drop database if exists 数据库名称;
-</code></pre><h3 id="五-修改数据库："><a href="#五-修改数据库：" class="headerlink" title="五.修改数据库："></a>五.修改数据库：</h3><pre><code>1.修改数据库字符集：
-* alter database 数据库名称 character set 字符集名称;
-</code></pre><h3 id="六-使用数据库"><a href="#六-使用数据库" class="headerlink" title="六.使用数据库"></a>六.使用数据库</h3><pre><code>1. 使用数据库：
-* use 数据库名称;
-2.查询当前数据库名称：
-* select database();
-</code></pre><h2 id="2-表的增删改查和复制"><a href="#2-表的增删改查和复制" class="headerlink" title="2.表的增删改查和复制"></a>2.表的增删改查和复制</h2><h3 id="一-查询"><a href="#一-查询" class="headerlink" title="一.查询"></a>一.查询</h3><pre><code>1. 查询某个库中所有表名称：
-* show tables;
-2. 查询表结构： 
-* desc 表名称;
-</code></pre><h3 id="二-创建表"><a href="#二-创建表" class="headerlink" title="二.创建表"></a>二.创建表</h3><pre><code>1. 创建： 
-    * create table 表名(
-        列名1 数据类型1，    
-        列名2 数据类型2，    
-        列名3 数据类型3，    
-        列名4 数据类型4，    
-        ...        
-        列名n 数据类型n
-    );
-    ** 注意，最后一行没有逗号！
-    ** 数据类型：
-    1.int 
-    2.double（5,2）解释：一共有五个数字，小数后面保留俩位，也就是最大999.99
-    3.date yyyy-MM-dd
-    4.datetime: yyyy-MM-dd HH:mm-ss
-    5.timestamp:时间错类型 yyyy-MM-dd HH:mm-ss(如果将来不给这个字段赋值，或赋值为null，则默认使用当前的系统时间)
-    6.varchar 最大20个字符
-    7.其他
-</code></pre><h3 id="三-删除"><a href="#三-删除" class="headerlink" title="三.删除"></a>三.删除</h3><pre><code>1. 删除表 
-* drop tabel 表名;
-2. 判断是否有+删除
-* drop table if exists 表名;
-</code></pre><h3 id="四-修改表"><a href="#四-修改表" class="headerlink" title="四.修改表"></a>四.修改表</h3><pre><code>1. 修改表名
-* alter table 表名 rename to 新表名
-2. 修改表的字符集
-* alter table 表名 character set utf8;
-3. 添加一列
-* alter table 表名 add 列名 数据类型
-4. 修改列名称 类型
-* alter table 表名 change 列名 新列名 数
-  单独修改数据类型：
-* alter table 表名 modify 列名 数据类型
-据类型
-5. 删除列
-alter table 表名 drop 列名
-</code></pre><h3 id="五-复制表"><a href="#五-复制表" class="headerlink" title="五.复制表"></a>五.复制表</h3><pre><code>1. 复制表：
-create table 表名 like 被复制的表名
+      <h2 id="MVC：开发模式"><a href="#MVC：开发模式" class="headerlink" title="MVC：开发模式"></a>MVC：开发模式</h2><pre><code>1. jsp演变历史
+    1.    早期只有servlet，只能使用response输出标签数据，非常麻烦
+    2.    后来有jsp,简化了servlet开发，但是如果过度使用jsp，在jsp中写大量的java代码，有的和html代码嵌套，难以维护和分工
+    3.    再后来，Javaweb的开发，借鉴mvc开发模式，使得程序的设计更加合理性
+
+2.    MVC:
+    1.    M:Model,模型。 JavaBean
+        * 完成具体的业务操作，如：查询数据库，封装对象
+    2.    V：View,视图。 JSP
+        * 展示数据
+    3.    C：Controller，控制器。 Servlet
+        * 获取用户输入
+        * 调用模型
+        * 将数据交给视图展示    
+3.    MVC优缺点：
+    1.    优点：    
+        1.    耦合性低，方便维护，可以利于分工协作
+        2.    重用性高
+    2.    缺点：
+        1.    使得项目架构变得复杂，对开发人员要求高
 </code></pre>
     </div>
   </div>
@@ -325,7 +280,7 @@ create table 表名 like 被复制的表名
         
           本文作者 : Yi <br/>
         
-        原文链接 : <a href="">https://www.zhangjiayi.xyz/archives/2019/06/17/mysql01/</a><br>
+        原文链接 : <a href="">https://www.zhangjiayi.xyz/archives/2019/06/17/mvc/</a><br>
         版权声明 : 本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
         </blockquote>
       </div>
@@ -391,20 +346,14 @@ create table 表名 like 被复制的表名
           <i class="iconfont icon-06tags"></i>标签: 
           
           <span class="span--tag">
-            <a href="/tags/MySQL/">
-              #MySQL
+            <a href="/tags/jsp/">
+              #jsp
             </a>
           </span>
           
           <span class="span--tag">
-            <a href="/tags/database/">
-              #database
-            </a>
-          </span>
-          
-          <span class="span--tag">
-            <a href="/tags/table/">
-              #table
+            <a href="/tags/Mvc/">
+              #Mvc
             </a>
           </span>
           
@@ -429,13 +378,13 @@ create table 表名 like 被复制的表名
       <div class="nav-pre">
         <i class="iconfont icon-prev"></i>
         上一篇:
-        <a href="/2019/06/05/bsSize/" target="_self">BootStrap元素size变更</a>
+        <a href="/2019/06/17/jsp/" target="_self">jsp基础语法和内置对象</a>
       </div>
     
     
       <div class="nav-next">
         下一篇:
-        <a href="/2019/06/17/jsp/" target="_self">jsp基础语法和内置对象</a>
+        <a href="/2019/06/18/jspForm/" target="_self">jsp页面Form表单提交路径</a>
         <i class="iconfont icon-next"></i>
       </div>
     
