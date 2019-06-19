@@ -275,17 +275,17 @@
     &lt;%-- --%&gt;:可以注释所有
 </code></pre><h3 id="3-内置对象"><a href="#3-内置对象" class="headerlink" title="3.    内置对象"></a>3.    内置对象</h3><pre><code>* 在jsp页面中不需要创建，直接使用的对象
 * 一共有9个：
-    变量名                真实类型                    作用
-    1.    pageContext        PageContext                  当前页面共享数据，还可以获取其他八个其他内置对象
-    2.    request            HttpServletRequest        一次请求访问的多个资源（转发）
-    3.    session            HttpSession                一次会话的多个请求间共享数据
-    4.    application        ServletContext            所有用户间共享数据
-    5.    response        HttpServletResponse        响应对象
-    6.    page            Object                    当前页面(Servelet)的对象 this
+    变量名                     真实类型                    作用
+    1.    pageContext             PageContext                  当前页面共享数据，还可以获取其他八个其他内置对象
+    2.    request                 HttpServletRequest            一次请求访问的多个资源（转发）
+    3.    session                 HttpSession                一次会话的多个请求间共享数据
+    4.    application        ServletContext                    所有用户间共享数据
+    5.    response             HttpServletResponse        响应对象
+    6.    page                 Object                        当前页面(Servelet)的对象      this
        （也就是Servelet对象，指向this） //final java.lang.Object page = this;
-    7.    out                JspWriter                输出对象，数据输出到页面上
-    8.    config            ServletConfig            Servelet的配置对象
-    9.    exception        Throwable                异常对象
+    7.    out                     JspWriter                    输出对象，数据输出到页面上
+    8.    config                 ServletConfig                Servelet的配置对象
+    9.    exception             Throwable                    异常对象
 </code></pre>
     </div>
   </div>
@@ -401,7 +401,7 @@
     
       <div class="nav-next">
         下一篇:
-        <a href="/2019/06/17/mvc/" target="_self">mvc模式详解</a>
+        <a href="/2019/06/17/mvc/" target="_self">mvc模式</a>
         <i class="iconfont icon-next"></i>
       </div>
     

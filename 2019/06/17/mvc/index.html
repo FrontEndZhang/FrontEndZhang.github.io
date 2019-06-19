@@ -8,7 +8,7 @@
   
   
   
-  <title>mvc模式详解 | Yi</title>
+  <title>mvc模式 | Yi</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -223,7 +223,7 @@
 
 <div class="post">
   <h1 class="article-title">
-    <span>mvc模式详解</span>
+    <span>mvc模式</span>
   </h1>
   <div class="article-top-meta">
     <span>
@@ -249,27 +249,43 @@
 
   <div class="article-content">
     <div class="markdown-body">
-      <h2 id="MVC：开发模式"><a href="#MVC：开发模式" class="headerlink" title="MVC：开发模式"></a>MVC：开发模式</h2><pre><code>1. jsp演变历史
-    1.    早期只有servlet，只能使用response输出标签数据，非常麻烦
-    2.    后来有jsp,简化了servlet开发，但是如果过度使用jsp，在jsp中写大量的java代码，有的和html代码嵌套，难以维护和分工
-    3.    再后来，Javaweb的开发，借鉴mvc开发模式，使得程序的设计更加合理性
+      <h2 id="MVC：开发模式"><a href="#MVC：开发模式" class="headerlink" title="MVC：开发模式"></a>MVC：开发模式</h2><h3 id="1-jsp演变历史，mvc由来"><a href="#1-jsp演变历史，mvc由来" class="headerlink" title="1.jsp演变历史，mvc由来"></a>1.jsp演变历史，mvc由来</h3><ul>
+<li><p>早期只有servlet，只能使用response输出标签数据，非常麻烦</p>
+</li>
+<li><p>后来有jsp,简化了servlet开发，但是如果过度使用jsp，在jsp中写大量的java代码，有的和html代码嵌套，难以维护和分工</p>
+</li>
+<li><p>再后来，Javaweb的开发，借鉴mvc开发模式，使得程序的设计更加合理性</p>
+</li>
+</ul>
+<h3 id="2-MVC解析"><a href="#2-MVC解析" class="headerlink" title="2.MVC解析:"></a>2.MVC解析:</h3><ul>
+<li>1.M:Model,模型。 JavaBean<ul>
+<li>完成具体的业务操作，如：查询数据库，封装对象</li>
+</ul>
+</li>
+<li>2.V：View,视图。 JSP<ul>
+<li>展示数据</li>
+</ul>
+</li>
+<li>3.C：Controller，控制器。 Servlet<ul>
+<li>获取用户输入</li>
+<li>调用模型</li>
+<li>将数据交给视图展示    </li>
+</ul>
+</li>
+<li>3.MVC优缺点：<ol>
+<li>优点：    <ol>
+<li>耦合性低，方便维护，可以利于分工协作</li>
+<li>重用性高</li>
+</ol>
+</li>
+<li>缺点：<ol>
+<li>使得项目架构变得复杂，对开发人员要求高</li>
+</ol>
+</li>
+</ol>
+</li>
+</ul>
 
-2.    MVC:
-    1.    M:Model,模型。 JavaBean
-        * 完成具体的业务操作，如：查询数据库，封装对象
-    2.    V：View,视图。 JSP
-        * 展示数据
-    3.    C：Controller，控制器。 Servlet
-        * 获取用户输入
-        * 调用模型
-        * 将数据交给视图展示    
-3.    MVC优缺点：
-    1.    优点：    
-        1.    耦合性低，方便维护，可以利于分工协作
-        2.    重用性高
-    2.    缺点：
-        1.    使得项目架构变得复杂，对开发人员要求高
-</code></pre>
     </div>
   </div>
   

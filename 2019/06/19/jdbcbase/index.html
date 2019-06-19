@@ -8,12 +8,12 @@
   
   
   
-  <title>jsp页面Form表单提交路径 | Yi</title>
+  <title>JDBC底层操作代码 | Yi</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="Form,jsp,form," />
+    <meta name="keywords" content="jsp,Java,JDBC,mysql," />
   
 
   <script>
@@ -223,24 +223,24 @@
 
 <div class="post">
   <h1 class="article-title">
-    <span>jsp页面Form表单提交路径</span>
+    <span>JDBC底层操作代码</span>
   </h1>
   <div class="article-top-meta">
     <span>
       发布 : 
-      2019-06-18
+      2019-06-19
     </span>
     
       <span>
         分类 : 
-          <a href="/categories/Form/">
-            Form
+          <a href="/categories/jsp/">
+            jsp
           </a>
       </span>
     
     
       <span>
-        浏览 : <span class="article-timer" data-identity="jspForm"></span>
+        浏览 : <span class="article-timer" data-identity="jdbcbase"></span>
       </span>
     
   </div>
@@ -249,7 +249,55 @@
 
   <div class="article-content">
     <div class="markdown-body">
-      <p>## </p>
+      <h2 id="JDBC操作步骤"><a href="#JDBC操作步骤" class="headerlink" title="JDBC操作步骤"></a>JDBC操作步骤</h2><h3 id="1-加载驱动"><a href="#1-加载驱动" class="headerlink" title="1.加载驱动"></a>1.加载驱动</h3><pre><code>//不同的mysql版本加载驱动的方式
+Class.forName(&quot;com.mysql.jdbc.Driver&quot;); mysql 5
+Class.forName(&quot;com.mysql.cj.jdbc.Driver&quot;); mysql 6及以上
+</code></pre><h3 id="2-获取连接对象"><a href="#2-获取连接对象" class="headerlink" title="2.获取连接对象"></a>2.获取连接对象</h3><pre><code>//注意，mysql 6及以上 地址后面需要指定时区serverTimezone（比如：serverTimezone=UTC）
+Connection conn =DriverManager.getConnection(url, usr, password);
+url（地址）： jdbc:mysql://localhost（ip地址）:3306（端口）/database（库名）(?useUnicode=true&amp;characterEncoding=utf8&amp;useSSL=false)---可加可不加，建议加上    
+usr:用户名
+password:密码
+</code></pre><h3 id="3-获取执行对象"><a href="#3-获取执行对象" class="headerlink" title="3.获取执行对象"></a>3.获取执行对象</h3><pre><code>Statement statement = conn.createStatement();
+</code></pre><h3 id="4-使用执行对象的方法，来操作数据库"><a href="#4-使用执行对象的方法，来操作数据库" class="headerlink" title="4.使用执行对象的方法，来操作数据库"></a>4.使用执行对象的方法，来操作数据库</h3><pre><code>int row = statement.executeUpdate(sql语句);
+//executeUpdate方法： 只能执行更新语句，返回影响的行数。
+
+ResultSet resultSet = statement.executeQuery(sql语句); 
+//executeQuery方法 ： 只能执行查询语句，返回 ResultSet对象，包含查询信息，结构如下：
+
++----+--------------+--------+----------+----------+
+| id | account      | name   | nickname | password | &lt;—— ResultSet开始指针指向，执行next，就会往下移，有下一个返回true，否则为false
++----+--------------+--------+----------+----------+
+|  1 | 201710411411 | 张家义 | 锦瑟浮生 | 117139   |   
+|  2 | 201710411422 | 袁帅   | bloom    | 12306    |
+|  3 | 201710411433 | 周小学 | 嘤嘤嘤   | 1314250  |
++----+--------------+--------+----------+----------+
+//显示查询信息
+while (resultSet.next()){
+    String name = resultSet.getString(&quot;name&quot;);
+    System.out.println(name);
+}
+</code></pre><h3 id="5-关闭流-防止内存泄流"><a href="#5-关闭流-防止内存泄流" class="headerlink" title="5.关闭流(防止内存泄流)"></a>5.关闭流(防止内存泄流)</h3><pre><code>resultSet.close();
+statement.close();
+conn.close();
+</code></pre><h2 id="Mysql5和Mysql6的区别"><a href="#Mysql5和Mysql6的区别" class="headerlink" title="Mysql5和Mysql6的区别"></a>Mysql5和Mysql6的区别</h2><h3 id="1-版本区别"><a href="#1-版本区别" class="headerlink" title="1.版本区别"></a>1.版本区别</h3><ol>
+<li><p>com.mysql.jdbc.Driver 是 mysql-connector-java 5中的</p>
+</li>
+<li><p>com.mysql.cj.jdbc.Driver 是 mysql-connector-java 6及以上的</p>
+</li>
+</ol>
+<h3 id="2-JDBC连接Mysql5"><a href="#2-JDBC连接Mysql5" class="headerlink" title="2.JDBC连接Mysql5"></a>2.JDBC连接Mysql5</h3><ul>
+<li>driverClassName=com.mysql.jdbc.Driver</li>
+<li>url=jdbc:mysql://localhost:3306/jpa(?useUnicode=true&amp;characterEncoding=utf8&amp;useSSL=false)—-可加可不加，建议加上</li>
+<li>username=用户名</li>
+<li>password=密码</li>
+</ul>
+<h3 id="2-JDBC连接Mysql6-必须加时区"><a href="#2-JDBC连接Mysql6-必须加时区" class="headerlink" title="2.JDBC连接Mysql6(必须加时区)"></a>2.JDBC连接Mysql6(必须加时区)</h3><ul>
+<li>注意：需要指定时区serverTimezone</li>
+<li>driverClassName=com.mysql.cj.jdbc.Driver</li>
+<li>url=jdbc:mysql://localhost:3306/jpa（?serverTimezone=UTC&amp;useUnicode=true&amp;characterEncoding=utf8&amp;useSSL=false）—-不加报错</li>
+<li>username=用户名</li>
+<li>password=密码</li>
+</ul>
 
     </div>
   </div>
@@ -261,7 +309,7 @@
         
           本文作者 : Yi <br/>
         
-        原文链接 : <a href="">https://www.zhangjiayi.xyz/archives/2019/06/18/jspForm/</a><br>
+        原文链接 : <a href="">https://www.zhangjiayi.xyz/archives/2019/06/19/jdbcbase/</a><br>
         版权声明 : 本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
         </blockquote>
       </div>
@@ -327,14 +375,20 @@
           <i class="iconfont icon-06tags"></i>标签: 
           
           <span class="span--tag">
-            <a href="/tags/jsp/">
-              #jsp
+            <a href="/tags/Java/">
+              #Java
             </a>
           </span>
           
           <span class="span--tag">
-            <a href="/tags/form/">
-              #form
+            <a href="/tags/JDBC/">
+              #JDBC
+            </a>
+          </span>
+          
+          <span class="span--tag">
+            <a href="/tags/mysql/">
+              #mysql
             </a>
           </span>
           
@@ -359,15 +413,9 @@
       <div class="nav-pre">
         <i class="iconfont icon-prev"></i>
         上一篇:
-        <a href="/2019/06/17/mvc/" target="_self">mvc模式</a>
+        <a href="/2019/06/18/jspForm/" target="_self">jsp页面Form表单提交路径</a>
       </div>
     
-    
-      <div class="nav-next">
-        下一篇:
-        <a href="/2019/06/19/jdbcbase/" target="_self">JDBC底层操作代码</a>
-        <i class="iconfont icon-next"></i>
-      </div>
     
   </nav>
 
