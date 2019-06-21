@@ -8,12 +8,12 @@
   
   
   
-  <title>JDBC底层操作代码 | Yi</title>
+  <title>会话技术：Cookie和Session | Yi</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="jsp,Java,JDBC,mysql," />
+    <meta name="keywords" content="cookie,cookie,session," />
   
 
   <script>
@@ -223,24 +223,24 @@
 
 <div class="post">
   <h1 class="article-title">
-    <span>JDBC底层操作代码</span>
+    <span>会话技术：Cookie和Session</span>
   </h1>
   <div class="article-top-meta">
     <span>
       发布 : 
-      2019-06-19
+      2019-06-20
     </span>
     
       <span>
         分类 : 
-          <a href="/categories/jsp/">
-            jsp
+          <a href="/categories/cookie/">
+            cookie
           </a>
       </span>
     
     
       <span>
-        浏览 : <span class="article-timer" data-identity="jdbcbase"></span>
+        浏览 : <span class="article-timer" data-identity="cookie"></span>
       </span>
     
   </div>
@@ -249,55 +249,85 @@
 
   <div class="article-content">
     <div class="markdown-body">
-      <h2 id="JDBC操作步骤"><a href="#JDBC操作步骤" class="headerlink" title="JDBC操作步骤"></a>JDBC操作步骤</h2><h3 id="1-加载驱动"><a href="#1-加载驱动" class="headerlink" title="1.加载驱动"></a>1.加载驱动</h3><pre><code>//不同的mysql版本加载驱动的方式
-Class.forName(&quot;com.mysql.jdbc.Driver&quot;); mysql 5
-Class.forName(&quot;com.mysql.cj.jdbc.Driver&quot;); mysql 6及以上
-</code></pre><h3 id="2-获取连接对象"><a href="#2-获取连接对象" class="headerlink" title="2.获取连接对象"></a>2.获取连接对象</h3><pre><code>//注意，mysql 6及以上 地址后面需要指定时区serverTimezone（比如：serverTimezone=UTC）
-Connection conn =DriverManager.getConnection(url, usr, password);
-url（地址）： jdbc:mysql://localhost（ip地址）:3306（端口）/database（库名）(?useUnicode=true&amp;characterEncoding=utf8&amp;useSSL=false)---可加可不加，建议加上    
-usr:用户名
-password:密码
-</code></pre><h3 id="3-获取执行对象"><a href="#3-获取执行对象" class="headerlink" title="3.获取执行对象"></a>3.获取执行对象</h3><pre><code>Statement statement = conn.createStatement();
-</code></pre><h3 id="4-使用执行对象的方法，来操作数据库"><a href="#4-使用执行对象的方法，来操作数据库" class="headerlink" title="4.使用执行对象的方法，来操作数据库"></a>4.使用执行对象的方法，来操作数据库</h3><pre><code>int row = statement.executeUpdate(sql语句);
-//executeUpdate方法： 只能执行更新语句，返回影响的行数。
-
-ResultSet resultSet = statement.executeQuery(sql语句); 
-//executeQuery方法 ： 只能执行查询语句，返回 ResultSet对象，包含查询信息，结构如下：
-
-+----+--------------+--------+----------+----------+
-| id | account      | name   | nickname | password | &lt;—— ResultSet开始指针指向，执行next，就会往下移，有下一个返回true，否则为false
-+----+--------------+--------+----------+----------+
-|  1 | 201710411411 | 张家义 | 锦瑟浮生 | 117139   |   
-|  2 | 201710411422 | 袁帅   | bloom    | 12306    |
-|  3 | 201710411433 | 周小学 | 嘤嘤嘤   | 1314250  |
-+----+--------------+--------+----------+----------+
-//显示查询信息
-while (resultSet.next()){
-    String name = resultSet.getString(&quot;name&quot;);
-    System.out.println(name);
-}
-</code></pre><h3 id="5-关闭流-防止内存泄流"><a href="#5-关闭流-防止内存泄流" class="headerlink" title="5.关闭流(防止内存泄流)"></a>5.关闭流(防止内存泄流)</h3><pre><code>resultSet.close();
-statement.close();
-conn.close();
-</code></pre><h2 id="Mysql5和Mysql6的区别"><a href="#Mysql5和Mysql6的区别" class="headerlink" title="Mysql5和Mysql6的区别"></a>Mysql5和Mysql6的区别</h2><h3 id="1-版本区别"><a href="#1-版本区别" class="headerlink" title="1.版本区别"></a>1.版本区别</h3><ol>
-<li><p>com.mysql.jdbc.Driver 是 mysql-connector-java 5中的</p>
+      <h2 id="会话技术"><a href="#会话技术" class="headerlink" title="会话技术"></a>会话技术</h2><ol>
+<li>会话：一次会话中包含多次请求响应<ol>
+<li>一次会话：浏览器第一次给服务器资源发送请求，会话建立，直达有一方断开连接</li>
+</ol>
 </li>
-<li><p>com.mysql.cj.jdbc.Driver 是 mysql-connector-java 6及以上的</p>
+<li>功能：在一次会话的范围内的多次请求见，共享数据</li>
+<li>方式：<ol>
+<li>客户端会话技术：Cookie</li>
+<li>服务器端会话技术：Session</li>
+</ol>
 </li>
 </ol>
-<h3 id="2-JDBC连接Mysql5"><a href="#2-JDBC连接Mysql5" class="headerlink" title="2.JDBC连接Mysql5"></a>2.JDBC连接Mysql5</h3><ul>
-<li>driverClassName=com.mysql.jdbc.Driver</li>
-<li>url=jdbc:mysql://localhost:3306/jpa(?useUnicode=true&amp;characterEncoding=utf8&amp;useSSL=false)—-可加可不加，建议加上</li>
-<li>username=用户名</li>
-<li>password=密码</li>
+<h2 id="Cookie"><a href="#Cookie" class="headerlink" title="Cookie"></a>Cookie</h2><ol>
+<li>概念：客户端会话技术，将数据保存到客户端</li>
+<li>快速入门：<ul>
+<li>使用步骤<ol>
+<li>创建Cookie对象，绑定数据<ul>
+<li>new Cookie(String name,Sting value)</li>
 </ul>
-<h3 id="2-JDBC连接Mysql6-必须加时区"><a href="#2-JDBC连接Mysql6-必须加时区" class="headerlink" title="2.JDBC连接Mysql6(必须加时区)"></a>2.JDBC连接Mysql6(必须加时区)</h3><ul>
-<li>注意：需要指定时区serverTimezone</li>
-<li>driverClassName=com.mysql.cj.jdbc.Driver</li>
-<li>url=jdbc:mysql://localhost:3306/jpa（?serverTimezone=UTC&amp;useUnicode=true&amp;characterEncoding=utf8&amp;useSSL=false）—-不加报错</li>
-<li>username=用户名</li>
-<li>password=密码</li>
+</li>
+<li>发送Cookie对象<ul>
+<li>response.addCookie(Cookie cookie) </li>
 </ul>
+</li>
+<li>获取Cookie，拿到数据<ul>
+<li>Cookie[] request.getCookies()  </li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p>图示：</p>
+<p><img src="/imgs/cookie/one.png"></p>
+</li>
+<li><p>实现原理</p>
+<ul>
+<li>基于响应头set-cookie和请求头Cookie实现</li>
+</ul>
+</li>
+<li>cookie的细节<ol>
+<li>默认情况下，当浏览器关闭后，Cookie数据被销毁</li>
+<li>持久化存储：<ul>
+<li>setMaxAge(int seconds)<ol>
+<li>正数：将Cookie数据写到硬盘的文件中。持久化存储。cookie存活时间</li>
+<li>负数：默认值</li>
+<li>零：删除cookie信息</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>cookie能不能存中文<ol>
+<li>在tomcat8 之前，cookie中不能直接存储中文数据<ul>
+<li>需要将1中文数据转码—一般采用URL编码（%E3）</li>
+</ul>
+</li>
+<li>在tomcat8 之前，cookie可以存储中文</li>
+</ol>
+</li>
+<li><p>cookie共享问题</p>
+<ol>
+<li><p>假设在一个tomcat服务器中，部署了多个web项目，那么在这些1web项目中cookie能不能共享？</p>
+<ul>
+<li>默认情况下不能共享</li>
+<li>setPath（String path）：设置cookie的获取范围，默认情况下，设置为当前的虚拟目录（该目录下才可以共享）</li>
+</ul>
+<ol start="2">
+<li>不同tomcat服务器间cookie共享问题<ul>
+<li>setDomain(String path):如果设置一级域名相同，那么多个服务器之间cookie可以共享</li>
+<li>setDomain(“.baidu.com”),那么tieba.baidu.com和    news.baidu.com就可以共享</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
 
     </div>
   </div>
@@ -309,7 +339,7 @@ conn.close();
         
           本文作者 : Yi <br/>
         
-        原文链接 : <a href="">https://www.zhangjiayi.xyz/archives/2019/06/19/jdbcbase/</a><br>
+        原文链接 : <a href="">https://www.zhangjiayi.xyz/archives/2019/06/20/cookie/</a><br>
         版权声明 : 本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
         </blockquote>
       </div>
@@ -375,20 +405,14 @@ conn.close();
           <i class="iconfont icon-06tags"></i>标签: 
           
           <span class="span--tag">
-            <a href="/tags/Java/">
-              #Java
+            <a href="/tags/cookie/">
+              #cookie
             </a>
           </span>
           
           <span class="span--tag">
-            <a href="/tags/JDBC/">
-              #JDBC
-            </a>
-          </span>
-          
-          <span class="span--tag">
-            <a href="/tags/mysql/">
-              #mysql
+            <a href="/tags/session/">
+              #session
             </a>
           </span>
           
@@ -413,15 +437,9 @@ conn.close();
       <div class="nav-pre">
         <i class="iconfont icon-prev"></i>
         上一篇:
-        <a href="/2019/06/18/jspForm/" target="_self">jsp页面Form表单提交路径</a>
+        <a href="/2019/06/19/jdbcbase/" target="_self">JDBC底层操作代码</a>
       </div>
     
-    
-      <div class="nav-next">
-        下一篇:
-        <a href="/2019/06/20/cookie/" target="_self">会话技术：Cookie和Session</a>
-        <i class="iconfont icon-next"></i>
-      </div>
     
   </nav>
 
