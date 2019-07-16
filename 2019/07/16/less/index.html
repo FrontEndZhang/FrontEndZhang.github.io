@@ -8,12 +8,12 @@
   
   
   
-  <title>会话技术：Cookie和Session | Yi</title>
+  <title>Less基础 | Yi</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="cookie,cookie,session," />
+    <meta name="keywords" content="Less,Less," />
   
 
   <script>
@@ -223,24 +223,24 @@
 
 <div class="post">
   <h1 class="article-title">
-    <span>会话技术：Cookie和Session</span>
+    <span>Less基础</span>
   </h1>
   <div class="article-top-meta">
     <span>
       发布 : 
-      2019-06-20
+      2019-07-16
     </span>
     
       <span>
         分类 : 
-          <a href="/categories/cookie/">
-            cookie
+          <a href="/categories/Less/">
+            Less
           </a>
       </span>
     
     
       <span>
-        浏览 : <span class="article-timer" data-identity="cookie"></span>
+        浏览 : <span class="article-timer" data-identity="less"></span>
       </span>
     
   </div>
@@ -249,71 +249,213 @@
 
   <div class="article-content">
     <div class="markdown-body">
-      <h2 id="一-会话技术"><a href="#一-会话技术" class="headerlink" title="一.会话技术"></a>一.会话技术</h2><h3 id="1-会话"><a href="#1-会话" class="headerlink" title="1.会话"></a>1.会话</h3><ol>
-<li>一次会话中包含多次请求响应<ul>
-<li>一次会话：浏览器第一次给服务器资源发送请求，会话建立，直达有一方断开连接<h3 id="2-功能："><a href="#2-功能：" class="headerlink" title="2.功能："></a>2.功能：</h3></li>
+      <h2 id="1-为什么要用less，less是什么："><a href="#1-为什么要用less，less是什么：" class="headerlink" title="1.为什么要用less，less是什么："></a>1.为什么要用less，less是什么：</h2><ul>
+<li><p>我的体会是：由于一个项目，css代码很多，一百多行都能让你看的眼花缭乱，还要去慢慢找，很麻烦，而且结构不清晰。所以，为我们就选择less来增强css的结构性和可阅读性，我们只需要看less文件，就不需要在看css文件。</p>
+</li>
+<li><p>Less 是一个Css 预编译器,意思指的是它可以扩展Css语言,添加功能如允许变量(variables),混合(mixins),函数(functions) 和许多其他的技术，让你的Css更具维护性，主题性，扩展性。</p>
+</li>
+</ul>
+<h2 id="2-less的安装环境"><a href="#2-less的安装环境" class="headerlink" title="2.less的安装环境"></a>2.less的安装环境</h2><ol>
+<li>less 既可以在客户端上运行，也可以借助Node.js在服务器上运行</li>
+<li><p>介绍一个简单的方法：</p>
+<ul>
+<li>下载安装好node.js</li>
+<li>用vscode下载插件Easy Less</li>
+<li>重启vscode，然后编写less的文件，vscode就会给你自动在该文件夹里面生成对应的css文件</li>
+</ul>
+</li>
+<li><p>其他安装在网上查看即可 <a><a href="http://lesscss.cn/#using-less" target="_blank" rel="noopener">http://lesscss.cn/#using-less</a></a> </p>
+</li>
+</ol>
+<h2 id="3-less的注释"><a href="#3-less的注释" class="headerlink" title="3.less的注释"></a>3.less的注释</h2><ol>
+<li>以//开头的注释，不会编译到css文件中</li>
+<li>以/**/包裹的注释会编译到css文件中</li>
+</ol>
+<h2 id="4-less中的变量"><a href="#4-less中的变量" class="headerlink" title="4.less中的变量"></a>4.less中的变量</h2><ul>
+<li>使用@来声明一个变量：@color:pink; @pro:margin;<ol>
+<li>作为普通属性值来使用：直接使用@pink</li>
+<li>作为选择器和属性名： @{selector的值}的形式，比如 @{pro}: 0;</li>
+<li>作为URL：@{url}</li>
+<li>切记：变量的延迟加载 </li>
+</ol>
+</li>
+</ul>
+<h2 id="5-less中的嵌套规则"><a href="#5-less中的嵌套规则" class="headerlink" title="5.less中的嵌套规则"></a>5.less中的嵌套规则</h2><ol>
+<li><p>基本嵌套规则</p>
+<ul>
+<li><p>html代码：</p>
+<pre><code>&lt;div class=&quot;container&quot;&gt;
+    &lt;div class=&quot;inner&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+</code></pre></li>
+<li><p>less文件源码</p>
+<pre><code>.container {
+    height: 100px;
+    width: 100px;
+    .inner {
+        height: 50px;
+        width: 50px;
+        }
+}  
+</code></pre></li>
+<li><p>输出的css源码：</p>
+<pre><code>.container {
+  height: 100px;
+  width: 100px;
+}
+.container .inner {
+  height: 50px;
+  width: 50px;
+}
+</code></pre></li>
+</ul>
+</li>
+<li><p>&amp;的使用</p>
+<ul>
+<li>个人认为，该符号类似于Java中的this，代表自己</li>
+<li><p>使用方法：</p>
+<p>   .container {</p>
+<pre><code>height: 50px;
+width: 50px;
+  &amp;:hover {  //让自己获得hover效果
+          background: yellow;
+  }        
+</code></pre><p>   }</p>
+</li>
 </ul>
 </li>
 </ol>
-<ul>
-<li>在一次会话的范围内的多次请求见，共享数据<h3 id="3-技术方式："><a href="#3-技术方式：" class="headerlink" title="3.技术方式："></a>3.技术方式：</h3></li>
-</ul>
+<h2 id="6-less中的混合"><a href="#6-less中的混合" class="headerlink" title="6.less中的混合"></a>6.less中的混合</h2><p>混合就是将一系列属性从一个规则集引入到另一个规则集的方式</p>
 <ol>
-<li>客户端会话技术：Cookie</li>
-<li>服务器端会话技术：Session</li>
+<li><p>普通混合（没有带括号）    </p>
+<pre><code>//该段代码会被编译到css文件中
+.common {
+        position: @p;
+        height: @h;
+        width: @w;
+}
+.container {
+    .common //输出的css中也包含common中的代码
+
+}    
+</code></pre></li>
+<li><p>不带输出的混合（后面有括号）</p>
+<pre><code>.common() {  //该段代码不会被编译到css文件中
+         position: 100px;
+         height: 100px;
+         width: 100px;
+}
+</code></pre></li>
 </ol>
-<h2 id="2-Cookie"><a href="#2-Cookie" class="headerlink" title="2.Cookie"></a>2.Cookie</h2><h3 id="1-概念：客户端会话技术，将数据保存到客户端"><a href="#1-概念：客户端会话技术，将数据保存到客户端" class="headerlink" title="1. 概念：客户端会话技术，将数据保存到客户端"></a>1. 概念：客户端会话技术，将数据保存到客户端</h3><h3 id="2-快速入门："><a href="#2-快速入门：" class="headerlink" title="2. 快速入门："></a>2. 快速入门：</h3><ul>
-<li><p>使用步骤</p>
-<ol>
-<li>创建Cookie对象，绑定数据<ul>
-<li>new Cookie(String name,Sting value)</li>
-</ul>
-</li>
-<li>发送Cookie对象<ul>
-<li>response.addCookie(Cookie cookie) </li>
-</ul>
-</li>
-<li><p>获取Cookie，拿到数据  </p>
-<ul>
-<li>Cookie[] request.getCookies()  <h3 id="3-图示："><a href="#3-图示：" class="headerlink" title="3. 图示："></a>3. 图示：</h3></li>
-</ul>
-<p><img src="/imgs/Cookie/one.png"></p>
-</li>
+<pre><code>.container {
+    .common //输出的css中也包含common中的代码
+
+}    
+</code></pre><ol start="3">
+<li><p>带参数的混合</p>
+<pre><code>.common(@h,@w,@p) {
+             position: @p;
+             height: @h;
+             width: @w;
+}
+.container {
+    .common(50px,50px,ralative) //输出的css中也包含common中的代码
+
+}
+</code></pre></li>
+<li><p>带参数并且有默认值的混合 </p>
+<pre><code>.common(@h:100px,@w:100px,@p:absolute) {
+             position: @p;
+             height: @h;
+             width: @w;
+}
+.container {
+    .common() //输出的css中也包含common中的代码,默认为100px,100px,absolute
+
+}
+</code></pre></li>
+<li><p>命名参数(指定给哪个参数传值)</p>
+<pre><code>.common(@h:100px,@w:100px,@p) {
+             position: @p;
+             height: @h;
+             width: @w;
+}
+.container {
+    .common(@p:absolute) 
+
+}
+</code></pre></li>
+<li><p>匹配模式</p>
+<pre><code>.common(signA,@h:100px,@w:100px,@p:absolute) { 
+             position: @p;
+             height: @h;
+             width: @w;
+}
+.common(signB,@h:200px,@w:200px,@p:relative) { 
+             position: @p;
+             height: @h;
+             width: @w;
+}
+.container {
+    .common(signB) //选择的是signB中的代码片段
+
+}
+</code></pre></li>
+<li><p>arguments变量</p>
+<pre><code>//less代码
+.common(@a,@b,@c) {
+       border: @arguments  
+}
+.container {
+    .common(1px,solid,red); //等同于 
+}
+//输出的css代码如下：
+.container {
+  border: 1px solid red;
+}
+</code></pre></li>
 </ol>
-</li>
+<h2 id="less运算"><a href="#less运算" class="headerlink" title="less运算"></a>less运算</h2><ul>
+<li>在less中可以进行加减乘除的运算，但是至少要加一个单位哦！<h2 id="less避免编译"><a href="#less避免编译" class="headerlink" title="less避免编译"></a>less避免编译</h2></li>
+<li><p>语法： ~”直接显示的内容”</p>
+<h2 id="less继承-继承让相同的代码不再重复出现css里面"><a href="#less继承-继承让相同的代码不再重复出现css里面" class="headerlink" title="less继承 (继承让相同的代码不再重复出现css里面)"></a>less继承 (继承让相同的代码不再重复出现css里面)</h2><pre><code>//less文件
+    .common{
+        height: 100%;
+        width: 50%;
+        &amp;:hover{  //注意
+            background: yellow;
+        }
+    }
+    .container {
+        .right:extend(.common all) { //all代表着有关的代码全部继承下来，比如：hover等等
+            background: blue;
+        }
+        .left:extend(.common all) {  
+            background: green;
+        }
+    }
+
+//css输出
+    .common,
+    .container .right,
+    .container .left {
+      height: 100%;
+      width: 50%;
+    }
+    .common:hover,
+    .container .right:hover,
+    .container .left:hover {
+      background: yellow;
+    }
+
+    .container .right {
+      background: blue;
+    }
+    .container .left {
+      background: green;
+    }
+</code></pre></li>
 </ul>
-<h3 id="4-实现原理"><a href="#4-实现原理" class="headerlink" title="4. 实现原理"></a>4. 实现原理</h3><ul>
-<li>基于响应头set-cookie和请求头Cookie实现<h2 id="5-cookie的细节"><a href="#5-cookie的细节" class="headerlink" title="5. cookie的细节"></a>5. cookie的细节</h2><h3 id="1-cookie存活时间和持久化存储"><a href="#1-cookie存活时间和持久化存储" class="headerlink" title="1. cookie存活时间和持久化存储"></a>1. cookie存活时间和持久化存储</h3></li>
-</ul>
-<ol>
-<li>默认情况下，当浏览器关闭后，Cookie数据被销毁</li>
-<li>持久化存储：<ul>
-<li>setMaxAge(int seconds)<ol>
-<li>正数：将Cookie数据写到硬盘的文件中。持久化存储。cookie存活时间</li>
-<li>负数：默认值</li>
-<li>零：删除cookie信息<h3 id="2-cookie能不能存中文"><a href="#2-cookie能不能存中文" class="headerlink" title="2. cookie能不能存中文"></a>2. cookie能不能存中文</h3></li>
-</ol>
-</li>
-</ul>
-</li>
-<li>在tomcat8 之前，cookie中不能直接存储中文数据<ul>
-<li>需要将1中文数据转码—一般采用URL编码（%E3）</li>
-</ul>
-</li>
-<li>在tomcat8 之后，cookie可以存储中文<h3 id="3-cookie共享问题"><a href="#3-cookie共享问题" class="headerlink" title="3. cookie共享问题"></a>3. cookie共享问题</h3></li>
-<li><p>假设在一个tomcat服务器中，部署了多个web项目，那么在这些1web项目中cookie能不能共享？</p>
-<ul>
-<li>默认情况下不能共享</li>
-<li>setPath（String path）：设置cookie的获取范围，默认情况下，设置为当前的虚拟目录（该目录下才可以共享）</li>
-</ul>
-</li>
-<li><p>不同tomcat服务器间cookie共享问题</p>
-<ul>
-<li>setDomain(String path):如果设置一级域名相同，那么多个服务器之间cookie可以共享</li>
-<li>setDomain(“.baidu.com”),那么tieba.baidu.com和    news.baidu.com就可以共享</li>
-</ul>
-</li>
-</ol>
 
     </div>
   </div>
@@ -325,7 +467,7 @@
         
           本文作者 : Yi <br/>
         
-        原文链接 : <a href="">https://www.zhangjiayi.xyz/archives/2019/06/20/cookie/</a><br>
+        原文链接 : <a href="">https://www.zhangjiayi.xyz/archives/2019/07/16/less/</a><br>
         版权声明 : 本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
         </blockquote>
       </div>
@@ -391,14 +533,8 @@
           <i class="iconfont icon-06tags"></i>标签: 
           
           <span class="span--tag">
-            <a href="/tags/cookie/">
-              #cookie
-            </a>
-          </span>
-          
-          <span class="span--tag">
-            <a href="/tags/session/">
-              #session
+            <a href="/tags/Less/">
+              #Less
             </a>
           </span>
           
@@ -423,15 +559,9 @@
       <div class="nav-pre">
         <i class="iconfont icon-prev"></i>
         上一篇:
-        <a href="/2019/06/19/jdbcbase/" target="_self">JDBC底层操作代码</a>
-      </div>
-    
-    
-      <div class="nav-next">
-        下一篇:
         <a href="/2019/06/24/filter/" target="_self">filter拦截路径设置</a>
-        <i class="iconfont icon-next"></i>
       </div>
+    
     
   </nav>
 
