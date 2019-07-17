@@ -326,9 +326,7 @@ width: 50px;
 </li>
 </ol>
 <h2 id="6-less中的混合"><a href="#6-less中的混合" class="headerlink" title="6.less中的混合"></a>6.less中的混合</h2><p>混合就是将一系列属性从一个规则集引入到另一个规则集的方式</p>
-<ol>
-<li><p>普通混合（没有带括号）    </p>
-<pre><code>//该段代码会被编译到css文件中
+<h3 id="1-普通混合（没有带括号）"><a href="#1-普通混合（没有带括号）" class="headerlink" title="1.普通混合（没有带括号）"></a>1.普通混合（没有带括号）</h3><pre><code>//该段代码会被编译到css文件中
 .common {
         position: @p;
         height: @h;
@@ -338,22 +336,18 @@ width: 50px;
     .common //输出的css中也包含common中的代码
 
 }    
-</code></pre></li>
-<li><p>不带输出的混合（后面有括号）</p>
-<pre><code>.common() {  //该段代码不会被编译到css文件中
+</code></pre><h3 id="2-不带输出的混合（后面有括号）"><a href="#2-不带输出的混合（后面有括号）" class="headerlink" title="2.不带输出的混合（后面有括号）"></a>2.不带输出的混合（后面有括号）</h3><pre><code>.common() {  //该段代码不会被编译到css文件中
          position: 100px;
          height: 100px;
          width: 100px;
 }
-</code></pre></li>
-</ol>
-<pre><code>.container {
+
+
+.container {
     .common //输出的css中也包含common中的代码
 
 }    
-</code></pre><ol start="3">
-<li><p>带参数的混合</p>
-<pre><code>.common(@h,@w,@p) {
+</code></pre><h3 id="3-带参数的混合"><a href="#3-带参数的混合" class="headerlink" title="3. 带参数的混合"></a>3. 带参数的混合</h3><pre><code>.common(@h,@w,@p) {
              position: @p;
              height: @h;
              width: @w;
@@ -362,9 +356,7 @@ width: 50px;
     .common(50px,50px,ralative) //输出的css中也包含common中的代码
 
 }
-</code></pre></li>
-<li><p>带参数并且有默认值的混合 </p>
-<pre><code>.common(@h:100px,@w:100px,@p:absolute) {
+</code></pre><h3 id="4-带参数并且有默认值的混合"><a href="#4-带参数并且有默认值的混合" class="headerlink" title="4. 带参数并且有默认值的混合"></a>4. 带参数并且有默认值的混合</h3><pre><code>.common(@h:100px,@w:100px,@p:absolute) {
              position: @p;
              height: @h;
              width: @w;
@@ -373,9 +365,7 @@ width: 50px;
     .common() //输出的css中也包含common中的代码,默认为100px,100px,absolute
 
 }
-</code></pre></li>
-<li><p>命名参数(指定给哪个参数传值)</p>
-<pre><code>.common(@h:100px,@w:100px,@p) {
+</code></pre><h3 id="5-命名参数-指定给哪个参数传值"><a href="#5-命名参数-指定给哪个参数传值" class="headerlink" title="5. 命名参数(指定给哪个参数传值)"></a>5. 命名参数(指定给哪个参数传值)</h3><pre><code>.common(@h:100px,@w:100px,@p) {
              position: @p;
              height: @h;
              width: @w;
@@ -384,9 +374,7 @@ width: 50px;
     .common(@p:absolute) 
 
 }
-</code></pre></li>
-<li><p>匹配模式</p>
-<pre><code>.common(signA,@h:100px,@w:100px,@p:absolute) { 
+</code></pre><h3 id="6-匹配模式"><a href="#6-匹配模式" class="headerlink" title="6. 匹配模式"></a>6. 匹配模式</h3><pre><code>.common(signA,@h:100px,@w:100px,@p:absolute) { 
              position: @p;
              height: @h;
              width: @w;
@@ -400,9 +388,7 @@ width: 50px;
     .common(signB) //选择的是signB中的代码片段
 
 }
-</code></pre></li>
-<li><p>arguments变量</p>
-<pre><code>//less代码
+</code></pre><h3 id="7-arguments变量"><a href="#7-arguments变量" class="headerlink" title="7. arguments变量"></a>7. arguments变量</h3><pre><code>//less代码
 .common(@a,@b,@c) {
        border: @arguments  
 }
@@ -413,12 +399,13 @@ width: 50px;
 .container {
   border: 1px solid red;
 }
-</code></pre></li>
-</ol>
-<h2 id="less运算"><a href="#less运算" class="headerlink" title="less运算"></a>less运算</h2><ul>
-<li>在less中可以进行加减乘除的运算，但是至少要加一个单位哦！<h2 id="less避免编译"><a href="#less避免编译" class="headerlink" title="less避免编译"></a>less避免编译</h2></li>
-<li><p>语法： ~”直接显示的内容”</p>
-<h2 id="less继承-继承让相同的代码不再重复出现css里面"><a href="#less继承-继承让相同的代码不再重复出现css里面" class="headerlink" title="less继承 (继承让相同的代码不再重复出现css里面)"></a>less继承 (继承让相同的代码不再重复出现css里面)</h2><pre><code>//less文件
+</code></pre><h2 id="7-less运算"><a href="#7-less运算" class="headerlink" title="7.less运算"></a>7.less运算</h2><ul>
+<li>在less中可以进行加减乘除的运算，但是至少要加一个单位哦！</li>
+</ul>
+<h2 id="8-less避免编译"><a href="#8-less避免编译" class="headerlink" title="8.less避免编译"></a>8.less避免编译</h2><ul>
+<li>语法： ~”直接显示的内容”</li>
+</ul>
+<h2 id="9-less继承-继承让相同的代码不再重复出现css里面"><a href="#9-less继承-继承让相同的代码不再重复出现css里面" class="headerlink" title="9.less继承 (继承让相同的代码不再重复出现css里面)"></a>9.less继承 (继承让相同的代码不再重复出现css里面)</h2><pre><code>//less文件
     .common{
         height: 100%;
         width: 50%;
@@ -454,9 +441,7 @@ width: 50px;
     .container .left {
       background: green;
     }
-</code></pre></li>
-</ul>
-
+</code></pre>
     </div>
   </div>
   
