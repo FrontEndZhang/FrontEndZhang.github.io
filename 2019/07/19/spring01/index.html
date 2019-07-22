@@ -8,12 +8,12 @@
   
   
   
-  <title>Less基础 | Yi</title>
+  <title>IoC——spring框架核心之一 | Yi</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="Less,Less," />
+    <meta name="keywords" content="Spring,Spring,IOC,AOP," />
   
 
   <script>
@@ -223,24 +223,24 @@
 
 <div class="post">
   <h1 class="article-title">
-    <span>Less基础</span>
+    <span>IoC——spring框架核心之一</span>
   </h1>
   <div class="article-top-meta">
     <span>
       发布 : 
-      2019-07-16
+      2019-07-19
     </span>
     
       <span>
         分类 : 
-          <a href="/categories/Less/">
-            Less
+          <a href="/categories/Spring/">
+            Spring
           </a>
       </span>
     
     
       <span>
-        浏览 : <span class="article-timer" data-identity="less"></span>
+        浏览 : <span class="article-timer" data-identity="spring01"></span>
       </span>
     
   </div>
@@ -249,199 +249,328 @@
 
   <div class="article-content">
     <div class="markdown-body">
-      <h2 id="1-为什么要用less，less是什么："><a href="#1-为什么要用less，less是什么：" class="headerlink" title="1.为什么要用less，less是什么："></a>1.为什么要用less，less是什么：</h2><ul>
-<li><p>我的体会是：由于一个项目，css代码很多，一百多行都能让你看的眼花缭乱，还要去慢慢找，很麻烦，而且结构不清晰。所以，为我们就选择less来增强css的结构性和可阅读性，我们只需要看less文件，就不需要在看css文件。</p>
+      <h2 id="IoC的基本概念和原理"><a href="#IoC的基本概念和原理" class="headerlink" title="IoC的基本概念和原理"></a>IoC的基本概念和原理</h2><h3 id="1-什么是IoC（控制反转）"><a href="#1-什么是IoC（控制反转）" class="headerlink" title="1.什么是IoC（控制反转）"></a>1.什么是IoC（控制反转）</h3><ul>
+<li>控制反转把<strong>创建对象的权利交给框架（也就是说，我们不用自己去new，以后直接就可以通过配置文件，让框架帮我们创建）</strong>，是框架的重要特征。它包括依赖注入和依赖查找</li>
+</ul>
+<h3 id="2-IoC的作用"><a href="#2-IoC的作用" class="headerlink" title="2.IoC的作用"></a>2.IoC的作用</h3><ul>
+<li>削减计算机程序的耦合（解除我们代码中的依赖关系）</li>
+</ul>
+<h3 id="3-IoC的基本原理（理解如何通过配置文件，让工厂类帮我们创建）"><a href="#3-IoC的基本原理（理解如何通过配置文件，让工厂类帮我们创建）" class="headerlink" title="3.IoC的基本原理（理解如何通过配置文件，让工厂类帮我们创建）"></a>3.IoC的基本原理（理解如何通过配置文件，让工厂类帮我们创建）</h3><ul>
+<li><p>说明：个人感觉类似于写JDBC的工具类，通过反射和配置文件的机制来设计IoC，但是功能不同，IoC是用于创建类的，而JDBC工具类是对JDBC的简单封装，可以简化JDBC的代码量</p>
 </li>
-<li><p>Less 是一个Css 预编译器,意思指的是它可以扩展Css语言,添加功能如允许变量(variables),混合(mixins),函数(functions) 和许多其他的技术，让你的Css更具维护性，主题性，扩展性。</p>
+<li><p>创建一个普通的Maven的Java项目，用来演示简单的账户保存，包括Dao层，Service层，Ui层，还有一个Factory工厂，项目结构如下图： </p>
 </li>
 </ul>
-<h2 id="2-less的安装环境"><a href="#2-less的安装环境" class="headerlink" title="2.less的安装环境"></a>2.less的安装环境</h2><ol>
-<li>less 既可以在客户端上运行，也可以借助Node.js在服务器上运行</li>
-<li><p>介绍一个简单的方法：</p>
+<p><img src="/imgs/spring/menu1.png"><br><img src="/imgs/spring/menu2.png"></p>
 <ul>
-<li>下载安装好node.js</li>
-<li>用vscode下载插件Easy Less</li>
-<li>重启vscode，然后编写less的文件，vscode就会给你自动在该文件夹里面生成对应的css文件</li>
-</ul>
-</li>
-<li><p>其他安装在网上查看即可 <a><a href="http://lesscss.cn/#using-less" target="_blank" rel="noopener">http://lesscss.cn/#using-less</a></a> </p>
-</li>
-</ol>
-<h2 id="3-less的注释"><a href="#3-less的注释" class="headerlink" title="3.less的注释"></a>3.less的注释</h2><ol>
-<li>以//开头的注释，不会编译到css文件中</li>
-<li>以/**/包裹的注释会编译到css文件中</li>
-</ol>
-<h2 id="4-less中的变量"><a href="#4-less中的变量" class="headerlink" title="4.less中的变量"></a>4.less中的变量</h2><ul>
-<li>使用@来声明一个变量：@color:pink; @pro:margin;<ol>
-<li>作为普通属性值来使用：直接使用@pink</li>
-<li>作为选择器和属性名： @{selector的值}的形式，比如 @{pro}: 0;</li>
-<li>作为URL：@{url}</li>
-<li>切记：变量的延迟加载 </li>
-</ol>
-</li>
-</ul>
-<h2 id="5-less中的嵌套规则"><a href="#5-less中的嵌套规则" class="headerlink" title="5.less中的嵌套规则"></a>5.less中的嵌套规则</h2><ol>
-<li><p>基本嵌套规则</p>
-<ul>
-<li><p>html代码：</p>
-<pre><code>&lt;div class=&quot;container&quot;&gt;
-    &lt;div class=&quot;inner&quot;&gt;&lt;/div&gt;
-&lt;/div&gt;
-</code></pre></li>
-<li><p>less文件源码</p>
-<pre><code>.container {
-    height: 100px;
-    width: 100px;
-    .inner {
-        height: 50px;
-        width: 50px;
-        }
-}  
-</code></pre></li>
-<li><p>输出的css源码：</p>
-<pre><code>.container {
-  height: 100px;
-  width: 100px;
-}
-.container .inner {
-  height: 50px;
-  width: 50px;
+<li><p>Dao层（被Service层调用）</p>
+<pre><code>public class AccountDaoImpl implements IAccountDao {
+    @Override
+    public void save() {
+        System.out.println(&quot;保存成功!&quot;);
+    }
 }
 </code></pre></li>
+<li><p>Service层（被Ui层调用）</p>
+<pre><code>public class AccountServiceImpl implements IAccountService {
+    private IAccountDao iAccountDao ;
+    @Override
+    public void accountSave() {
+        try {
+            //此处利用BeanFactory类来通过配置文件的key来获取对象，不再通过 new AccountDaoImpl 来创建
+            iAccountDao = (AccountDaoImpl)BeanFactory.getBean(&quot;accountDao&quot;);
+        } catch (Exception e){
+            throw new ExceptionInInitializerError(&quot;初始化失败&quot;);
+        }
+        iAccountDao.save();
+    }
+}
+</code></pre></li>
+<li><p>Ui层（程序的运行）</p>
+<pre><code>public class Client {
+    public static void main(String[] args) throws Exception {
+        //此处利用BeanFactory类来通过配置文件的key来获取对象
+        AccountServiceImpl accountService = (AccountServiceImpl)BeanFactory.getBean(&quot;accountService&quot;);
+        accountService.accountSave();
+    }
+}
+</code></pre></li>
+<li><p>Factory：分为单例和多例创建方法，spring默认为单例，也可以在spring的配置文件中更改</p>
+<ul>
+<li><p>多例</p>
+<pre><code>public class BeanFactory {
+    private static Properties props;
+    static {
+        props = new Properties();
+        try {
+            //利用反射加载配置文件
+            props.load(BeanFactory.class.getClassLoader().getResourceAsStream(&quot;config.properties&quot;));
+        } catch (Exception e) {
+            throw new ExceptionInInitializerError(&quot;初始化失败&quot;);
+        }
+    }
+    //多例对象：用一次这方法，就创建一个新的对象，static代码块里面只是加载配置文件，获取配置文件里面的信息，而真正的创建在getBean方法里面
+    public static Object getBean(String beanName) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+        Object bean = null;
+        String beanClass = props.getProperty(beanName);
+        bean = Class.forName(beanClass).newInstance();
+        return bean;
+    }
+</code></pre></li>
+<li><p>单例</p>
+</li>
 </ul>
 </li>
-<li><p>&amp;的使用</p>
-<ul>
-<li>个人认为，该符号类似于Java中的this，代表自己</li>
-<li><p>使用方法：</p>
-<p>   .container {</p>
-<pre><code>height: 50px;
-width: 50px;
-  &amp;:hover {  //让自己获得hover效果
-          background: yellow;
-  }        
-</code></pre><p>   }</p>
+</ul>
+<pre><code>public class BeanFactory {
+    private static Properties props;
+    private static Map&lt;String,Object&gt; beans;
+    static {
+        props = new Properties();
+        try {
+            //利用反射加载配置文件
+            props.load(BeanFactory.class.getClassLoader().getResourceAsStream(&quot;config.properties&quot;));
+            //创建一个容器，来装创建的实体对象
+            beans = new HashMap&lt;&gt;();
+            //取出配置文件中所有的key
+            Enumeration&lt;Object&gt; keys = props.keys();
+            while (keys.hasMoreElements()){
+                //获取键
+                String key = keys.nextElement().toString();
+                //获取值
+                String beanPath =  props.getProperty(key);
+                //利用反射来创建类
+                Object bean = Class.forName(beanPath).newInstance();
+                //把键和创建的对象放入Map容器
+                beans.put(key,bean);
+            }
+        } catch (Exception e) {
+            throw new ExceptionInInitializerError(&quot;初始化失败&quot;);
+        }
+    }
+    //单例对象：无论用多少次这个方法，始终用的是同一个对象,就只是在static里面，把配置文件中所有的类都创建好，并放入容器中
+    public static Object getBean(String beanNmae){
+         return beans.get(beanNmae);
+    }
+
+}
+</code></pre><ul>
+<li><p>配置文件 </p>
+<pre><code>accountService = zjy.xyz.Service.impl.AccountServiceImpl
+accountDao = zjy.xyz.Dao.impl.AccountDaoImpl
+</code></pre></li>
+</ul>
+<h2 id="Spring对bean的管理细节"><a href="#Spring对bean的管理细节" class="headerlink" title="Spring对bean的管理细节"></a>Spring对bean的管理细节</h2><ol>
+<li>spring的基本使用</li>
+<li>创建bean的三种方式</li>
+<li>bean对象的作用范围</li>
+<li>bean对象的生命周期(略)</li>
+</ol>
+<h3 id="1-spring的基本使用"><a href="#1-spring的基本使用" class="headerlink" title="1.spring的基本使用"></a>1.spring的基本使用</h3><ul>
+<li>问题：我们如何通过spring帮我们实现BeanFactory工厂类的功能，直接通过配置文件来创建对象？</li>
+</ul>
+<ol>
+<li><p>首先，引入spring的jar包，maven直接导包</p>
 </li>
+<li><p>第二，我们得有配置文件，我们演示IoC原理的时候，配置文件是properties文件，但spring中的配置文件用的是xml文件，我们把config.properties配置文件，改为bean.xml文件，其他不用变。</p>
+<pre><code>&lt;!--  bean.xml内容如下： --&gt;
+&lt;bean id=&quot;accountDao&quot; class=&quot;xyz.Dao.impl.AccountDaoImpl&quot;&gt;&lt;/bean&gt;
+</code></pre></li>
+<li><p>第三，获取对象</p>
+<pre><code>//获取容器
+ApplicationContext ac = new ClassPathXmlApplicationContext(&quot;bean.xml&quot;);
+//然后使用getBean方法，通过ID查询（也就类似上面IoC原理中的key）来获取对象
+AccountDaoImpl accountDao = (AccountDaoImpl) ac.getBean(&quot;accountDao&quot;);    
+</code></pre></li>
+</ol>
+<h3 id="2-创建bean的三种方式"><a href="#2-创建bean的三种方式" class="headerlink" title="2.创建bean的三种方式"></a>2.创建bean的三种方式</h3><ul>
+<li><p>问题：类的构造方法有默认的还有带参的（代参的就是依赖注入），还有其他jar包中，类通过方法（分静态和非静态方法）来获取对象的，spring中配置文件又如何解决</p>
+</li>
+<li><p>方法一：使用默认构造函数，配置文件中bean标签，只有id和class属性，且没有其他属性和标签时，采用的就是默认函数创建对象，如果没有默认构造函数，就创建不起</p>
+</li>
+</ul>
+<pre><code>&lt;bean id=&quot;accountDao&quot; class=&quot;xyz.Dao.impl.AccountDaoImpl&quot;&gt;&lt;/bean&gt;
+</code></pre><ul>
+<li>方法二：使用普通工厂中的方法创建对象（有的jar包中，某个类的方法可以获取对象，我们也可以通过配置文件来获取，例如有个FactoryBean类中getAsi方法可以直接获取对象</li>
+</ul>
+<pre><code>public class FactoryBean {
+    public AccountServiceImpl getAsi(){
+        return new AccountDaoImpl();
+    }
+}
+
+bean.xml配置文件中的写法：
+&lt;bean id=&quot;fuctory&quot; class=&quot;xyz.Fuctory.FactoryBean&quot;&gt;&lt;/bean&gt;
+&lt;bean id=&quot;accountDao&quot; factory-bean=&quot;fuctory&quot; factory-method=&quot;getAsi&quot;&gt;&lt;/bean&gt;
+</code></pre><ul>
+<li><p>方法三：使用工厂中的静态（与方法二不同的是：静态方法）方法来返回对象实例</p>
+<pre><code>&lt;bean id=&quot;accountDao&quot; class=&quot;xyz.Fuctory.FactoryStaticBean&quot; factory-method=&quot;getAsi&quot;&gt;&lt;/bean&gt;
+</code></pre></li>
+</ul>
+<h3 id="3-bean对象的作用范围"><a href="#3-bean对象的作用范围" class="headerlink" title="3.bean对象的作用范围"></a>3.bean对象的作用范围</h3><ul>
+<li><p>问题：除了多例和单例，还有其他的吗？</p>
+<pre><code>bean对象的作用范围 : 属性 scope
+ 值：singleton: 单例的（默认）
+     prototype：多例的
+     request：作用于web应用的请求范围
+     session：作用于web应用的会话范围
+     global-session：作用于集群环境1的会话（不是集群就是session）
+</code></pre></li>
+</ul>
+<h2 id="依赖注入（就是有数据的对象进行初始化）"><a href="#依赖注入（就是有数据的对象进行初始化）" class="headerlink" title="依赖注入（就是有数据的对象进行初始化）"></a>依赖注入（就是有数据的对象进行初始化）</h2><ul>
+<li>问题：有的带参数的构造方法，如何进行初始了？哪些数据能注入，几种方式可以注入？</li>
+</ul>
+<ol>
+<li><p>能注入的数据：</p>
+<ol>
+<li>基本类型和String</li>
+<li>其他bean类型（在配置文件中或者配置过的bean）</li>
+<li>复杂类型/集合类型</li>
+</ol>
+</li>
+<li><p>注入的方式：</p>
+<ol>
+<li>使用构造函数提供 </li>
+<li>使用set方法提供</li>
+<li>使用注解提供</li>
+</ol>
+</li>
+</ol>
+<h3 id="构造函数注入"><a href="#构造函数注入" class="headerlink" title="构造函数注入"></a>构造函数注入</h3><ol>
+<li>使用的标签：constructor-arg</li>
+<li>标签出现的位置，bean标签的内部</li>
+<li>标签中的属性：<ul>
+<li>type：用于指定要注入的数据类型，该数据类型1也是够着函数中的某个或某些参数的类型</li>
+<li>index：用于指定要注入的数据给构造函数中指定索引位置的参数赋值。索引的位置是从0开始</li>
+<li>name: 用于指定给构造函数中指定名称的参数赋值</li>
+<li>================以上三个用于指定给构造函数中哪个参数赋值=============</li>
+<li>value: 用于基本类型和String类型的数据</li>
+<li>ref: 用于其他的bean类型，它指的是在spring的Ioc核心容器中出现过的bean对象</li>
 </ul>
 </li>
 </ol>
-<h2 id="6-less中的混合"><a href="#6-less中的混合" class="headerlink" title="6.less中的混合"></a>6.less中的混合</h2><p>混合就是将一系列属性从一个规则集引入到另一个规则集的方式</p>
-<h3 id="1-普通混合（没有带括号）"><a href="#1-普通混合（没有带括号）" class="headerlink" title="1.普通混合（没有带括号）"></a>1.普通混合（没有带括号）</h3><pre><code>//该段代码会被编译到css文件中
-.common {
-        position: @p;
-        height: @h;
-        width: @w;
-}
-.container {
-    .common //输出的css中也包含common中的代码
-
-}    
-</code></pre><h3 id="2-不带输出的混合（后面有括号）"><a href="#2-不带输出的混合（后面有括号）" class="headerlink" title="2.不带输出的混合（后面有括号）"></a>2.不带输出的混合（后面有括号）</h3><pre><code>.common() {  //该段代码不会被编译到css文件中
-         position: 100px;
-         height: 100px;
-         width: 100px;
+<pre><code>//要注入的AccountServiceImpl类的构造函数
+ public AccountServiceImpl(String name, Integer age, Date birthday) {
+       this.name = name;
+       this.age = age;
+       this.birthday = birthday;
 }
 
+&lt;!-- bean.xml --&gt;
+ &lt;bean id=&quot;service&quot; class=&quot;xyz.Service.impl.AccountServiceImpl&quot;&gt;
+    &lt;constructor-arg name=&quot;name&quot; value=&quot;Andy&quot;&gt;&lt;/constructor-arg&gt;
+    &lt;constructor-arg name=&quot;age&quot; value=&quot;18&quot;&gt;&lt;/constructor-arg&gt;
+    &lt;constructor-arg name=&quot;birthday&quot; ref=&quot;now&quot;&gt;&lt;/constructor-arg&gt; //date是复杂类型，所以引用下面的 now
+&lt;/bean&gt;
+&lt;bean id=&quot;now&quot; class=&quot;java.util.Date&quot;&gt;&lt;/bean&gt;
+</code></pre><h3 id="set方法注入"><a href="#set方法注入" class="headerlink" title="set方法注入"></a>set方法注入</h3><ol>
+<li>涉及的标签：property</li>
+<li>出现的位置：bean的内部</li>
+<li><p>标签的属性：</p>
+<ul>
+<li>name:用于指定给构造函数中指定名称的参数赋值，setAge的name为age</li>
+<li>value: 用于基本类型和String类型的数据</li>
+<li><p>ref：用于其他的bean类型，它指的是在spring的Ioc核心容器中出现过的bean对象  </p>
+<pre><code>//AccountServiceImpl类的Set方法
+public void setName(String name) {
+    this.name = name;
+}
+public void setAge(Integer age) {
+    this.age = age;
+}
+public void setBirthday(Date birthday) {
+    this.birthday = birthday;
+}
 
-.container {
-    .common //输出的css中也包含common中的代码
+//bean.xml（注意，虽然是setAge，name却是：age）
+&lt;bean id=&quot;now&quot; class=&quot;java.util.Date&quot;&gt;&lt;/bean&gt;
 
-}    
-</code></pre><h3 id="3-带参数的混合"><a href="#3-带参数的混合" class="headerlink" title="3. 带参数的混合"></a>3. 带参数的混合</h3><pre><code>.common(@h,@w,@p) {
-             position: @p;
-             height: @h;
-             width: @w;
-}
-.container {
-    .common(50px,50px,ralative) //输出的css中也包含common中的代码
-
-}
-</code></pre><h3 id="4-带参数并且有默认值的混合"><a href="#4-带参数并且有默认值的混合" class="headerlink" title="4. 带参数并且有默认值的混合"></a>4. 带参数并且有默认值的混合</h3><pre><code>.common(@h:100px,@w:100px,@p:absolute) {
-             position: @p;
-             height: @h;
-             width: @w;
-}
-.container {
-    .common() //输出的css中也包含common中的代码,默认为100px,100px,absolute
-
-}
-</code></pre><h3 id="5-命名参数-指定给哪个参数传值"><a href="#5-命名参数-指定给哪个参数传值" class="headerlink" title="5. 命名参数(指定给哪个参数传值)"></a>5. 命名参数(指定给哪个参数传值)</h3><pre><code>.common(@h:100px,@w:100px,@p) {
-             position: @p;
-             height: @h;
-             width: @w;
-}
-.container {
-    .common(@p:absolute) 
-
-}
-</code></pre><h3 id="6-匹配模式"><a href="#6-匹配模式" class="headerlink" title="6. 匹配模式"></a>6. 匹配模式</h3><pre><code>.common(signA,@h:100px,@w:100px,@p:absolute) { 
-             position: @p;
-             height: @h;
-             width: @w;
-}
-.common(signB,@h:200px,@w:200px,@p:relative) { 
-             position: @p;
-             height: @h;
-             width: @w;
-}
-.container {
-    .common(signB) //选择的是signB中的代码片段
-
-}
-</code></pre><h3 id="7-arguments变量"><a href="#7-arguments变量" class="headerlink" title="7. arguments变量"></a>7. arguments变量</h3><pre><code>//less代码
-.common(@a,@b,@c) {
-       border: @arguments  
-}
-.container {
-    .common(1px,solid,red); //等同于 
-}
-//输出的css代码如下：
-.container {
-  border: 1px solid red;
-}
-</code></pre><h2 id="7-less运算"><a href="#7-less运算" class="headerlink" title="7.less运算"></a>7.less运算</h2><ul>
-<li>在less中可以进行加减乘除的运算，但是至少要加一个单位哦！</li>
+&lt;bean id=&quot;service&quot; class=&quot;xyz.Service.impl.AccountServiceImpl&quot;&gt;
+    &lt;property name=&quot;name&quot; value=&quot;Bndy&quot;&gt;&lt;/property&gt;
+    &lt;property name=&quot;age&quot; value=&quot;20&quot;&gt;&lt;/property&gt;
+    &lt;property name=&quot;birthday&quot; ref=&quot;now&quot;&gt;&lt;/property&gt;
+&lt;/bean&gt;
+</code></pre></li>
 </ul>
-<h2 id="8-less避免编译"><a href="#8-less避免编译" class="headerlink" title="8.less避免编译"></a>8.less避免编译</h2><ul>
-<li>语法： ~”直接显示的内容”</li>
+</li>
+</ol>
+<h3 id="复杂类型注入"><a href="#复杂类型注入" class="headerlink" title="复杂类型注入"></a>复杂类型注入</h3><ul>
+<li>用于给list结构集合注入的标签：list array set</li>
+<li>用于给Map结构集合注入的标签：map props</li>
+<li><p><strong>结构相同，标签可以互换</strong></p>
+<pre><code>//AccountServiceImpl类的Set方法
+private String[] myStrs;
+private List&lt;String&gt; myList;
+private Set&lt;String&gt; mySet;
+private Map&lt;String,String&gt; myMap;
+private Properties myProperties;
+
+public void setMyStrs(String[] myStrs) {
+    this.myStrs = myStrs;
+}
+
+public void setMyList(List&lt;String&gt; myList) {
+    this.myList = myList;
+}
+
+public void setMySet(Set&lt;String&gt; mySet) {
+    this.mySet = mySet;
+}
+
+public void setMyMap(Map&lt;String, String&gt; myMap) {
+    this.myMap = myMap;
+}
+
+public void setMyProperties(Properties myProperties) {
+    this.myProperties = myProperties;
+}
+
+//对应bean.xml的配置
+&lt;bean id=&quot;service&quot; class=&quot;xyz.Service.impl.AccountServiceImpl&quot;&gt;
+   &lt;property name=&quot;myStrs&quot;&gt;
+       &lt;array&gt;
+           &lt;value&gt;arrayAAA&lt;/value&gt;
+           &lt;value&gt;arrayBBB&lt;/value&gt;
+           &lt;value&gt;arrayCCC&lt;/value&gt;
+       &lt;/array&gt;
+   &lt;/property&gt;
+    &lt;property name=&quot;myList&quot;&gt;
+        &lt;list&gt;
+            &lt;value&gt;ListAAA&lt;/value&gt;
+            &lt;value&gt;ListBBB&lt;/value&gt;
+            &lt;value&gt;ListCCC&lt;/value&gt;
+        &lt;/list&gt;
+    &lt;/property&gt;
+    &lt;property name=&quot;mySet&quot;&gt;
+        &lt;set&gt;
+            &lt;value&gt;SetAAA&lt;/value&gt;
+            &lt;value&gt;SetBBB&lt;/value&gt;
+            &lt;value&gt;SetCCC&lt;/value&gt;
+        &lt;/set&gt;
+    &lt;/property&gt;
+    &lt;property name=&quot;myMap&quot;&gt;
+        &lt;map&gt;
+           &lt;!--写法一：简单推荐--&gt;
+            &lt;entry key=&quot;aaa&quot; value=&quot;MapAAA&quot;&gt;&lt;/entry&gt;
+            &lt;entry key=&quot;bbb&quot; value=&quot;MapBBB&quot;&gt;&lt;/entry&gt;
+            &lt;!--写法二--&gt;
+            &lt;entry key=&quot;ccc&quot;&gt;
+                &lt;value&gt;MapCCC&lt;/value&gt;
+            &lt;/entry&gt;
+        &lt;/map&gt;
+    &lt;/property&gt;
+    &lt;property name=&quot;myProperties&quot;&gt;
+        &lt;props&gt;
+            &lt;prop key=&quot;aaa&quot;&gt;PropsAAA&lt;/prop&gt;
+            &lt;prop key=&quot;bbb&quot;&gt;PropsAAA&lt;/prop&gt;
+            &lt;prop key=&quot;ccc&quot;&gt;PropsAAA&lt;/prop&gt;
+        &lt;/props&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;
+</code></pre><p>  </p>
+</li>
 </ul>
-<h2 id="9-less继承-继承让相同的代码不再重复出现css里面"><a href="#9-less继承-继承让相同的代码不再重复出现css里面" class="headerlink" title="9.less继承 (继承让相同的代码不再重复出现css里面)"></a>9.less继承 (继承让相同的代码不再重复出现css里面)</h2><pre><code>//less文件
-    .common{
-        height: 100%;
-        width: 50%;
-        &amp;:hover{  //注意
-            background: yellow;
-        }
-    }
-    .container {
-        .right:extend(.common all) { //all代表着有关的代码全部继承下来，比如：hover等等
-            background: blue;
-        }
-        .left:extend(.common all) {  
-            background: green;
-        }
-    }
 
-//css输出
-    .common,
-    .container .right,
-    .container .left {
-      height: 100%;
-      width: 50%;
-    }
-    .common:hover,
-    .container .right:hover,
-    .container .left:hover {
-      background: yellow;
-    }
-
-    .container .right {
-      background: blue;
-    }
-    .container .left {
-      background: green;
-    }
-</code></pre>
     </div>
   </div>
   
@@ -452,7 +581,7 @@ width: 50px;
         
           本文作者 : Yi <br/>
         
-        原文链接 : <a href="">https://www.zhangjiayi.xyz/archives/2019/07/16/less/</a><br>
+        原文链接 : <a href="">https://www.zhangjiayi.xyz/archives/2019/07/19/spring01/</a><br>
         版权声明 : 本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
         </blockquote>
       </div>
@@ -518,8 +647,20 @@ width: 50px;
           <i class="iconfont icon-06tags"></i>标签: 
           
           <span class="span--tag">
-            <a href="/tags/Less/">
-              #Less
+            <a href="/tags/Spring/">
+              #Spring
+            </a>
+          </span>
+          
+          <span class="span--tag">
+            <a href="/tags/IOC/">
+              #IOC
+            </a>
+          </span>
+          
+          <span class="span--tag">
+            <a href="/tags/AOP/">
+              #AOP
             </a>
           </span>
           
@@ -544,15 +685,9 @@ width: 50px;
       <div class="nav-pre">
         <i class="iconfont icon-prev"></i>
         上一篇:
-        <a href="/2019/06/24/filter/" target="_self">filter拦截路径设置</a>
-      </div>
-    
-    
-      <div class="nav-next">
-        下一篇:
         <a href="/2019/07/17/bootstrap/" target="_self">bootstrap基础</a>
-        <i class="iconfont icon-next"></i>
       </div>
+    
     
   </nav>
 
