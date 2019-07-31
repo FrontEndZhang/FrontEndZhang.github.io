@@ -8,12 +8,12 @@
   
   
   
-  <title>IoC——spring框架核心之一 | Yi</title>
+  <title>spring注解配置和注解类 | Yi</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="Spring,Spring,IOC,AOP," />
+    <meta name="keywords" content="annotation,Spring,annotation," />
   
 
   <script>
@@ -223,24 +223,24 @@
 
 <div class="post">
   <h1 class="article-title">
-    <span>IoC——spring框架核心之一</span>
+    <span>spring注解配置和注解类</span>
   </h1>
   <div class="article-top-meta">
     <span>
       发布 : 
-      2019-07-19
+      2019-07-29
     </span>
     
       <span>
         分类 : 
-          <a href="/categories/Spring/">
-            Spring
+          <a href="/categories/annotation/">
+            annotation
           </a>
       </span>
     
     
       <span>
-        浏览 : <span class="article-timer" data-identity="spring01"></span>
+        浏览 : <span class="article-timer" data-identity="annotation"></span>
       </span>
     
   </div>
@@ -249,327 +249,222 @@
 
   <div class="article-content">
     <div class="markdown-body">
-      <h2 id="IoC的基本概念和原理"><a href="#IoC的基本概念和原理" class="headerlink" title="IoC的基本概念和原理"></a>IoC的基本概念和原理</h2><h3 id="1-什么是IoC（控制反转）"><a href="#1-什么是IoC（控制反转）" class="headerlink" title="1.什么是IoC（控制反转）"></a>1.什么是IoC（控制反转）</h3><ul>
-<li>控制反转把<strong>创建对象的权利交给框架（也就是说，我们不用自己去new，以后直接就可以通过配置文件，让框架帮我们创建）</strong>，是框架的重要特征。它包括依赖注入和依赖查找</li>
-</ul>
-<h3 id="2-IoC的作用"><a href="#2-IoC的作用" class="headerlink" title="2.IoC的作用"></a>2.IoC的作用</h3><ul>
-<li>削减计算机程序的耦合（解除我们代码中的依赖关系）</li>
-</ul>
-<h3 id="3-IoC的基本原理（理解如何通过配置文件，让工厂类帮我们创建）"><a href="#3-IoC的基本原理（理解如何通过配置文件，让工厂类帮我们创建）" class="headerlink" title="3.IoC的基本原理（理解如何通过配置文件，让工厂类帮我们创建）"></a>3.IoC的基本原理（理解如何通过配置文件，让工厂类帮我们创建）</h3><ul>
-<li><p>说明：个人感觉类似于写JDBC的工具类，通过反射和配置文件的机制来设计IoC，但是功能不同，IoC是用于创建类的，而JDBC工具类是对JDBC的简单封装，可以简化JDBC的代码量</p>
-</li>
-<li><p>创建一个普通的Maven的Java项目，用来演示简单的账户保存，包括Dao层，Service层，Ui层，还有一个Factory工厂，项目结构如下图： </p>
+      <h2 id="注解的分类"><a href="#注解的分类" class="headerlink" title="注解的分类"></a>注解的分类</h2><p>注解有4类，功能分别对应xml文件配置的功能（注解的配置对比servlet设置虚拟目录）</p>
+<h3 id="1-用于创建对象"><a href="#1-用于创建对象" class="headerlink" title="1. 用于创建对象"></a>1. 用于创建对象</h3><ul>
+<li>他们的作用跟xml配置文件中的bean标签实现的功能是一样的 <ol>
+<li>Component:<ul>
+<li>作用：用于把当前类对象存入spring容器</li>
+<li>属性： <ol>
+<li>value：用于指定bean的id。当我们不写时，默认值为当前类名，且首字母为小写</li>
+</ol>
 </li>
 </ul>
-<p><img src="/imgs/spring/menu1.png"><br><img src="/imgs/spring/menu2.png"></p>
-<ul>
-<li><p>Dao层（被Service层调用）</p>
-<pre><code>public class AccountDaoImpl implements IAccountDao {
+</li>
+<li>Controller 一般用在表现层</li>
+<li>Service    一般用于业务层</li>
+<li>Repository  一般用于持久层</li>
+<li>注：以上三个注解他们的作用和属性与Component是一模一样的，他们三个是Spring框架为我们提供明确的三层使用的注解，使我们的三层更加清晰</li>
+</ol>
+</li>
+</ul>
+<h3 id="2-用于注入数据"><a href="#2-用于注入数据" class="headerlink" title="2. 用于注入数据"></a>2. 用于注入数据</h3><ul>
+<li><p>他们的作用跟xml配置文件中bean标签中property标签实现的功能是一样的</p>
+<ol>
+<li><p>Autowired</p>
+<pre><code>* 作用：自动按照类型注入。只要容器中有唯一的一个bean对象类型和要注入的变量类型匹配，就可以注入成功，如果ioc容器中没有任何bean的类型和要注入的类型匹配，则报错（自动注入的类也要加上创建对象的注解，不然会找不到该类），
+* 如果有多个，先找出符合的，再通过变量名来匹配key,如果没有则报错
+
+       @Autowired
+       private      IAccountDao   accountDao1 = null;
+       访问修饰符    数据类型       变量名称    数据类型
+
+       ioc 容器：
+       key（String）   value(Object)
+       Account         IAccountService
+       accountDao1     IAccountDao     //accountDao1和accountDao2符合，但是变量名称匹配的是accountDao1
+       accountDao2     IAccountDao    
+* 出现位置：可以是变量上，也可以是方法上
+* 细节：在使用注解注入时，set方法就不是必须的了
+</code></pre></li>
+<li><p>Qualifier：</p>
+<pre><code>* 作用：在按照类中注入的基础上再按照名称注入（配合Autowired），它在给类成员注入时不能单独使用，但是在给方法参数注入时可以
+* 属性：value 用于给指定的bean的id
+</code></pre></li>
+<li><p>Resource</p>
+<pre><code>* 作用：直接按照bean的id注入，他可以独立使用
+* 属性：name：用于指定id
+
+         @Qualifier(&quot;accountDao&quot;)
+          @Autowired                    等于 @Resource(name = &quot;&quot;)
+
+* **注：以上三个注入都只能注入其他bean类型的数据，而基本类型和String类型无法使用上述注解实现，另外，集合类型的注入只能通过xml来实现**
+</code></pre></li>
+</ol>
+</li>
+</ul>
+<pre><code>4. Value
+       * 作用：用于注入基本类型和String类型的数据
+       * 属性：value，用于指定数据的值。他可以使用spring中SpEl（Spring的El表达式=${表达式}）
+</code></pre><h3 id="3-用于改变作用范围的"><a href="#3-用于改变作用范围的" class="headerlink" title="3. 用于改变作用范围的"></a>3. 用于改变作用范围的</h3><ul>
+<li>他们的作用集合在bean标签中使用scope属性实现的功能是一样的<ul>
+<li>Scope<ul>
+<li>作用：用于指定bean的作用范围</li>
+<li>属性：value：直营范围的取值，常用取值：singletor property</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-和生命周期相关的"><a href="#4-和生命周期相关的" class="headerlink" title="4. 和生命周期相关的"></a>4. 和生命周期相关的</h3><ul>
+<li>他们的作用集合在bean标签中使用init-method和destroy-method属性是一样的<ol>
+<li>PreDestory:作用：用于指定销毁方法</li>
+<li>PostConStruct:作用：用于初始化方法</li>
+</ol>
+</li>
+</ul>
+<h2 id="注解类"><a href="#注解类" class="headerlink" title="注解类"></a>注解类</h2><ol>
+<li>Configuration<ul>
+<li>作用：指定当前类是一个配置类</li>
+</ul>
+</li>
+<li>ComponentScan<ul>
+<li>作用：用于通过注解来指定spring在创建容器时要扫描的包</li>
+<li>属性：value:它和basePackeages的作用是一样的，都是用于指定创建配置容器时要扫描的包，等同于在xml配置文件中配置了：&lt;context:component-scan base-package=””&gt;&lt;/context:component-scan&gt;</li>
+</ul>
+</li>
+<li>Bean<ul>
+<li>作用：用于把当前方法的返回值作为bean对象存入spring的ioc容器</li>
+<li>属性：name：用于指定bean的id，当不写时，默认值是当前方法的名称</li>
+<li>细节：当我们使用注解配置方法时，如果方法有参数，spring框架回去容器中查找有没有可用的bean对象，查找的方法和Autowired注解的作用是一样的</li>
+</ul>
+</li>
+</ol>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><p>有俩个例子，一个为用注解配置，另一个为注解类配置</p>
+<h3 id="注解配置"><a href="#注解配置" class="headerlink" title="注解配置"></a>注解配置</h3><ol>
+<li><p>xml内容如下：</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        https://www.springframework.org/schema/context/spring-context.xsd&quot;&gt;
+
+    //包扫描的范围
+    &lt;context:component-scan base-package=&quot;xyz.zjy&quot;&gt;&lt;/context:component-scan&gt;
+    //配置账户类实例
+    &lt;bean id=&quot;account&quot; class=&quot;xyz.zjy.domain.Account&quot;&gt;
+        &lt;property name=&quot;name&quot; value=&quot;zjy&quot;&gt;&lt;/property&gt;
+        &lt;property name=&quot;id&quot; value=&quot;1&quot;&gt;&lt;/property&gt;
+        &lt;property name=&quot;money&quot; value=&quot;250&quot;&gt;&lt;/property&gt;
+    &lt;/bean&gt;
+    &lt;!--  获取JdbcTemplate对象，构造方法获取dataSource，用于操作数据库  --&gt;
+    &lt;bean id=&quot;jdbcT&quot; class=&quot;org.springframework.jdbc.core.JdbcTemplate&quot;&gt;
+        &lt;constructor-arg name=&quot;dataSource&quot; ref=&quot;ds&quot;&gt;&lt;/constructor-arg&gt;
+    &lt;/bean&gt;
+
+    //配置dataSource
+    &lt;bean id=&quot;ds&quot; class=&quot;com.alibaba.druid.pool.DruidDataSourceFactory&quot; factory-method=&quot;createDataSource&quot;&gt;
+        &lt;constructor-arg&gt;
+            &lt;props&gt;
+                &lt;prop key=&quot;url&quot;&gt;jdbc:mysql://localhost:3306/test?serverTimezone=UTC&amp;amp;useSSL=false&amp;amp;allowPublicKeyRetrieval=true&amp;amp;dbnameuseUnicode=true&amp;amp;characterEncoding=utf-8&lt;/prop&gt;
+                &lt;prop key=&quot;driverClassName&quot;&gt;com.mysql.cj.jdbc.Driver&lt;/prop&gt;
+                &lt;prop key=&quot;username&quot;&gt;root&lt;/prop&gt;
+                &lt;prop key=&quot;password&quot;&gt;117139&lt;/prop&gt;
+            &lt;/props&gt;
+        &lt;/constructor-arg&gt;
+    &lt;/bean&gt;
+&lt;/beans&gt;
+</code></pre></li>
+<li><p>Service层</p>
+<pre><code>@Service(&quot;accountService&quot;)
+public class AccountServiceImpl implements IAccountService {
+    @Autowired
+    private IAccountDao accountDao;
+// 注解配置，set方法可以不要
+//    public void setAccountDao(IAccountDao accountDao) {
+//        this.accountDao = accountDao;
+//    }
+@Override
+public List&lt;Account&gt; findAllAccount() {
+   return this.accountDao.findAllAccount();
+}
+</code></pre></li>
+</ol>
+<ol start="3">
+<li><p>Dao层</p>
+<pre><code>@Repository(&quot;accountDao&quot;)
+public class AccountDaoImpl implements IAccountDao {
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
     @Override
-    public void save() {
-        System.out.println(&quot;保存成功!&quot;);
+    public List&lt;Account&gt; findAllAccount() {
+        List&lt;Account&gt; list = jdbcTemplate.query(&quot;select * from account&quot;, new BeanPropertyRowMapper&lt;Account&gt;(Account.class));
+        return list;
     }
 }
 </code></pre></li>
-<li><p>Service层（被Ui层调用）</p>
-<pre><code>public class AccountServiceImpl implements IAccountService {
-    private IAccountDao iAccountDao ;
-    @Override
-    public void accountSave() {
-        try {
-            //此处利用BeanFactory类来通过配置文件的key来获取对象，不再通过 new AccountDaoImpl 来创建
-            iAccountDao = (AccountDaoImpl)BeanFactory.getBean(&quot;accountDao&quot;);
-        } catch (Exception e){
-            throw new ExceptionInInitializerError(&quot;初始化失败&quot;);
-        }
-        iAccountDao.save();
-    }
-}
-</code></pre></li>
-<li><p>Ui层（程序的运行）</p>
+<li><p>Ui层 </p>
 <pre><code>public class Client {
-    public static void main(String[] args) throws Exception {
-        //此处利用BeanFactory类来通过配置文件的key来获取对象
-        AccountServiceImpl accountService = (AccountServiceImpl)BeanFactory.getBean(&quot;accountService&quot;);
-        accountService.accountSave();
+
+    public static void main(String[] args) {
+
+     ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(&quot;bean3.xml&quot;);
+     AccountServiceImpl accountService = (AccountServiceImpl)context.getBean(&quot;accountService&quot;);
+     List&lt;Account&gt; allAccount = accountService.findAllAccount();
+     System.out.println(allAccount);
     }
 }
 </code></pre></li>
-<li><p>Factory：分为单例和多例创建方法，spring默认为单例，也可以在spring的配置文件中更改</p>
-<ul>
-<li><p>多例</p>
-<pre><code>public class BeanFactory {
-    private static Properties props;
-    static {
-        props = new Properties();
+</ol>
+<h3 id="配置类配置"><a href="#配置类配置" class="headerlink" title="配置类配置"></a>配置类配置</h3><ol>
+<li><p>配置类</p>
+<pre><code>//表明这是一个配置类
+@Configuration
+//扫描的包
+@ComponentScan(basePackages = {&quot;xyz.zjy&quot;})
+public class ConfigClass {
+    //把这个方法返回的类放进容器，取key=jdbctemplate
+    @Bean(name = &quot;jdbctemplate&quot;)
+    //范围，这里开启的是多对象
+    @Scope(&quot;prototype&quot;)
+    //方法有参数，spring框架回去容器中查找有没有可用的bean对象
+    public JdbcTemplate createJdbcTemplate(DataSource dataSource){
+        return new JdbcTemplate(dataSource);
+    }
+
+    @Bean(name = &quot;dataSource&quot;)
+    public DataSource createDataSource() {
+        Properties properties = new Properties();
+        DataSource dataSource = null;
+        properties.setProperty(&quot;url&quot;,&quot;jdbc:mysql://localhost:3306/message?serverTimezone=UTC&amp;useSSL=false&amp;allowPublicKeyRetrieval=true&amp;dbnameuseUnicode=true&amp;characterEncoding=utf-8&quot;);
+        properties.setProperty(&quot;driverClassName&quot;, &quot;com.mysql.cj.jdbc.Driver&quot;);
+        properties.setProperty(&quot;username&quot;,&quot;root&quot;);
+        properties.setProperty(&quot;password&quot;,&quot;117139&quot;);
         try {
-            //利用反射加载配置文件
-            props.load(BeanFactory.class.getClassLoader().getResourceAsStream(&quot;config.properties&quot;));
+            dataSource = DruidDataSourceFactory.createDataSource(properties);
+            return dataSource;
         } catch (Exception e) {
-            throw new ExceptionInInitializerError(&quot;初始化失败&quot;);
+            new Exception(&quot;dataSource error&quot;);
+            e.printStackTrace();
         }
-    }
-    //多例对象：用一次这方法，就创建一个新的对象，static代码块里面只是加载配置文件，获取配置文件里面的信息，而真正的创建在getBean方法里面
-    public static Object getBean(String beanName) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
-        Object bean = null;
-        String beanClass = props.getProperty(beanName);
-        bean = Class.forName(beanClass).newInstance();
-        return bean;
-    }
-</code></pre></li>
-<li><p>单例</p>
-</li>
-</ul>
-</li>
-</ul>
-<pre><code>public class BeanFactory {
-    private static Properties props;
-    private static Map&lt;String,Object&gt; beans;
-    static {
-        props = new Properties();
-        try {
-            //利用反射加载配置文件
-            props.load(BeanFactory.class.getClassLoader().getResourceAsStream(&quot;config.properties&quot;));
-            //创建一个容器，来装创建的实体对象
-            beans = new HashMap&lt;&gt;();
-            //取出配置文件中所有的key
-            Enumeration&lt;Object&gt; keys = props.keys();
-            while (keys.hasMoreElements()){
-                //获取键
-                String key = keys.nextElement().toString();
-                //获取值
-                String beanPath =  props.getProperty(key);
-                //利用反射来创建类
-                Object bean = Class.forName(beanPath).newInstance();
-                //把键和创建的对象放入Map容器
-                beans.put(key,bean);
-            }
-        } catch (Exception e) {
-            throw new ExceptionInInitializerError(&quot;初始化失败&quot;);
-        }
-    }
-    //单例对象：无论用多少次这个方法，始终用的是同一个对象,就只是在static里面，把配置文件中所有的类都创建好，并放入容器中
-    public static Object getBean(String beanNmae){
-         return beans.get(beanNmae);
-    }
-
-}
-</code></pre><ul>
-<li><p>配置文件 </p>
-<pre><code>accountService = zjy.xyz.Service.impl.AccountServiceImpl
-accountDao = zjy.xyz.Dao.impl.AccountDaoImpl
-</code></pre></li>
-</ul>
-<h2 id="Spring对bean的管理细节"><a href="#Spring对bean的管理细节" class="headerlink" title="Spring对bean的管理细节"></a>Spring对bean的管理细节</h2><ol>
-<li>spring的基本使用</li>
-<li>创建bean的三种方式</li>
-<li>bean对象的作用范围</li>
-<li>bean对象的生命周期(略)</li>
-</ol>
-<h3 id="1-spring的基本使用"><a href="#1-spring的基本使用" class="headerlink" title="1.spring的基本使用"></a>1.spring的基本使用</h3><ul>
-<li>问题：我们如何通过spring帮我们实现BeanFactory工厂类的功能，直接通过配置文件来创建对象？</li>
-</ul>
-<ol>
-<li><p>首先，引入spring的jar包，maven直接导包</p>
-</li>
-<li><p>第二，我们得有配置文件，我们演示IoC原理的时候，配置文件是properties文件，但spring中的配置文件用的是xml文件，我们把config.properties配置文件，改为bean.xml文件，其他不用变。</p>
-<pre><code>&lt;!--  bean.xml内容如下： --&gt;
-&lt;bean id=&quot;accountDao&quot; class=&quot;xyz.Dao.impl.AccountDaoImpl&quot;&gt;&lt;/bean&gt;
-</code></pre></li>
-<li><p>第三，获取对象</p>
-<pre><code>//获取容器
-ApplicationContext ac = new ClassPathXmlApplicationContext(&quot;bean.xml&quot;);
-//然后使用getBean方法，通过ID查询（也就类似上面IoC原理中的key）来获取对象
-AccountDaoImpl accountDao = (AccountDaoImpl) ac.getBean(&quot;accountDao&quot;);    
-</code></pre></li>
-</ol>
-<h3 id="2-创建bean的三种方式"><a href="#2-创建bean的三种方式" class="headerlink" title="2.创建bean的三种方式"></a>2.创建bean的三种方式</h3><ul>
-<li><p>问题：类的构造方法有默认的还有带参的（代参的就是依赖注入），还有其他jar包中，类通过方法（分静态和非静态方法）来获取对象的，spring中配置文件又如何解决</p>
-</li>
-<li><p>方法一：使用默认构造函数，配置文件中bean标签，只有id和class属性，且没有其他属性和标签时，采用的就是默认函数创建对象，如果没有默认构造函数，就创建不起</p>
-</li>
-</ul>
-<pre><code>&lt;bean id=&quot;accountDao&quot; class=&quot;xyz.Dao.impl.AccountDaoImpl&quot;&gt;&lt;/bean&gt;
-</code></pre><ul>
-<li>方法二：使用普通工厂中的方法创建对象（有的jar包中，某个类的方法可以获取对象，我们也可以通过配置文件来获取，例如有个FactoryBean类中getAsi方法可以直接获取对象</li>
-</ul>
-<pre><code>public class FactoryBean {
-    public AccountServiceImpl getAsi(){
-        return new AccountDaoImpl();
+        return dataSource;
     }
 }
-
-bean.xml配置文件中的写法：
-&lt;bean id=&quot;fuctory&quot; class=&quot;xyz.Fuctory.FactoryBean&quot;&gt;&lt;/bean&gt;
-&lt;bean id=&quot;accountDao&quot; factory-bean=&quot;fuctory&quot; factory-method=&quot;getAsi&quot;&gt;&lt;/bean&gt;
-</code></pre><ul>
-<li><p>方法三：使用工厂中的静态（与方法二不同的是：静态方法）方法来返回对象实例</p>
-<pre><code>&lt;bean id=&quot;accountDao&quot; class=&quot;xyz.Fuctory.FactoryStaticBean&quot; factory-method=&quot;getAsi&quot;&gt;&lt;/bean&gt;
 </code></pre></li>
-</ul>
-<h3 id="3-bean对象的作用范围"><a href="#3-bean对象的作用范围" class="headerlink" title="3.bean对象的作用范围"></a>3.bean对象的作用范围</h3><ul>
-<li><p>问题：除了多例和单例，还有其他的吗？</p>
-<pre><code>bean对象的作用范围 : 属性 scope
- 值：singleton: 单例的（默认）
-     prototype：多例的
-     request：作用于web应用的请求范围
-     session：作用于web应用的会话范围
-     global-session：作用于集群环境1的会话（不是集群就是session）
+<li><p>Ui层</p>
+<pre><code>public class Client {
+
+public static void main(String[] args) {
+    //配置类获取核心容器
+    ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(&quot;bean2.xml&quot;);
+    AccountServiceImpl accountService = (AccountServiceImpl)context.getBean(&quot;accountService&quot;);
+    List&lt;Account&gt; allAccount = accountService.findAllAccount();
+    System.out.println(allAccount);
+}
 </code></pre></li>
-</ul>
-<h2 id="依赖注入（就是有数据的对象进行初始化）"><a href="#依赖注入（就是有数据的对象进行初始化）" class="headerlink" title="依赖注入（就是有数据的对象进行初始化）"></a>依赖注入（就是有数据的对象进行初始化）</h2><ul>
-<li>问题：有的带参数的构造方法，如何进行初始了？哪些数据能注入，几种方式可以注入？</li>
-</ul>
-<ol>
-<li><p>能注入的数据：</p>
-<ol>
-<li>基本类型和String</li>
-<li>其他bean类型（在配置文件中或者配置过的bean）</li>
-<li>复杂类型/集合类型</li>
 </ol>
-</li>
-<li><p>注入的方式：</p>
-<ol>
-<li>使用构造函数提供 </li>
-<li>使用set方法提供</li>
-<li>使用注解提供</li>
-</ol>
-</li>
-</ol>
-<h3 id="构造函数注入"><a href="#构造函数注入" class="headerlink" title="构造函数注入"></a>构造函数注入</h3><ol>
-<li>使用的标签：constructor-arg</li>
-<li>标签出现的位置，bean标签的内部</li>
-<li>标签中的属性：<ul>
-<li>type：用于指定要注入的数据类型，该数据类型1也是够着函数中的某个或某些参数的类型</li>
-<li>index：用于指定要注入的数据给构造函数中指定索引位置的参数赋值。索引的位置是从0开始</li>
-<li>name: 用于指定给构造函数中指定名称的参数赋值</li>
-<li>================以上三个用于指定给构造函数中哪个参数赋值=============</li>
-<li>value: 用于基本类型和String类型的数据</li>
-<li>ref: 用于其他的bean类型，它指的是在spring的Ioc核心容器中出现过的bean对象</li>
-</ul>
-</li>
-</ol>
-<pre><code>//要注入的AccountServiceImpl类的构造函数
- public AccountServiceImpl(String name, Integer age, Date birthday) {
-       this.name = name;
-       this.age = age;
-       this.birthday = birthday;
-}
-
-&lt;!-- bean.xml --&gt;
- &lt;bean id=&quot;service&quot; class=&quot;xyz.Service.impl.AccountServiceImpl&quot;&gt;
-    &lt;constructor-arg name=&quot;name&quot; value=&quot;Andy&quot;&gt;&lt;/constructor-arg&gt;
-    &lt;constructor-arg name=&quot;age&quot; value=&quot;18&quot;&gt;&lt;/constructor-arg&gt;
-    &lt;constructor-arg name=&quot;birthday&quot; ref=&quot;now&quot;&gt;&lt;/constructor-arg&gt; //date是复杂类型，所以引用下面的 now
-&lt;/bean&gt;
-&lt;bean id=&quot;now&quot; class=&quot;java.util.Date&quot;&gt;&lt;/bean&gt;
-</code></pre><h3 id="set方法注入"><a href="#set方法注入" class="headerlink" title="set方法注入"></a>set方法注入</h3><ol>
-<li>涉及的标签：property</li>
-<li>出现的位置：bean的内部</li>
-<li><p>标签的属性：</p>
-<ul>
-<li>name:用于指定给构造函数中指定名称的参数赋值，setAge的name为age</li>
-<li>value: 用于基本类型和String类型的数据</li>
-<li><p>ref：用于其他的bean类型，它指的是在spring的Ioc核心容器中出现过的bean对象  </p>
-<pre><code>//AccountServiceImpl类的Set方法
-public void setName(String name) {
-    this.name = name;
-}
-public void setAge(Integer age) {
-    this.age = age;
-}
-public void setBirthday(Date birthday) {
-    this.birthday = birthday;
-}
-
-//bean.xml（注意，虽然是setAge，name却是：age）
-&lt;bean id=&quot;now&quot; class=&quot;java.util.Date&quot;&gt;&lt;/bean&gt;
-
-&lt;bean id=&quot;service&quot; class=&quot;xyz.Service.impl.AccountServiceImpl&quot;&gt;
-    &lt;property name=&quot;name&quot; value=&quot;Bndy&quot;&gt;&lt;/property&gt;
-    &lt;property name=&quot;age&quot; value=&quot;20&quot;&gt;&lt;/property&gt;
-    &lt;property name=&quot;birthday&quot; ref=&quot;now&quot;&gt;&lt;/property&gt;
-&lt;/bean&gt;
-</code></pre></li>
-</ul>
-</li>
-</ol>
-<h3 id="复杂类型注入"><a href="#复杂类型注入" class="headerlink" title="复杂类型注入"></a>复杂类型注入</h3><ul>
-<li>用于给list结构集合注入的标签：list array set</li>
-<li>用于给Map结构集合注入的标签：map props</li>
-<li><p><strong>结构相同，标签可以互换</strong></p>
-<pre><code>//AccountServiceImpl类的Set方法
-private String[] myStrs;
-private List&lt;String&gt; myList;
-private Set&lt;String&gt; mySet;
-private Map&lt;String,String&gt; myMap;
-private Properties myProperties;
-
-public void setMyStrs(String[] myStrs) {
-    this.myStrs = myStrs;
-}
-
-public void setMyList(List&lt;String&gt; myList) {
-    this.myList = myList;
-}
-
-public void setMySet(Set&lt;String&gt; mySet) {
-    this.mySet = mySet;
-}
-
-public void setMyMap(Map&lt;String, String&gt; myMap) {
-    this.myMap = myMap;
-}
-
-public void setMyProperties(Properties myProperties) {
-    this.myProperties = myProperties;
-}
-
-//对应bean.xml的配置
-&lt;bean id=&quot;service&quot; class=&quot;xyz.Service.impl.AccountServiceImpl&quot;&gt;
-   &lt;property name=&quot;myStrs&quot;&gt;
-       &lt;array&gt;
-           &lt;value&gt;arrayAAA&lt;/value&gt;
-           &lt;value&gt;arrayBBB&lt;/value&gt;
-           &lt;value&gt;arrayCCC&lt;/value&gt;
-       &lt;/array&gt;
-   &lt;/property&gt;
-    &lt;property name=&quot;myList&quot;&gt;
-        &lt;list&gt;
-            &lt;value&gt;ListAAA&lt;/value&gt;
-            &lt;value&gt;ListBBB&lt;/value&gt;
-            &lt;value&gt;ListCCC&lt;/value&gt;
-        &lt;/list&gt;
-    &lt;/property&gt;
-    &lt;property name=&quot;mySet&quot;&gt;
-        &lt;set&gt;
-            &lt;value&gt;SetAAA&lt;/value&gt;
-            &lt;value&gt;SetBBB&lt;/value&gt;
-            &lt;value&gt;SetCCC&lt;/value&gt;
-        &lt;/set&gt;
-    &lt;/property&gt;
-    &lt;property name=&quot;myMap&quot;&gt;
-        &lt;map&gt;
-           &lt;!--写法一：简单推荐--&gt;
-            &lt;entry key=&quot;aaa&quot; value=&quot;MapAAA&quot;&gt;&lt;/entry&gt;
-            &lt;entry key=&quot;bbb&quot; value=&quot;MapBBB&quot;&gt;&lt;/entry&gt;
-            &lt;!--写法二--&gt;
-            &lt;entry key=&quot;ccc&quot;&gt;
-                &lt;value&gt;MapCCC&lt;/value&gt;
-            &lt;/entry&gt;
-        &lt;/map&gt;
-    &lt;/property&gt;
-    &lt;property name=&quot;myProperties&quot;&gt;
-        &lt;props&gt;
-            &lt;prop key=&quot;aaa&quot;&gt;PropsAAA&lt;/prop&gt;
-            &lt;prop key=&quot;bbb&quot;&gt;PropsAAA&lt;/prop&gt;
-            &lt;prop key=&quot;ccc&quot;&gt;PropsAAA&lt;/prop&gt;
-        &lt;/props&gt;
-    &lt;/property&gt;
-&lt;/bean&gt;
-</code></pre><p>  </p>
-</li>
-</ul>
 
     </div>
   </div>
@@ -581,7 +476,7 @@ public void setMyProperties(Properties myProperties) {
         
           本文作者 : Yi <br/>
         
-        原文链接 : <a href="">https://www.zhangjiayi.xyz/archives/2019/07/19/spring01/</a><br>
+        原文链接 : <a href="">https://www.zhangjiayi.xyz/archives/2019/07/29/annotation/</a><br>
         版权声明 : 本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
         </blockquote>
       </div>
@@ -653,14 +548,8 @@ public void setMyProperties(Properties myProperties) {
           </span>
           
           <span class="span--tag">
-            <a href="/tags/IOC/">
-              #IOC
-            </a>
-          </span>
-          
-          <span class="span--tag">
-            <a href="/tags/AOP/">
-              #AOP
+            <a href="/tags/annotation/">
+              #annotation
             </a>
           </span>
           
@@ -685,15 +574,9 @@ public void setMyProperties(Properties myProperties) {
       <div class="nav-pre">
         <i class="iconfont icon-prev"></i>
         上一篇:
-        <a href="/2019/07/17/bootstrap/" target="_self">bootstrap基础</a>
+        <a href="/2019/07/19/spring01/" target="_self">IoC——spring框架核心之一</a>
       </div>
     
-    
-      <div class="nav-next">
-        下一篇:
-        <a href="/2019/07/29/annotation/" target="_self">spring注解配置和注解类</a>
-        <i class="iconfont icon-next"></i>
-      </div>
     
   </nav>
 
