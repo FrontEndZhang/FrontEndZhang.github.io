@@ -8,12 +8,12 @@
   
   
   
-  <title>spring注解配置和注解类 | Yi</title>
+  <title>springAOP原理 | Yi</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="annotation,Spring,annotation," />
+    <meta name="keywords" content="Spring,Spring,AOP," />
   
 
   <script>
@@ -223,24 +223,24 @@
 
 <div class="post">
   <h1 class="article-title">
-    <span>spring注解配置和注解类</span>
+    <span>springAOP原理</span>
   </h1>
   <div class="article-top-meta">
     <span>
       发布 : 
-      2019-07-29
+      2019-09-14
     </span>
     
       <span>
         分类 : 
-          <a href="/categories/annotation/">
-            annotation
+          <a href="/categories/Spring/">
+            Spring
           </a>
       </span>
     
     
       <span>
-        浏览 : <span class="article-timer" data-identity="annotation"></span>
+        浏览 : <span class="article-timer" data-identity="springAop1"></span>
       </span>
     
   </div>
@@ -249,99 +249,234 @@
 
   <div class="article-content">
     <div class="markdown-body">
-      <h2 id="注解的分类"><a href="#注解的分类" class="headerlink" title="注解的分类"></a>注解的分类</h2><p>注解有4类，功能分别对应xml文件配置的功能（注解的配置对比servlet设置虚拟目录）</p>
-<h3 id="1-用于创建对象"><a href="#1-用于创建对象" class="headerlink" title="1. 用于创建对象"></a>1. 用于创建对象</h3><ul>
-<li>他们的作用跟xml配置文件中的bean标签实现的功能是一样的 <ol>
-<li>Component:<ul>
-<li>作用：用于把当前类对象存入spring容器</li>
-<li>属性： <ol>
-<li>value：用于指定bean的id。当我们不写时，默认值为当前类名，且首字母为小写</li>
-</ol>
-</li>
+      <h2 id="AOP的基本概念和原理"><a href="#AOP的基本概念和原理" class="headerlink" title="AOP的基本概念和原理"></a>AOP的基本概念和原理</h2><h3 id="1-什么是AOP"><a href="#1-什么是AOP" class="headerlink" title="1.什么是AOP"></a>1.什么是AOP</h3><ul>
+<li>在软件业，AOP为Aspect Oriented Programming的缩写，意为：面向切面编程，通过预编译方式和运行期动态代理实现程序功能的统一维护的一种技术。AOP是OOP的延续，是软件开发中的一个热点，也是Spring框架中的一个重要内容，是函数式编程的一种衍生范型。</li>
 </ul>
-</li>
-<li>Controller 一般用在表现层</li>
-<li>Service    一般用于业务层</li>
-<li>Repository  一般用于持久层</li>
-<li>注：以上三个注解他们的作用和属性与Component是一模一样的，他们三个是Spring框架为我们提供明确的三层使用的注解，使我们的三层更加清晰</li>
-</ol>
-</li>
+<h3 id="2-Aop的作用"><a href="#2-Aop的作用" class="headerlink" title="2.Aop的作用"></a>2.Aop的作用</h3><ul>
+<li>AOP可以对业务逻辑的各个部分进行隔离，从而使得业务逻辑各部分之间的耦合度降低，提高程序的可重用性，同时提高了开发的效率。（个人理解：对于很多重复的代码，打印日志这些等，AOP可以帮我们解决这些问题）</li>
 </ul>
-<h3 id="2-用于注入数据"><a href="#2-用于注入数据" class="headerlink" title="2. 用于注入数据"></a>2. 用于注入数据</h3><ul>
-<li><p>他们的作用跟xml配置文件中bean标签中property标签实现的功能是一样的</p>
-<ol>
-<li><p>Autowired</p>
-<pre><code>* 作用：自动按照类型注入。只要容器中有唯一的一个bean对象类型和要注入的变量类型匹配，就可以注入成功，如果ioc容器中没有任何bean的类型和要注入的类型匹配，则报错（自动注入的类也要加上创建对象的注解，不然会找不到该类），
-* 如果有多个，先找出符合的，再通过变量名来匹配key,如果没有则报错
+<h3 id="3-AOP的使用"><a href="#3-AOP的使用" class="headerlink" title="3.AOP的使用"></a>3.AOP的使用</h3><pre><code>spring中基于XML的AOP配置步骤
+    1. 把通知Bean交给spring来管理
+    2. 使用aop：config标签表名开始aop的配置
+    3. 使用aop：aspect标签表名配置切面
+        id属性：是给切面提供一个唯一标志
+        ref属性：是指定通知类bean的ID
+    4. 在aop：aspect标签内部使用对应标签来配置通知的类型
+            我们现在示例是让printLog方法在切入点方法执行之前，所以是前置通知
+            aop:before:前置通知
+                method属性：用于指定Logger类中哪个方法是前置通知
+                printcut属性：用于指定切入点表达式，该表达式的含义指的是对业务层中那些方法增强
+        切入点表达式的写法
+            关键字：execution（表达式）
+            表达式写法：
+                    访问修饰符 返回值 包名.包名...类名.方法（参数列表）
+             标准的表达式写法：
+                    public void xyz.zjy.service.impl.AccountService.saveAccount()
+             访问修饰符可以省略
+                    void xyz.zjy.service.impl.AccountService.saveAccount()
+             返回值可以使用通配符，表示任意返回值
+                    * xyz.zjy.service.impl.AccountService.saveAccount()
+             包名可以使用通配符，表示任意包。但是有几级包，就要写几个*
+                    * *.*.*.*.AccountService.saveAccount()
+             包名可以使用 .. 表示当前包及其子包
+                    * *..AccountService.saveAccount()
+             类名和方法名都可以使用*来实现通配
+                    * *..*.*()  //注意是没有参数的方法生效哦！
+             参数列表：
+                  可以直接写数据类型：
+                    基本类型直接写名称  int
+                    应用类型写包名.类名的方式 java.lang.String
+                   可以使用通配符表示任意类型，但是必须有参数
+                   可以使用 .. 表示有无参数均可
+             全通配写法
+                    * *..*.*(..)
+             实际开发中切入点表达式的通常写法：
+                 切入到业务层类下的使有方法
+                    * xyz.zjy.service.impl.*.*(..)
 
-       @Autowired
-       private      IAccountDao   accountDao1 = null;
-       访问修饰符    数据类型       变量名称    数据类型
+    例子：
+    &lt;!--    配置Logger类--&gt;
+        &lt;bean id=&quot;logger&quot; class=&quot;xyz.zjy.utils.Logger&quot;&gt;&lt;/bean&gt;
+    &lt;!--    配置AOP类--&gt;
+        &lt;aop:config proxy-target-class=&quot;true&quot;&gt;
+            &lt;aop:aspect id=&quot;logAdvice&quot; ref=&quot;logger&quot; &gt;
+    &lt;!--    配置通知的类型，并且建立通知方法和切入点方法的关联        --&gt;
+                &lt;aop:before method=&quot;printLog&quot; pointcut=&quot;execution(* *..*.*(int))&quot;&gt;&lt;/aop:before&gt;
+            &lt;/aop:aspect&gt;
+        &lt;/aop:config&gt;
+</code></pre><h3 id="4-AOP的原理分析示例（理解AOP有什么用，干什么的）"><a href="#4-AOP的原理分析示例（理解AOP有什么用，干什么的）" class="headerlink" title="4.AOP的原理分析示例（理解AOP有什么用，干什么的）"></a>4.AOP的原理分析示例（理解AOP有什么用，干什么的）</h3><ul>
+<li>本示例通过把事务分离开，动态代理事务，来模仿springAOP原理</li>
+<li>首先创建一个普通的Maven的Java项目，用来演示简单的转账，包括dao层，utils工具类，service层,domain实体类,还有一个BeanFactory工厂，项目结构如下图：</li>
+</ul>
+<ul>
+<li><p>ConnectionUtiles（让一个线程绑定一个连接）</p>
+<pre><code>public class ConnectionUtils {
+    //一个线程内部的存储类，可以在指定线程内存储数据
+    private ThreadLocal&lt;Connection&gt; t1 = new ThreadLocal&lt;Connection&gt;();
+     private DataSource dataSource;
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
-       ioc 容器：
-       key（String）   value(Object)
-       Account         IAccountService
-       accountDao1     IAccountDao     //accountDao1和accountDao2符合，但是变量名称匹配的是accountDao1
-       accountDao2     IAccountDao    
-* 出现位置：可以是变量上，也可以是方法上
-* 细节：在使用注解注入时，set方法就不是必须的了
+    //获取当前线程上的连接
+    public Connection getThreadConnection(){
+        try {
+            //1.先从ThreadLocal上获取
+            Connection conn = t1.get();
+            //2.判断当前线程上是否有连接
+            if (conn==null){
+                //3.从数据源中获取一个连接，并且存入ThreadLocal中
+                conn = dataSource.getConnection();
+                //把没有conn，就把connection存入
+                t1.set(conn);
+            }
+            //返回当前1线程上的连接
+            return conn;
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public void removeConnection(){
+        t1.remove();
+    }
+}
 </code></pre></li>
-<li><p>Qualifier：</p>
-<pre><code>* 作用：在按照类中注入的基础上再按照名称注入（配合Autowired），它在给类成员注入时不能单独使用，但是在给方法参数注入时可以
-* 属性：value 用于给指定的bean的id
-</code></pre></li>
-<li><p>Resource</p>
-<pre><code>* 作用：直接按照bean的id注入，他可以独立使用
-* 属性：name：用于指定id
+<li><p>TransactionManager（事务管理的工具类，它包含了，开启事务，提交事务，回滚事务和释放连接）</p>
+<pre><code>public class TransactionManager {
 
-         @Qualifier(&quot;accountDao&quot;)
-          @Autowired                    等于 @Resource(name = &quot;&quot;)
-
-* **注：以上三个注入都只能注入其他bean类型的数据，而基本类型和String类型无法使用上述注解实现，另外，集合类型的注入只能通过xml来实现**
+    private ConnectionUtils connectionUtils;
+    public TransactionManager(ConnectionUtils connectionUtils) {
+        this.connectionUtils = connectionUtils;
+    }
 </code></pre></li>
-</ol>
-</li>
 </ul>
-<pre><code>4. Value
-       * 作用：用于注入基本类型和String类型的数据
-       * 属性：value，用于指定数据的值。他可以使用spring中SpEl（Spring的El表达式=${表达式}）
-</code></pre><h3 id="3-用于改变作用范围的"><a href="#3-用于改变作用范围的" class="headerlink" title="3. 用于改变作用范围的"></a>3. 用于改变作用范围的</h3><ul>
-<li>他们的作用集合在bean标签中使用scope属性实现的功能是一样的<ul>
-<li>Scope<ul>
-<li>作用：用于指定bean的作用范围</li>
-<li>属性：value：直营范围的取值，常用取值：singletor property</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="4-和生命周期相关的"><a href="#4-和生命周期相关的" class="headerlink" title="4. 和生命周期相关的"></a>4. 和生命周期相关的</h3><ul>
-<li>他们的作用集合在bean标签中使用init-method和destroy-method属性是一样的<ol>
-<li>PreDestory:作用：用于指定销毁方法</li>
-<li>PostConStruct:作用：用于初始化方法</li>
-</ol>
-</li>
-</ul>
-<h2 id="注解类"><a href="#注解类" class="headerlink" title="注解类"></a>注解类</h2><ol>
-<li>Configuration<ul>
-<li>作用：指定当前类是一个配置类</li>
-</ul>
-</li>
-<li>ComponentScan<ul>
-<li>作用：用于通过注解来指定spring在创建容器时要扫描的包</li>
-<li>属性：value:它和basePackeages的作用是一样的，都是用于指定创建配置容器时要扫描的包，等同于在xml配置文件中配置了：&lt;context:component-scan base-package=””&gt;&lt;/context:component-scan&gt;</li>
-</ul>
-</li>
-<li>Bean<ul>
-<li>作用：用于把当前方法的返回值作为bean对象存入spring的ioc容器</li>
-<li>属性：name：用于指定bean的id，当不写时，默认值是当前方法的名称</li>
-<li>细节：当我们使用注解配置方法时，如果方法有参数，spring框架回去容器中查找有没有可用的bean对象，查找的方法和Autowired注解的作用是一样的</li>
-</ul>
-</li>
-</ol>
-<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><p>有俩个例子，一个为用注解配置，另一个为注解类配置</p>
-<h3 id="注解配置"><a href="#注解配置" class="headerlink" title="注解配置"></a>注解配置</h3><ol>
-<li><p>xml内容如下：</p>
+<pre><code>    /*开启事务 */
+
+    public void beginTransaction(){
+        try {
+            connectionUtils.getThreadConnection().setAutoCommit(false);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    /*
+        提交事务
+     */
+    public void commit(){
+        try {
+            connectionUtils.getThreadConnection().commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    /*
+         回滚事务
+     */
+    public void rollback(){
+        try {
+            connectionUtils.getThreadConnection().rollback();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    /*
+        释放事务
+     */
+    public void release(){
+        try {
+            connectionUtils.getThreadConnection().close();
+            connectionUtils.removeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+}
+</code></pre><ul>
+<li><p>AccountDaoImpl（被Service层调用，就是操作数据库的）</p>
+<pre><code>@Repository(&quot;accountDao&quot;)
+public class AccountDaoImpl implements IAccountDao {
+    //自动注入
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+    //自动注入
+    @Autowired
+    private QueryRunner queryRunner;
+    //自动注入
+    @Autowired
+    private ConnectionUtils connectionUtils;
+    //传入account账户对象来改变账户信息
+    @Override
+    public void updateAccount(Account account) throws Exception {
+        int update = queryRunner.update(connectionUtils.getThreadConnection(),&quot;update accountPlus set name = ? ,money = ? where id = ?&quot;,account.getName(), account.getMoney(), account.getId());
+        if (update&gt;0){
+            System.out.println(&quot;update seccess!&quot;);
+        }
+    }
+    //通过账户名字返回账户account对象
+    @Override
+    public Account findAccountByName(String accountName) {
+        try {
+            List&lt;Account&gt; list = queryRunner.query(connectionUtils.getThreadConnection(), &quot;select * from accountPlus where name = ?&quot;,
+                    new BeanListHandler&lt;Account&gt;(Account.class), accountName);
+            System.out.println(list);
+            if (list == null || list.size()==0){
+                return null;
+            }
+            if (list.size()&gt;1){
+                throw new RuntimeException(&quot;结果不唯一，数据有问题！&quot;);
+            }
+            return list.get(0);
+        }catch (Exception e){
+            throw  new RuntimeException(e);
+        }
+
+    }
+
+}
+</code></pre></li>
+<li><p>BeanFactory（通过这个类来增强事务操作）</p>
+<pre><code>@Service(&quot;bean&quot;)
+public class BeanFactory {
+    @Autowired
+    private IAccountService accountService;
+    @Autowired
+    private TransactionManager transactionManager;
+
+    public IAccountService getAccountService(){
+        //动态代理
+        Object o = Proxy.newProxyInstance(accountService.getClass().getClassLoader(),
+                accountService.getClass().getInterfaces(), new InvocationHandler() {
+                    @Override
+                    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                        try {
+                            System.out.println(&quot;begin&quot;);
+                            //1.开启事务
+                            transactionManager.beginTransaction();
+                            //2.执行操作
+                            Object invoke = method.invoke(accountService, args);
+                            //3.提交操作
+                            transactionManager.commit();
+                            //4.返回结果
+                            return invoke;
+                        } catch (Exception e) {
+                            //5.回滚操作
+                            transactionManager.rollback();
+                            throw new RuntimeException(e);
+                        } finally {
+                            //6.释放连接
+                            transactionManager.release();
+                            System.out.println(&quot;end&quot;);
+                        }
+                    }
+                });
+        return (IAccountService) o;
+    }
+}
+</code></pre></li>
+<li><p>bean.xml配置文件</p>
 <pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
        xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
@@ -351,121 +486,116 @@
         http://www.springframework.org/schema/context
         https://www.springframework.org/schema/context/spring-context.xsd&quot;&gt;
 
-    //包扫描的范围
     &lt;context:component-scan base-package=&quot;xyz.zjy&quot;&gt;&lt;/context:component-scan&gt;
-    //配置账户类实例
-    &lt;bean id=&quot;account&quot; class=&quot;xyz.zjy.domain.Account&quot;&gt;
-        &lt;property name=&quot;name&quot; value=&quot;zjy&quot;&gt;&lt;/property&gt;
-        &lt;property name=&quot;id&quot; value=&quot;1&quot;&gt;&lt;/property&gt;
-        &lt;property name=&quot;money&quot; value=&quot;250&quot;&gt;&lt;/property&gt;
-    &lt;/bean&gt;
+
     &lt;!--  获取JdbcTemplate对象，构造方法获取dataSource，用于操作数据库  --&gt;
     &lt;bean id=&quot;jdbcT&quot; class=&quot;org.springframework.jdbc.core.JdbcTemplate&quot;&gt;
         &lt;constructor-arg name=&quot;dataSource&quot; ref=&quot;ds&quot;&gt;&lt;/constructor-arg&gt;
     &lt;/bean&gt;
-
-    //配置dataSource
+    &lt;bean id=&quot;queryRunner&quot; class=&quot;org.apache.commons.dbutils.QueryRunner&quot;&gt;
+        &lt;constructor-arg ref=&quot;ds&quot;&gt;&lt;/constructor-arg&gt;
+    &lt;/bean&gt;
+    &lt;!--配置dataSource--&gt;
     &lt;bean id=&quot;ds&quot; class=&quot;com.alibaba.druid.pool.DruidDataSourceFactory&quot; factory-method=&quot;createDataSource&quot;&gt;
         &lt;constructor-arg&gt;
             &lt;props&gt;
-                &lt;prop key=&quot;url&quot;&gt;jdbc:mysql://localhost:3306/test?serverTimezone=UTC&amp;amp;useSSL=false&amp;amp;allowPublicKeyRetrieval=true&amp;amp;dbnameuseUnicode=true&amp;amp;characterEncoding=utf-8&lt;/prop&gt;
+                &lt;prop key=&quot;url&quot;&gt;jdbc:mysql://localhost:3306/message?serverTimezone=UTC&amp;amp;useSSL=false&amp;amp;allowPublicKeyRetrieval=true&amp;amp;dbnameuseUnicode=true&amp;amp;characterEncoding=utf-8&lt;/prop&gt;
                 &lt;prop key=&quot;driverClassName&quot;&gt;com.mysql.cj.jdbc.Driver&lt;/prop&gt;
                 &lt;prop key=&quot;username&quot;&gt;root&lt;/prop&gt;
                 &lt;prop key=&quot;password&quot;&gt;117139&lt;/prop&gt;
             &lt;/props&gt;
         &lt;/constructor-arg&gt;
     &lt;/bean&gt;
+
+    &lt;!--    配置事务管理器 --&gt;
+    &lt;bean id=&quot;transactionManager&quot; class=&quot;xyz.zjy.utils.TransactionManager&quot;&gt;
+        &lt;constructor-arg name=&quot;connectionUtils&quot; ref=&quot;connectionUtils&quot;/&gt;
+    &lt;/bean&gt;
+    &lt;!--    配置ConnectionUtils工具类--&gt;
+    &lt;bean id=&quot;connectionUtils&quot; class=&quot;xyz.zjy.utils.ConnectionUtils&quot;&gt;
+        &lt;property name=&quot;dataSource&quot; ref=&quot;ds&quot;&gt;&lt;/property&gt;
+    &lt;/bean&gt;
+
 &lt;/beans&gt;
 </code></pre></li>
-<li><p>Service层</p>
-<pre><code>@Service(&quot;accountService&quot;)
-public class AccountServiceImpl implements IAccountService {
-    @Autowired
-    private IAccountDao accountDao;
-// 注解配置，set方法可以不要
-//    public void setAccountDao(IAccountDao accountDao) {
-//        this.accountDao = accountDao;
-//    }
-@Override
-public List&lt;Account&gt; findAllAccount() {
-   return this.accountDao.findAllAccount();
+<li><p>Main（执行操作，测试代码）</p>
+<pre><code>public class Main {
+    public static void main(String[] args) throws Exception {
+
+        ApplicationContext context = new ClassPathXmlApplicationContext(&quot;bean.xml&quot;);
+        BeanFactory bean = (BeanFactory) context.getBean(&quot;bean&quot;);
+        IAccountService accountService = bean.getAccountService();
+        accountService.transfer(&quot;aaa&quot;,&quot;bbb&quot;,100f);
+
 }
 </code></pre></li>
-</ol>
-<ol start="3">
-<li><p>Dao层</p>
-<pre><code>@Repository(&quot;accountDao&quot;)
-public class AccountDaoImpl implements IAccountDao {
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
-    @Override
-    public List&lt;Account&gt; findAllAccount() {
-        List&lt;Account&gt; list = jdbcTemplate.query(&quot;select * from account&quot;, new BeanPropertyRowMapper&lt;Account&gt;(Account.class));
-        return list;
-    }
-}
-</code></pre></li>
-<li><p>Ui层 </p>
-<pre><code>public class Client {
+</ul>
+<h2 id="springAOP的xml配置"><a href="#springAOP的xml配置" class="headerlink" title="springAOP的xml配置"></a>springAOP的xml配置</h2><h3 id="spring中基于XML的声明事务控制配置步骤"><a href="#spring中基于XML的声明事务控制配置步骤" class="headerlink" title="spring中基于XML的声明事务控制配置步骤"></a>spring中基于XML的声明事务控制配置步骤</h3><pre><code>spring中基于XML的声明事务控制配置步骤
+1.配置事务管理器
+2.配置事务的通知
+        此时我们需要导入事务的约束,tx名称空间和约束，同样也需要 aop
+        使用tx：advice标签配置事务通知
+            属性：
+                id：给事务1通知起一个唯一标志
+                transaction-manager：给事务通知提供一个事务管理器引用
+ 3.配置AOP中通用切入点表达式
+ 4.建立事务通知和切入点表达式的对应关系
+ 5.配置事务的属性
+        是在事务的通知tx:advice标签内部
+</code></pre><h2 id="用xml配置以上的事务动态代理"><a href="#用xml配置以上的事务动态代理" class="headerlink" title="用xml配置以上的事务动态代理"></a>用xml配置以上的事务动态代理</h2><pre><code>        &lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xmlns:aop=&quot;http://www.springframework.org/schema/aop&quot;
+       xmlns:tx=&quot;http://www.springframework.org/schema/tx&quot;
+       xsi:schemaLocation=&quot;
+        http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/tx
+        https://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/aop
+        https://www.springframework.org/schema/aop/spring-aop.xsd&quot;&gt;
 
-    public static void main(String[] args) {
+    &lt;bean id=&quot;accountService&quot; class=&quot;xyz.zjy.service.impl.AccountServiceImpl&quot;&gt;
+        &lt;property name=&quot;accountDao&quot; ref=&quot;accountDao&quot;&gt;&lt;/property&gt;
+    &lt;/bean&gt;
 
-     ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(&quot;bean3.xml&quot;);
-     AccountServiceImpl accountService = (AccountServiceImpl)context.getBean(&quot;accountService&quot;);
-     List&lt;Account&gt; allAccount = accountService.findAllAccount();
-     System.out.println(allAccount);
-    }
-}
-</code></pre></li>
-</ol>
-<h3 id="配置类配置"><a href="#配置类配置" class="headerlink" title="配置类配置"></a>配置类配置</h3><ol>
-<li><p>配置类</p>
-<pre><code>//表明这是一个配置类
-@Configuration
-//扫描的包
-@ComponentScan(basePackages = {&quot;xyz.zjy&quot;})
-public class ConfigClass {
-    //把这个方法返回的类放进容器，取key=jdbctemplate
-    @Bean(name = &quot;jdbctemplate&quot;)
-    //范围，这里开启的是多对象
-    @Scope(&quot;prototype&quot;)
-    //方法有参数，spring框架回去容器中查找有没有可用的bean对象
-    public JdbcTemplate createJdbcTemplate(DataSource dataSource){
-        return new JdbcTemplate(dataSource);
-    }
+    &lt;bean id=&quot;accountDao&quot; class=&quot;xyz.zjy.dao.impl.AccountDaoImpl&quot;&gt;
+        &lt;property name=&quot;jdbcTemplate&quot; ref=&quot;jdbcTemplate&quot;&gt;&lt;/property&gt;
+    &lt;/bean&gt;
 
-    @Bean(name = &quot;dataSource&quot;)
-    public DataSource createDataSource() {
-        Properties properties = new Properties();
-        DataSource dataSource = null;
-        properties.setProperty(&quot;url&quot;,&quot;jdbc:mysql://localhost:3306/message?serverTimezone=UTC&amp;useSSL=false&amp;allowPublicKeyRetrieval=true&amp;dbnameuseUnicode=true&amp;characterEncoding=utf-8&quot;);
-        properties.setProperty(&quot;driverClassName&quot;, &quot;com.mysql.cj.jdbc.Driver&quot;);
-        properties.setProperty(&quot;username&quot;,&quot;root&quot;);
-        properties.setProperty(&quot;password&quot;,&quot;117139&quot;);
-        try {
-            dataSource = DruidDataSourceFactory.createDataSource(properties);
-            return dataSource;
-        } catch (Exception e) {
-            new Exception(&quot;dataSource error&quot;);
-            e.printStackTrace();
-        }
-        return dataSource;
-    }
-}
-</code></pre></li>
-<li><p>Ui层</p>
-<pre><code>public class Client {
+    &lt;bean id=&quot;jdbcTemplate&quot; class=&quot;org.springframework.jdbc.core.JdbcTemplate&quot;&gt;
+        &lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot;&gt;&lt;/property&gt;
+    &lt;/bean&gt;
 
-public static void main(String[] args) {
-    //配置类获取核心容器
-    ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(&quot;bean2.xml&quot;);
-    AccountServiceImpl accountService = (AccountServiceImpl)context.getBean(&quot;accountService&quot;);
-    List&lt;Account&gt; allAccount = accountService.findAllAccount();
-    System.out.println(allAccount);
-}
-</code></pre></li>
-</ol>
+    &lt;bean id=&quot;dataSource&quot; class=&quot;org.springframework.jdbc.datasource.DriverManagerDataSource&quot;&gt;
+        &lt;property name=&quot;driverClassName&quot; value=&quot;com.mysql.cj.jdbc.Driver&quot;&gt;&lt;/property&gt;
+        &lt;property name=&quot;username&quot; value=&quot;root&quot;&gt;&lt;/property&gt;
+        &lt;property name=&quot;url&quot; value=&quot;jdbc:mysql://localhost:3306/message?serverTimezone=UTC&amp;amp;useSSL=false&amp;amp;allowPublicKeyRetrieval=true&amp;amp;dbnameuseUnicode=true&amp;amp;characterEncoding=utf-8&quot;&gt;&lt;/property&gt;
+        &lt;property name=&quot;password&quot; value=&quot;117139&quot;&gt;&lt;/property&gt;
+    &lt;/bean&gt;
 
+
+&lt;!--  配置事务管理器  --&gt;
+    &lt;bean id=&quot;transactionManager&quot; class=&quot;org.springframework.jdbc.datasource.DataSourceTransactionManager&quot;&gt;
+        &lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot;&gt;&lt;/property&gt;
+    &lt;/bean&gt;
+&lt;!--  配置事务的通知  --&gt;
+    &lt;tx:advice id=&quot;txAdvice&quot; transaction-manager=&quot;transactionManager&quot;&gt;
+&lt;!--     配置事务属性 --&gt;
+        &lt;tx:attributes&gt;
+            &lt;tx:method name=&quot;transfer&quot; propagation=&quot;REQUIRED&quot; read-only=&quot;false&quot;/&gt;
+            &lt;tx:method name=&quot;find&quot; propagation=&quot;SUPPORTS&quot; read-only=&quot;true&quot;&gt;&lt;/tx:method&gt;
+        &lt;/tx:attributes&gt;
+    &lt;/tx:advice&gt;
+
+&lt;!--   配置AOP --&gt;
+    &lt;aop:config proxy-target-class=&quot;true&quot;&gt;
+&lt;!--     配置aop切入点表达式   --&gt;
+        &lt;aop:pointcut id=&quot;pt1&quot; expression=&quot;execution(* xyz.zjy.service.impl.*.*(..))&quot;/&gt;
+&lt;!--     建立切入点表达式和事务通知的对应关系   --&gt;
+        &lt;aop:advisor advice-ref=&quot;txAdvice&quot; pointcut-ref=&quot;pt1&quot;&gt;&lt;/aop:advisor&gt;
+    &lt;/aop:config&gt;
+&lt;/beans&gt;
+</code></pre>
     </div>
   </div>
   
@@ -476,7 +606,7 @@ public static void main(String[] args) {
         
           本文作者 : Yi <br/>
         
-        原文链接 : <a href="">https://www.zhangjiayi.xyz/archives/2019/07/29/annotation/</a><br>
+        原文链接 : <a href="">https://www.zhangjiayi.xyz/archives/2019/09/14/springAop1/</a><br>
         版权声明 : 本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
         </blockquote>
       </div>
@@ -548,8 +678,8 @@ public static void main(String[] args) {
           </span>
           
           <span class="span--tag">
-            <a href="/tags/annotation/">
-              #annotation
+            <a href="/tags/AOP/">
+              #AOP
             </a>
           </span>
           
@@ -574,15 +704,9 @@ public static void main(String[] args) {
       <div class="nav-pre">
         <i class="iconfont icon-prev"></i>
         上一篇:
-        <a href="/2019/07/19/spring01/" target="_self">IoC——spring框架核心之一</a>
+        <a href="/2019/07/29/annotation/" target="_self">spring注解配置和注解类</a>
       </div>
     
-    
-      <div class="nav-next">
-        下一篇:
-        <a href="/2019/09/14/springAop1/" target="_self">springAOP原理</a>
-        <i class="iconfont icon-next"></i>
-      </div>
     
   </nav>
 
