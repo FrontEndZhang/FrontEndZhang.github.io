@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+  
+<head>
+  <meta charset="utf-8">
+  <meta name="author" content="董沅鑫, yuanxin.me@gmail.com" />
+  
+  
+  
+  <title>python中的序列 | Yi</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="python,list," />
+  
+
+  <script>
+    console.log('\n%c Hexo-theme-bmw v4.0 ' + '%c 🎉 https://github.com/dongyuanxin/theme-bmw 🎉\n' + '\n%c View demo online ' + '%c 🔍 https://godbmw.com/ 🔍  \n' , 'color: #fadfa3; background: #030307; padding:3px 0;', '', 'color: #fadfa3; background: #030307; padding:3px 0;', '');
+  </script>
+
+  
+    <meta name="description" content="hello word">
+  
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/touch-icon.png">
+  
+
+  <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/icon/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+
+  <script src="/js/util.js"></script>
+<script src="/js/valine.min.js"></script>
+
+  
+
+  
+    <link href="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.js" async></script>
+  
+
+  
+    <link href="https://cdn.bootcss.com/social-share.js/1.0.16/css/share.min.css" rel="stylesheet">
+  
+  
+  <script src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js" async></script>
+  
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.0/dist/av-min.js"></script>
+  
+
+</head>
+
+  <body>
+
+    
+
+    <div id="app">
+
+      <div class="header-wrap">
+  <header>
+    <div class="site-brand">
+      <div class="site-title">
+        <a href="/">zhangjiayi.xyz</a>
+      </div>
+    </div>
+    <nav class="site-navigation">
+      <ul class="nav-menu">
+      
+        <li class="nav-item" data-path="/">
+          
+            <a 
+              href="/"
+              target="_self"
+            >
+              主页
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          
+            <a 
+              href="/archives/"
+              target="_self"
+            >
+              归档
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          
+            <a 
+              href="/categories/"
+              target="_self"
+            >
+              分类
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          
+            <a 
+              href="/tags/"
+              target="_self"
+            >
+              标签
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          
+            <a 
+              href="/friends/"
+              target="_self"
+            >
+              友链
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          
+            <a 
+              href="/about/"
+              target="_self"
+            >
+              关于
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="">
+          
+            <a href="javascript:void(0);" v-else>抓到我</a>
+            <ul class="nav-menu--dropdown">
+              
+                <li>
+                  <a 
+                    href="https://github.com/FrontEndZhang" 
+                    target="_blank"
+                  >
+                    Github
+                  </a>
+                </li>
+              
+                <li>
+                  <a 
+                    href="https://www.zhihu.com/people/sha-bai-xiao-tian-xin/activities" 
+                    target="_blank"
+                  >
+                    知乎
+                  </a>
+                </li>
+              
+            </ul>
+          
+        </li>
+      
+      </ul>
+    </nav>
+    <i class="iconfont icon-menu"></i>
+  </header>
+</div>
+
+<script>
+  let links = document.querySelectorAll('.nav-item');
+  for(let link of links){
+    let childrenLink = link.querySelector('ul');
+    link.addEventListener('mouseenter', () => {
+      if(childrenLink) {
+        childrenLink.className = "nav-menu--dropdown active";
+      }
+    })
+    link.addEventListener('mouseleave', () => {
+      if(childrenLink) {
+        childrenLink.className = "nav-menu--dropdown";
+      }
+    })
+  }
+  let rootRealPath = getRealPath(window.location.pathname, true);
+  for(let link of links) {
+    let linkPath = link.getAttribute("data-path");
+    if(linkPath && getRealPath(linkPath, true) === rootRealPath) {
+      link.className = "nav-item hover";
+    }
+  }
+
+  let iconMenu = document.querySelector("i.iconfont.icon-menu"),
+    iconMenuClicked = false;
+  let navDOM = document.querySelector("nav.site-navigation");
+  iconMenu.addEventListener("click", () => {
+    iconMenuClicked 
+      ? navDOM.className = "site-navigation active"
+      : navDOM.className = "site-navigation";
+    iconMenuClicked = !iconMenuClicked;
+  })
+</script>
+
+      
+
+
+
+
+
+
+
+
+<div class="container post-index">
+
+  
+
+<div class="post">
+  <h1 class="article-title">
+    <span>python中的序列</span>
+  </h1>
+  <div class="article-top-meta">
+    <span>
+      发布 : 
+      2019-09-17
+    </span>
+    
+      <span>
+        分类 : 
+          <a href="/categories/python/">
+            python
+          </a>
+      </span>
+    
+    
+      <span>
+        浏览 : <span class="article-timer" data-identity="PYarray"></span>
+      </span>
+    
+  </div>
+
+  
+
+  <div class="article-content">
+    <div class="markdown-body">
+      <h2 id="序列"><a href="#序列" class="headerlink" title="序列"></a>序列</h2><h3 id="序列的定义"><a href="#序列的定义" class="headerlink" title="序列的定义"></a>序列的定义</h3><ul>
+<li><strong>序列</strong>是一块用于存放<strong>多个</strong>值连续<strong>内存空间</strong>，并且按一定顺序排列，可以通过<strong>索引</strong>取值</li>
+</ul>
+<h3 id="Python中的序列"><a href="#Python中的序列" class="headerlink" title="Python中的序列"></a>Python中的序列</h3><ol>
+<li>列表（list）</li>
+<li>元组（tuple）</li>
+<li>字典（dictionary）</li>
+<li>集合（set）</li>
+<li>字符串</li>
+</ol>
+<h2 id="序列中的常用方法"><a href="#序列中的常用方法" class="headerlink" title="序列中的常用方法"></a>序列中的常用方法</h2><h3 id="1-索引"><a href="#1-索引" class="headerlink" title="1.索引"></a>1.索引</h3><pre><code>语法：序列[下标] 
+下标范围：
+        正下标 0 —— 序列长度减一
+        负下标 负的序列长度 —— -1
+</code></pre><h3 id="2-切片"><a href="#2-切片" class="headerlink" title="2.切片"></a>2.切片</h3><pre><code>语法：序列[start：end：step]
+参数属性：
+        start：起始值（包括） 注：第一个参数可省略，但是：要保留
+        end：结束值（不包括）
+        step：切片的步长，就是一次跳几个 注：省略以后，默认值为1
+</code></pre><h3 id="3-相加"><a href="#3-相加" class="headerlink" title="3.相加"></a>3.相加</h3><pre><code>语法：序列 + 序列
+</code></pre><p>注意：只能是<strong>同类型</strong>的<strong>序列</strong>相加</p>
+<h3 id="4-相乘"><a href="#4-相乘" class="headerlink" title="4.相乘"></a>4.相乘</h3><pre><code>使用方法：序列 * 序列 = 重复n次的序列
+</code></pre><p>小技巧：字符串也可以直接相乘，比如  “s”*10 = ‘ssssssssss’</p>
+<h3 id="5-检查某个元素是否是序列成员"><a href="#5-检查某个元素是否是序列成员" class="headerlink" title="5.检查某个元素是否是序列成员"></a>5.检查某个元素是否是序列成员</h3><pre><code>语法：value in sequence
+参数属性：
+        value：要检查的元素
+        sequence：序列
+        关键字：in
+返回值： Boolean
+</code></pre><h3 id="6-序列长度"><a href="#6-序列长度" class="headerlink" title="6.序列长度"></a>6.序列长度</h3><pre><code>语法：len(sequence)
+返回值：int
+</code></pre><h3 id="7-序列中最大-小-元素"><a href="#7-序列中最大-小-元素" class="headerlink" title="7.序列中最大(小)元素"></a>7.序列中最大(小)元素</h3><pre><code>语法：max(sequence)
+语法：min(sequence)
+</code></pre><h3 id="8-其他方法"><a href="#8-其他方法" class="headerlink" title="8.其他方法"></a>8.其他方法</h3><pre><code>转换为列表：list（sequence）
+转换为字符串：str（sequence）
+转换为索引序列：enumerate(sequence) 注：类似于枚举：(0, &apos;乔丹&apos;)
+序列元素和：sum(sequence)
+排序序列：sorted(iterable, cmp=None, key=None, reverse=False)
+    iterable -- 可迭代对象。
+    cmp -- 比较的函数，这个具有两个参数，参数的值都是从可迭代对象中取出，此函数必须遵守的规则为，大于则返回1，小于则返回-1，等于则返回0。
+    key -- 主要是用来进行比较的元素，只有一个参数，具体的函数的参数就是取自于可迭代对象中，指定可迭代对象中的一个元素来进行排序。
+    reverse -- 排序规则，reverse = True 降序 ， reverse = False 升序（默认）。
+
+反转序列：reversed(sequence)
+</code></pre><p>注意：序列中只能是同类型才能用</p>
+<h2 id="序列的种类详解"><a href="#序列的种类详解" class="headerlink" title="序列的种类详解"></a>序列的种类详解</h2><h3 id="列表（list）"><a href="#列表（list）" class="headerlink" title="列表（list）"></a>列表（list）</h3><pre><code>1.创建列表：
+    1.使用赋值运算符直接创建列表：listname = [元素1 元素2,...,元素n]
+    2.创建空列表：emptylist = []
+    3.创建数值列表：listname = list(range(start,end,step))
+      start:起始值（包括）
+      end：结束值（不包括）
+      step：步长
+2.删除列表：
+    del（sequence）
+3.遍历列表
+    1.直接使用for循环（只能输出元素值）
+        for item in listname:                
+    2.使用for循环和enumerate()函数
+        for index ,item in enumerate(sequence):
+4.添加新元素：
+    列表.append（addValue）
+5.插入新元素：
+    列表.insert（index,addValue）
+6.添加列表：
+    列表.extend（sequence）
+7.修改元素：
+    列表[index] = value    
+8.删除元素：
+    列表.remove(元素值)
+9.统计指定元素次数
+    列表.count(Value)
+10.获取指定元素下标
+    列表.index(Value)
+11.获取数值列表元素和
+    sum(列表[,reAddValue])
+        reAddValue : 数值列表总和再加上该值
+</code></pre><h3 id="列表推导式-快速生成想要的列表"><a href="#列表推导式-快速生成想要的列表" class="headerlink" title="列表推导式(快速生成想要的列表)"></a>列表推导式(快速生成想要的列表)</h3><pre><code>语法：list = [Expression for var in range]  # range也可以是list
+例子1：[item * item for item in range(0,10,2)] = [0, 4, 16, 36, 64]
+例子2：[x*y for x in range(1,5) if x &gt; 2 for y in range(1,4) if y &lt; 3]
+        他的执行顺序是:
+        for x in range(1,5)
+            if x &gt; 2
+                for y in range(1,4)
+                    if y &lt; 3
+                        x*y   # 这句最后执行的哦
+</code></pre><h3 id="元组（tuple）"><a href="#元组（tuple）" class="headerlink" title="元组（tuple）"></a>元组（tuple）</h3><ul>
+<li><p>特点：无法增加元素，无法修改元素（直接修改不行）</p>
+<pre><code>1.元组的创建
+    1.使用赋值运算符直接创建元组(只有一个元素时，必须加个“，”，不然是字符串，不是元组)
+        tuplename = (元素1，元素2，元素3...)
+    2.创建空元组
+        tuplename = ()
+    3.创建数值元组
+        tuplename = tuple(range(start,end,step))            
+
+2.访问元组元素
+    1.直接使用print()函数输出
+    2.索引
+        tuple[index]
+    3.切片
+        tuple[start:end]
+            包括start，不包括end
+3.修改元组元素
+    可以通过 + 号得到新元组
+4.元组推导式
+    类似于列表，只是把[] 变为 ()
+
+5.元组与列表的区别
+      元组                  列表
+    不可变序列                   可变序列
+    支持切片操作                 支持切片操作
+    元组访问速度快           列表访问速度慢
+    元组可以作为字典键        不能作为字典的键
+</code></pre><h3 id="字典（dictionary）"><a href="#字典（dictionary）" class="headerlink" title="字典（dictionary）"></a>字典（dictionary）</h3><p>  1.字典的创建</p>
+<pre><code>使用dict()方法
+    例子：
+    &gt;&gt;&gt; dict(a=&apos;a&apos;, b=&apos;b&apos;, t=&apos;t&apos;) #注，没有引号     
+    {&apos;a&apos;: &apos;a&apos;, &apos;b&apos;: &apos;b&apos;, &apos;t&apos;: &apos;t&apos;}
+    &gt;&gt;&gt; dict(zip([&apos;one&apos;, &apos;two&apos;, &apos;three&apos;], [1, 2, 3]))   # 映射函数方式来构造字典
+    {&apos;three&apos;: 3, &apos;two&apos;: 2, &apos;one&apos;: 1} 
+    &gt;&gt;&gt; dict([(&apos;one&apos;, 1), (&apos;two&apos;, 2), (&apos;three&apos;, 3)])    # 可迭代对象方式来构造字典
+    {&apos;three&apos;: 3, &apos;two&apos;: 2, &apos;one&apos;: 1}
+直接创建：dictionary = {&quot;key&quot;:&quot;value&quot;,....}
+</code></pre><p>  2.通过键值对访问</p>
+<pre><code>dictionary[key]
+</code></pre><p>  3.遍历字典</p>
+<pre><code>dict.item() # 获取可遍历对象dict_items([(&apos;key1&apos;, value), (&apos;key&apos;, value),...])
+dict.keys() #获取所有键 dict_keys([&apos;key1&apos;, &apos;key2&apos;,...])
+dict.values() #获取所有值 dict_values([value1, value2,..])
+</code></pre><p>  4.添加修改字典元素</p>
+<pre><code>dictionary[key] = value
+</code></pre><p>  5.字典推导式</p>
+<pre><code>类似于列表推导式
+例子：
+{i*i : random.randint(10,100) for i in range(1,10)}
+{1: 47, 4: 18, 9: 46, 16: 39, 25: 31, 36: 70, 49: 74, 64: 22, 81: 37}
+</code></pre><h3 id="集合（set）"><a href="#集合（set）" class="headerlink" title="集合（set）"></a>集合（set）</h3><pre><code>集合的创建
+    setname = {&quot;value1&quot;,&quot;value2&quot;,222}
+    setname = set() # 空集合，也可以把列表转换为集合
+集合的修改
+    setname.add(elmanet) #添加元素
+    setname.remove(&quot;value&quot;) # 删除指定元素
+    setname.pop()    #删除随机元素
+    setname.clear()    #全删
+&gt;&gt;&gt;x = set(&apos;runoob&apos;)
+
+集合的方法：
+    &gt;&gt;&gt; y = set(&apos;google&apos;)
+    &gt;&gt;&gt; x, y
+    (set([&apos;b&apos;, &apos;r&apos;, &apos;u&apos;, &apos;o&apos;, &apos;n&apos;]), set([&apos;e&apos;, &apos;o&apos;, &apos;g&apos;, &apos;l&apos;]))   # 重复的被删除
+    &gt;&gt;&gt; x &amp; y         # 交集
+    set([&apos;o&apos;])
+    &gt;&gt;&gt; x | y         # 并集
+    set([&apos;b&apos;, &apos;e&apos;, &apos;g&apos;, &apos;l&apos;, &apos;o&apos;, &apos;n&apos;, &apos;r&apos;, &apos;u&apos;])
+    &gt;&gt;&gt; x - y         # 差集
+    set([&apos;r&apos;, &apos;b&apos;, &apos;u&apos;, &apos;n&apos;])
+    &gt;&gt;&gt; x ^ y         # 对称差集
+</code></pre><h3 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h3><p>  字符串格式化</p>
+<pre><code>使用%操作符
+    &apos;%[-][+][0][m][.n]&apos;%exp
+
+    例子：
+        &gt;&gt;&gt; template = &apos;编号: %09d\t公司名称: %s \t 官网:http://www.%s.com&apos; # 定义模板
+        &gt;&gt;&gt; item = (&quot;7&quot;,&quot;百度&quot;,&quot;baidu&quot;)
+        &gt;&gt;&gt; print(template%item)
+        &gt;&gt;&gt;编号: 000000007    公司名称: 百度      官网:http://www.baidu.com
+使用format（）方法
+    str.format(args)
+    {[index][:[[fill]]align[sign][#][width][.precision][type]]
+</code></pre><p>  常用方法：<br>  大写转小写</p>
+<pre><code>str.lower（）
+</code></pre><p>  小写转大写</p>
+<pre><code>str.upper（）
+</code></pre></li>
+</ul>
+
+    </div>
+  </div>
+  
+    <div class="copy-right">
+      <div class="markdown-body">
+        <blockquote>
+        
+        
+          本文作者 : Yi <br/>
+        
+        原文链接 : <a href="">https://www.zhangjiayi.xyz/archives/2019/09/17/PYarray/</a><br>
+        版权声明 : 本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+        </blockquote>
+      </div>
+    </div>
+  
+  
+  
+    <div class="social-share"
+  style="margin-top: -2rem"
+  data-wechat-qrcode-title="<p>微信扫一扫</p>"
+  data-wechat-qrcode-helper="<p>微信右上角, 扫一扫分享</p>"
+   data-sites="qzone, qq, weibo, wechat, douban, google, facebook, twitter" 
+  
+>
+  <span style="color: #6b7487; font-size: 1.4rem;">分享到: </span>
+</div>
+<script src="https://cdn.bootcss.com/social-share.js/1.0.16/js/social-share.min.js" async>
+  
+
+  
+    <div id="reward">
+  
+    <p id="reward-meta">知识 & 情怀 | 二者兼得</p>
+  
+  <button id="reward-btn">
+    
+    <span>投食</span>
+  </button>
+  <div id="reward-qrcode">
+    
+      <div class="reward-qrcode--container">
+        <img class="qrcode-img" src="/images/wechat.png" alt="微信扫一扫, 向我投食">
+        <p class="qrcode-meta">微信扫一扫, 向我投食</p>
+      </div>
+    
+      <div class="reward-qrcode--container">
+        <img class="qrcode-img" src="/images/alipay.png" alt="支付宝扫一扫, 向我投食">
+        <p class="qrcode-meta">支付宝扫一扫, 向我投食</p>
+      </div>
+    
+  </div>
+
+</div>
+
+<script>
+  (() => {
+    let button = document.querySelector('#reward-btn'),
+      qrcode = document.querySelector('#reward-qrcode'),
+      display = false;
+    
+    button.addEventListener('click', () => {
+      qrcode.style.display = display ? 'none' : 'block'
+      display = !display
+    }, false)
+  })()
+</script>
+  
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+      <span>
+        
+          <i class="iconfont icon-06tags"></i>标签: 
+          
+          <span class="span--tag">
+            <a href="/tags/list/">
+              #list
+            </a>
+          </span>
+          
+        
+      </span>
+    </div>
+    <div class="article-meta pull-right">
+    </div>
+  </div>
+</div>
+
+
+  <aside id="sidebar">
+    <p id="sidebar-header"></p>
+    <ol id="sidebar-toc"></ol>
+  </aside>
+  <script async>setTimeout(generateToc, 10);</script>
+
+
+  <nav class="post-navigation">
+    
+      <div class="nav-pre">
+        <i class="iconfont icon-prev"></i>
+        上一篇:
+        <a href="/2019/09/14/springAop1/" target="_self">springAOP原理</a>
+      </div>
+    
+    
+      <div class="nav-next">
+        下一篇:
+        <a href="/2019/09/19/PYdef/" target="_self">python中的函数和类</a>
+        <i class="iconfont icon-next"></i>
+      </div>
+    
+  </nav>
+
+  
+    <a href="#comment" class="comment-anchor"></a>
+<div class="comment-title"><i class="iconfont icon-footprint"></i> 留下足迹 <i class="iconfont icon-footprint"></i></div>
+<div id="vcomments"></div>
+
+<script defer>
+  if( true ) {
+    let path = getRealPath()
+    new Valine({
+      el: "#vcomments",
+      appId: "SCkREsFgT1mxprDxN243QYy6-gzGzoHsz",
+      appKey: "GJDLLfiOsJ6PV6u5jbg1dVk5",
+      notify: false,
+      verify: false,
+      avatar: "robohash",
+      placeholder: "正确填写邮箱, 才能及时收到回复哦♪(^∇^*)",
+      path
+    });
+  }
+</script>
+   
+
+  
+    <script defer>
+const valineAPI = (() => {
+  try {
+    AV.init("SCkREsFgT1mxprDxN243QYy6-gzGzoHsz", "GJDLLfiOsJ6PV6u5jbg1dVk5");
+  } catch(error) {}
+  const isExist = (identity) => {
+    identity = identity || getRealPath();
+    let query = new AV.Query('Timer');
+    return new Promise((resolve, reject) => {
+      query.equalTo("identity", identity);
+      query.find().then(results => {
+        resolve(results.length > 0);
+      }, error => reject(error));
+    })
+  }
+
+  const _get = (identity) => {
+    let query = null;
+    if(identity && identity instanceof Array){
+      let querys = [];
+      for(let i = 0; i < identity.length; ++i) {
+        querys[i] = new AV.Query('Timer');
+        querys[i].equalTo('identity', identity[i]);
+      }
+      query = AV.Query.or.apply(null ,querys);
+    } else {
+      identity = identity || getRealPath();
+      query = new AV.Query("Timer");
+      query.equalTo("identity", identity);
+    }
+
+    return new Promise((resolve, reject) => {
+      query.find()
+      .then(results => resolve(results))
+      .catch(error => reject(error))
+    })
+  }
+
+  const create = (identity) => {
+    identity = identity || getRealPath();
+    return new Promise((resolve, reject) => {
+      let Todo = AV.Object.extend('Timer');
+      let todo = new Todo();
+      todo.set("times", 1);
+      todo.set("identity", identity);
+      todo.save().then(res => resolve(true), error => reject(error));
+    })
+  }
+
+  const update = (identity) => {
+    identity = identity || getRealPath();
+    return new Promise((resolve, reject) => {
+      let query = new AV.Query('Timer');
+      query.equalTo("identity", identity);
+      query.find().then(todos => {
+        todos.forEach(todo => {
+          todo.set("times", todo.attributes.times + 1);
+        });
+        return AV.Object.saveAll(todos);
+      }).then(todos => resolve(true), error => reject(error));
+    })
+  }
+
+  return {
+    isExist,
+    _get,
+    update,
+    create
+  }
+})()
+
+const calcAndWriteTimes = () => {
+  let isPost = true;
+
+  let timerAllDOM = document.querySelectorAll(".article-timer");
+
+  if(isPost) {
+    let identity = timerAllDOM[0].getAttribute("data-identity");
+    valineAPI.isExist(identity)
+    .then(exist => {
+      if(exist) {
+        return valineAPI.update(identity);
+      }
+      return new Promise(resolve => resolve(true));
+    })
+    .then( succuess => valineAPI._get(identity))
+    .then( result => timerAllDOM[0].innerText = result[0].attributes.times)
+    .catch(error => console.log(error.message))
+    return ;
+  }
+
+  let timerDOMCache = {};
+
+  for(let timerDOM of timerAllDOM) {
+    let identity = timerDOM.getAttribute("data-identity");
+    if(timerDOMCache.hasOwnProperty(identity)){
+      timerDOMCache[identity].dom.push(timerDOM);
+    }else{
+      timerDOMCache[identity] = {
+        dom: [timerDOM],
+        times: undefined
+      };
+    }
+  }
+
+  let identities = Object.keys(timerDOMCache);
+  valineAPI._get(identities).then(results => {
+    for(let result of results) {
+      let {identity, times} = result.attributes;
+      timerDOMCache[identity].times = times;
+      timerDOMCache[identity].dom.map(item => item.innerText = times);
+    }
+    for(let identity of identities) {
+      if(timerDOMCache[identity].times){
+        continue;
+      }
+      timerDOMCache[identity].dom.map(item => item.innerText = 1);
+      valineAPI.create(identity);
+    }
+  }).catch(error => console.log(error.message))
+}
+
+if(true){
+  calcAndWriteTimes();
+}
+</script>
+   
+
+</div>
+
+
+      <footer>
+  <p class="site-info">
+    博客已萌萌哒运行<span id="time-to-now"></span><span class="my-face">(●'◡'●)ﾉ♥</span>
+    <br>
+    Theme - <a href="https://github.com/dongyuanxin/theme-bmw">BMW</a> | Made With 💗 | Powered by <a href="https://godbmw.com/">GodBMW</a>
+    <br>
+    
+  </p>
+</footer>
+
+
+
+<script>
+const timeToNowDOM = document.querySelector("#time-to-now");
+const startTimestamp = new Date(2019, 5, 2).getTime();
+
+const updateTimeStr = () => {
+  let offset = parseInt(
+      (new Date().getTime() - startTimestamp) / 1000,
+      10
+    ),
+    day = Math.floor(offset / 86400),
+    hour = Math.floor((offset % 86400) / 3600),
+    minute = Math.floor(((offset % 86400) % 3600) / 60),
+    second = Math.floor(((offset % 86400) % 3600) % 60);
+  timeToNowDOM.innerHTML =
+    day + "天" + hour + "小时" + minute + "分钟" + second + "秒";
+  setTimeout(updateTimeStr, 500);
+}
+
+setTimeout(updateTimeStr, 500);
+</script>
+
+
+      <div class="back-to-top hidden">
+  <span>
+    <i class="iconfont icon-60"></i><span></span>%
+  </span>
+</div>
+
+<script>
+const updateIconToTop = percent => {
+  let dom = document.querySelector(".back-to-top span span");
+  dom.innerText = percent;
+  if(percent < 1) {
+    document.querySelector(".back-to-top").className = "back-to-top hidden";
+  } else {
+    document.querySelector(".back-to-top").className = "back-to-top";
+  }
+}
+
+const handleScoll = () => {
+  let isRunning = false;
+  return () => {
+    if (isRunning) return;
+    isRunning = true;
+    window.requestAnimationFrame(timestamp => {
+      let scrollTop =
+          document.documentElement.scrollTop || document.body.scrollTop,
+        scrollHeight =
+          document.documentElement.scrollHeight ||
+          document.body.scrollHeight,
+        clientHeight =
+          document.documentElement.clientHeight ||
+          document.body.clientHeight;
+      isRunning = false;
+      if (scrollTop <= 1) {
+        updateIconToTop(0);
+        return;
+      }
+      if (scrollTop + clientHeight >= scrollHeight) {
+        updateIconToTop(100);
+      } else {
+        updateIconToTop(parseInt(
+          100 * scrollTop / (scrollHeight - clientHeight),
+          10
+        ));
+      }
+    });
+  };
+}
+
+const backToTop = () => {
+  let scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop,
+    delay = 10,
+    time = 200;
+  if (scrollTop <= 20) {
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    return;
+  }
+  let step = Math.ceil(scrollTop * delay / time);
+  let timer = setInterval(() => {
+    scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop;
+    if (scrollTop - step <= 0) {
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      clearInterval(timer);
+    } else {
+      document.documentElement.scrollTop = scrollTop - step;
+      document.body.scrollTop = scrollTop - step;
+    }
+  }, delay);
+}
+
+document.addEventListener("scroll", handleScoll(), false);
+
+document.querySelector(".back-to-top").addEventListener("click", backToTop, false);
+
+</script>
+
+    </div>
+
+    
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+<script>
+  (() => {
+    const mathjaxConfig = {
+      showProcessingMessages: false, //关闭js加载过程信息
+      messageStyle: "none", //不显示信息
+      jax: ["input/TeX", "output/HTML-CSS"],
+      tex2jax: {
+        inlineMath: [["$", "$"], ["\\(", "\\)"]], //行内公式选择符
+        displayMath: [["$$", "$$"], ["\\[", "\\]"]], //段内公式选择符
+        skipTags: ["script", "noscript", "style", "textarea", "pre", "code", "a"] //避开某些标签
+      },
+      "HTML-CSS": {
+        availableFonts: ["STIX", "TeX"], //可选字体
+        showMathMenu: false //关闭右击菜单显示
+      }
+    }
+
+    let mathjaxInterval = setInterval(() => {
+      if(!window.MathJax){
+        return;
+      }
+      window.MathJax.Hub.Config(mathjaxConfig)
+      window.MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById('app')])
+
+      clearInterval(mathjaxInterval)
+    }, 10)    
+  })()
+</script>
+    
+
+    <script src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js" async></script>
+<script async>
+  let fancyTimer = setInterval(function(){
+    if(!window.$){
+      return;
+    }
+    $(document).ready(function() {
+      $(".post img").each(function () {
+        if($(this).parent().get(0).tagName.toLowerCase() === "a") {
+          return;
+        }
+        // $(this).attr("data-fancybox", "gallery"); // if you add 'data-fancybox', img will display after showed
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "gallery");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      });
+      
+      clearInterval(fancyTimer);
+    });
+  }, 10);
+</script>
+
+    
+  </body>
+
+</html>
