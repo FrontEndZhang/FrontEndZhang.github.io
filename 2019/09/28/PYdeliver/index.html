@@ -8,12 +8,12 @@
   
   
   
-  <title>django连接使用数据库 | Yi</title>
+  <title>PY反向解析和重定向 | Yi</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="python,python,mysql,django," />
+    <meta name="keywords" content="python,python,HttpResonse,Redirct," />
   
 
   <script>
@@ -223,12 +223,12 @@
 
 <div class="post">
   <h1 class="article-title">
-    <span>django连接使用数据库</span>
+    <span>PY反向解析和重定向</span>
   </h1>
   <div class="article-top-meta">
     <span>
       发布 : 
-      2019-09-24
+      2019-09-28
     </span>
     
       <span>
@@ -240,7 +240,7 @@
     
     
       <span>
-        浏览 : <span class="article-timer" data-identity="PYsql"></span>
+        浏览 : <span class="article-timer" data-identity="PYdeliver"></span>
       </span>
     
   </div>
@@ -249,133 +249,32 @@
 
   <div class="article-content">
     <div class="markdown-body">
-      <h2 id="连接数据库"><a href="#连接数据库" class="headerlink" title="连接数据库"></a>连接数据库</h2><ol>
-<li>在pycharm右边点击打开database</li>
-<li>点击加号，选择DataSource，选择mysql</li>
-<li>输入数据库名称等端口号密码等</li>
-<li>然后点击 testconnection</li>
-<li>如果是第一次，可能test connection为灰色，点击会出现 driver file are not downloaded， 点击下面 download driver files下载就OK了（如果出现 connection failed，mysql版本导致，点击Driver，选择Mysql变为Mysql5.1）</li>
-</ol>
-<h2 id="安装驱动"><a href="#安装驱动" class="headerlink" title="安装驱动"></a>安装驱动</h2><h3 id="驱动类型"><a href="#驱动类型" class="headerlink" title="驱动类型"></a>驱动类型</h3><ul>
-<li><p>mysqlclient</p>
-<ul>
-<li>python2,3都能直接使用</li>
-<li>致命缺点<ul>
-<li>对mysql安装有要求，必须指定位置存在配置文件</li>
+      <h2 id="反向解析"><a href="#反向解析" class="headerlink" title="反向解析"></a>反向解析</h2><h3 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h3><ul>
+<li>一般我们是都是写绝对路径，而现在通过别名来代替真实路径，为了以后维护和防止项目路径变化使路径失灵<h3 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h3></li>
+<li><p>别名空间（namespace）配置主路由</p>
+<pre><code>path(&apos;&apos;, include((&quot;子路由的urls&quot;, &apos;取的别名&apos;), namespace=&apos;取的别名&apos;))
+</code></pre><h3 id="第二步"><a href="#第二步" class="headerlink" title="第二步"></a>第二步</h3></li>
+<li><p>给子路由设置别名</p>
+<pre><code>path(&apos;test/&apos;, views.test, name=&apos;别名&apos;)
+</code></pre></li>
 </ul>
-</li>
+<h3 id="在html文件中第三步"><a href="#在html文件中第三步" class="headerlink" title="在html文件中第三步"></a>在html文件中第三步</h3><ul>
+<li><p>设置路径</p>
+<pre><code>// url是内置对象，
+&lt;a href=&quot;{% url '主路由别名:子路由别名' %}&quot;&gt;&lt;/a&gt;
+</code></pre></li>
 </ul>
-</li>
-<li><p>python-mysql</p>
-<ul>
-<li>python2支持</li>
-<li>python3不支持</li>
-</ul>
-</li>
-<li><p>pymysql</p>
-<ul>
-<li>python2,3都支持</li>
-<li>它还可以伪装成前面的库</li>
-</ul>
-</li>
-</ul>
-<h3 id="安装驱动-1"><a href="#安装驱动-1" class="headerlink" title="安装驱动"></a>安装驱动</h3><ul>
-<li>pip install pymysql</li>
-</ul>
-<h3 id="伪装"><a href="#伪装" class="headerlink" title="伪装"></a>伪装</h3><ul>
-<li><p>在主项目的<code>__init__.py</code>中导入pymysql进行伪装</p>
-<pre><code>import pymysql
+<h3 id="带参数路径"><a href="#带参数路径" class="headerlink" title="带参数路径"></a>带参数路径</h3><pre><code>&lt;a href=&quot;{% url '主路由别名:子路由别名' 参数1 参数2 ... %}&quot;&gt;&lt;/a&gt;
+</code></pre><h3 id="在py代码中第三步"><a href="#在py代码中第三步" class="headerlink" title="在py代码中第三步"></a>在py代码中第三步</h3><pre><code>//得到动态路径
+url = reverse(&apos;主路由别名:子路由别名&apos;)
+</code></pre><h2 id="HttpResponse子类"><a href="#HttpResponse子类" class="headerlink" title="HttpResponse子类"></a>HttpResponse子类</h2><h3 id="HttpResponseRedirect-简写是Redirct"><a href="#HttpResponseRedirect-简写是Redirct" class="headerlink" title="HttpResponseRedirect(简写是Redirct)"></a>HttpResponseRedirect(简写是Redirct)</h3><pre><code>//响应重定向：可以实现服务器内部跳转
+return HttpResponseRedirect(path)
+</code></pre><h3 id="JsonResponse"><a href="#JsonResponse" class="headerlink" title="JsonResponse"></a>JsonResponse</h3><pre><code>返回Json数据的请求，通常用在异步请求上
+JsonResponse（dict）
+也可以使用__init__（self.data）设置数据
 
-pymysql.install_as_MySQLdb() # 伪装成mysqldb
-</code></pre></li>
-</ul>
-<h3 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h3><ul>
-<li><p>问题一：django.core.exceptions.ImproperlyConfigured: mysqlclient 1.3.13 or newer is required; you have 0.9.3<br>.</p>
-</li>
-<li><p>解决方法：打开D:\Python\Envs\GP1\Lib\site-packages\django\db\backends\mysql中的base.py文件，注释掉</p>
-</li>
-<li><p>问题二：django.core.exceptions.ImproperlyConfigured: mysqlclient 1.3.13 or newer is required; you have 0.9.3 </p>
-</li>
-<li><p>解决方法：修改 D:\Python\Envs\GP1\Lib\site-packages\django\db\backends\mysql 中的operations.py ，如下：</p>
-<pre><code>if query is not None:
-#   query = query.decode(errors=&apos;replace&apos;) 注释掉这个，修改为下面这个
-    query = query.encode(errors=&apos;replace&apos;)
-</code></pre></li>
-</ul>
-<h2 id="Django操作数据库"><a href="#Django操作数据库" class="headerlink" title="Django操作数据库"></a>Django操作数据库</h2><h3 id="创建数据库表"><a href="#创建数据库表" class="headerlink" title="创建数据库表"></a>创建数据库表</h3><ol>
-<li><p>在setting里面添加上你的app应用</p>
-<pre><code># 内置应用项目
-INSTALLED_APPS = [
-    &apos;django.contrib.admin&apos;,
-    &apos;django.contrib.auth&apos;,
-    &apos;django.contrib.contenttypes&apos;,
-    &apos;django.contrib.sessions&apos;,
-    &apos;django.contrib.messages&apos;,
-    &apos;django.contrib.staticfiles&apos;,
-    &apos;two&apos; # 添加你的应用
-]
-</code></pre></li>
-<li><p>修改主项目中要连接的数据库</p>
-</li>
-</ol>
-<pre><code>DATABASES = {
-    # 默认为sqlite3
-    &apos;default&apos;: {
-        &apos;ENGINE&apos;: &apos;django.db.backends.sqlite3&apos;,
-        &apos;NAME&apos;: os.path.join(BASE_DIR, &apos;db.sqlite3&apos;),
-    }
-    # 如果是mysql，就改为如下
-    #&apos;default&apos;: {
-    #    &apos;ENGINE&apos;: &apos;django.db.backends.mysql&apos;,
-    #    &apos;NAME&apos;: &apos;message&apos;,
-    #    &apos;HOST&apos;: &apos;127.0.0.1&apos;,
-    #    &apos;PORT&apos;: 3306,
-    #    &apos;USER&apos;: &apos;root&apos;,
-    #    &apos;PASSWORD&apos;: &apos;117139&apos;,
-    #}
-#}
-</code></pre><ol start="2">
-<li>在每个项目通过models定义实现 数据库表的定义</li>
-</ol>
-<pre><code># 创建了一个student表，这个类必须继承models.Model实体类
-class Student(models.Model):
-    s_name = models.CharField(max_length=16)
-    s_age = models.IntegerField(default=1)
-</code></pre><ol start="3">
-<li><p>在终端执行数据库创建命令</p>
-<pre><code>python3 manage.py makemigrations
-python3 manage.py migrate
-</code></pre></li>
-</ol>
-<hr>
-<h2 id="数据操作"><a href="#数据操作" class="headerlink" title="数据操作"></a>数据操作</h2><h3 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h3><ul>
-<li>查询全部语法： objects.all() </li>
-<li>查询多个语法： objects.get(pk=xx)</li>
-<li><p>例子    </p>
-<pre><code># 注意：student没有括号
-students = Student.objects.all() 
-</code></pre></li>
-</ul>
-<h3 id="存储"><a href="#存储" class="headerlink" title="存储"></a>存储</h3><ul>
-<li>语法： save()</li>
-<li>例子：</li>
-</ul>
-<pre><code>student = Student() # models中的实例类
-student.s_name = &apos;zjy&apos;
-student.save() 
-</code></pre><h3 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h3><ul>
-<li>基于查询</li>
-<li>查好的对象，修改属性，然后save()</li>
-</ul>
-<h3 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h3><ul>
-<li>基于查询</li>
-<li><p>调用 delete()</p>
-<pre><code>stu = Student.objects.get(pk=1)
-stu.delete()
-return HttpResponse(&quot;删除成功！&quot;) 
-</code></pre></li>
-</ul>
-
+Content-type是application/json    
+</code></pre>
     </div>
   </div>
   
@@ -386,7 +285,7 @@ return HttpResponse(&quot;删除成功！&quot;)
         
           本文作者 : Yi <br/>
         
-        原文链接 : <a href="">https://www.zhangjiayi.xyz/archives/2019/09/24/PYsql/</a><br>
+        原文链接 : <a href="">https://www.zhangjiayi.xyz/archives/2019/09/28/PYdeliver/</a><br>
         版权声明 : 本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
         </blockquote>
       </div>
@@ -458,14 +357,14 @@ return HttpResponse(&quot;删除成功！&quot;)
           </span>
           
           <span class="span--tag">
-            <a href="/tags/mysql/">
-              #mysql
+            <a href="/tags/HttpResonse/">
+              #HttpResonse
             </a>
           </span>
           
           <span class="span--tag">
-            <a href="/tags/django/">
-              #django
+            <a href="/tags/Redirct/">
+              #Redirct
             </a>
           </span>
           
@@ -490,13 +389,13 @@ return HttpResponse(&quot;删除成功！&quot;)
       <div class="nav-pre">
         <i class="iconfont icon-prev"></i>
         上一篇:
-        <a href="/2019/09/23/DjangoMTV/" target="_self">DjangoMTV</a>
+        <a href="/2019/09/26/Mysql/" target="_self">Mysql联级操作</a>
       </div>
     
     
       <div class="nav-next">
         下一篇:
-        <a href="/2019/09/26/Mysql/" target="_self">Mysql联级操作</a>
+        <a href="/2019/10/04/PYredis/" target="_self">python缓存</a>
         <i class="iconfont icon-next"></i>
       </div>
     
