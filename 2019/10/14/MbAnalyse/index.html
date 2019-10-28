@@ -8,12 +8,12 @@
   
   
   
-  <title>django连接使用数据库 | Yi</title>
+  <title>Mybatis增删改查和联级操作 | Yi</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="python,mysql,python,django," />
+    <meta name="keywords" content="Hexo, theme-bmw" />
   
 
   <script>
@@ -223,24 +223,17 @@
 
 <div class="post">
   <h1 class="article-title">
-    <span>django连接使用数据库</span>
+    <span>Mybatis增删改查和联级操作</span>
   </h1>
   <div class="article-top-meta">
     <span>
       发布 : 
-      2019-09-24
+      2019-10-14
     </span>
     
-      <span>
-        分类 : 
-          <a href="/categories/python/">
-            python
-          </a>
-      </span>
-    
     
       <span>
-        浏览 : <span class="article-timer" data-identity="PYsql"></span>
+        浏览 : <span class="article-timer" data-identity="MbAnalyse"></span>
       </span>
     
   </div>
@@ -249,131 +242,278 @@
 
   <div class="article-content">
     <div class="markdown-body">
-      <h2 id="连接数据库"><a href="#连接数据库" class="headerlink" title="连接数据库"></a>连接数据库</h2><ol>
-<li>在pycharm右边点击打开database</li>
-<li>点击加号，选择DataSource，选择mysql</li>
-<li>输入数据库名称等端口号密码等</li>
-<li>然后点击 testconnection</li>
-<li>如果是第一次，可能test connection为灰色，点击会出现 driver file are not downloaded， 点击下面 download driver files下载就OK了（如果出现 connection failed，mysql版本导致，点击Driver，选择Mysql变为Mysql5.1）</li>
-</ol>
-<h2 id="安装驱动"><a href="#安装驱动" class="headerlink" title="安装驱动"></a>安装驱动</h2><h3 id="驱动类型"><a href="#驱动类型" class="headerlink" title="驱动类型"></a>驱动类型</h3><ul>
-<li><p>mysqlclient</p>
-<ul>
-<li>python2,3都能直接使用</li>
-<li>致命缺点<ul>
-<li>对mysql安装有要求，必须指定位置存在配置文件</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>python-mysql</p>
-<ul>
-<li>python2支持</li>
-<li>python3不支持</li>
-</ul>
-</li>
-<li><p>pymysql</p>
-<ul>
-<li>python2,3都支持</li>
-<li>它还可以伪装成前面的库</li>
-</ul>
-</li>
-</ul>
-<h3 id="安装驱动-1"><a href="#安装驱动-1" class="headerlink" title="安装驱动"></a>安装驱动</h3><ul>
-<li>pip install pymysql</li>
-</ul>
-<h3 id="伪装"><a href="#伪装" class="headerlink" title="伪装"></a>伪装</h3><ul>
-<li><p>在主项目的<code>__init__.py</code>中导入pymysql进行伪装</p>
-<pre><code>import pymysql
+      <h3 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h3><pre><code>public interface IUserDao {
 
-pymysql.install_as_MySQLdb() # 伪装成mysqldb
-</code></pre></li>
-</ul>
-<h3 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h3><ul>
-<li><p>问题一：django.core.exceptions.ImproperlyConfigured: mysqlclient 1.3.13 or newer is required; you have 0.9.3<br>.</p>
-</li>
-<li><p>解决方法：打开D:\Python\Envs\GP1\Lib\site-packages\django\db\backends\mysql中的base.py文件，注释掉</p>
-</li>
-<li><p>问题二：django.core.exceptions.ImproperlyConfigured: mysqlclient 1.3.13 or newer is required; you have 0.9.3 </p>
-</li>
-<li><p>解决方法：修改 D:\Python\Envs\GP1\Lib\site-packages\django\db\backends\mysql 中的operations.py ，如下：</p>
-<pre><code>if query is not None:
-#   query = query.decode(errors=&apos;replace&apos;) 注释掉这个，修改为下面这个
-    query = query.encode(errors=&apos;replace&apos;)
-</code></pre></li>
-</ul>
-<h2 id="Django操作数据库"><a href="#Django操作数据库" class="headerlink" title="Django操作数据库"></a>Django操作数据库</h2><h3 id="创建数据库表"><a href="#创建数据库表" class="headerlink" title="创建数据库表"></a>创建数据库表</h3><ol>
-<li><p>在setting里面添加上你的app应用</p>
-<pre><code># 内置应用项目
-INSTALLED_APPS = [
-    &apos;django.contrib.admin&apos;,
-    &apos;django.contrib.auth&apos;,
-    &apos;django.contrib.contenttypes&apos;,
-    &apos;django.contrib.sessions&apos;,
-    &apos;django.contrib.messages&apos;,
-    &apos;django.contrib.staticfiles&apos;,
-    &apos;two&apos; # 添加你的应用
-]
-</code></pre></li>
-<li><p>修改主项目中要连接的数据库</p>
-</li>
-</ol>
-<pre><code>DATABASES = {
-    # 默认为sqlite3
-    &apos;default&apos;: {
-        &apos;ENGINE&apos;: &apos;django.db.backends.sqlite3&apos;,
-        &apos;NAME&apos;: os.path.join(BASE_DIR, &apos;db.sqlite3&apos;),
+    List&lt;User&gt; findAll();
+
+    void saveUser(User user);
+
+    void updateUser(User user);
+
+    void delete(Integer integer);
+}
+</code></pre><h3 id="实体类"><a href="#实体类" class="headerlink" title="实体类"></a>实体类</h3><pre><code>package xyz.zjy.domin;
+
+import java.io.Serializable;
+import java.util.Date;
+
+public class User implements Serializable {
+
+    private Integer id;
+    private String username;
+    private Date birthday;
+    private String sex;
+    private String address;
+
+    public Integer getId() {
+        return id;
     }
-    # 如果是mysql，就改为如下
-    #&apos;default&apos;: {
-    #    &apos;ENGINE&apos;: &apos;django.db.backends.mysql&apos;,
-    #    &apos;NAME&apos;: &apos;message&apos;,
-    #    &apos;HOST&apos;: &apos;127.0.0.1&apos;,
-    #    &apos;PORT&apos;: 3306,
-    #    &apos;USER&apos;: &apos;root&apos;,
-    #    &apos;PASSWORD&apos;: &apos;117139&apos;,
-    #}
-#}
-</code></pre><ol start="2">
-<li>在每个项目通过models定义实现 数据库表的定义</li>
-</ol>
-<pre><code># 创建了一个student表，这个类必须继承models.Model实体类
-class Student(models.Model):
-    s_name = models.CharField(max_length=16)
-    s_age = models.IntegerField(default=1)
-</code></pre><ol start="3">
-<li><p>在终端执行数据库创建命令</p>
-<pre><code>python3 manage.py makemigrations
-python3 manage.py migrate
-</code></pre></li>
-</ol>
-<hr>
-<h2 id="数据操作"><a href="#数据操作" class="headerlink" title="数据操作"></a>数据操作</h2><h3 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h3><ul>
-<li>查询全部语法： objects.all() </li>
-<li>查询多个语法： objects.get(pk=xx)</li>
-<li><p>例子    </p>
-<pre><code># 注意：student没有括号
-students = Student.objects.all() 
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+</code></pre><p>}</p>
+<h2 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h2><ul>
+<li><strong>注意：mybatis默认为手动提交，增删改要手动提交，不然会回滚</strong></li>
+<li>可以设置openSession的参数为true，就可以自动提交</li>
+</ul>
+<h3 id="1-查询"><a href="#1-查询" class="headerlink" title="1.查询"></a>1.查询</h3><pre><code>// resultType：返回的实体类型
+&lt;select id=&quot;findAll&quot; resultType=&quot;xyz.zjy.domin.User&quot;&gt;
+    select * from user
+&lt;/select&gt;
+</code></pre><h3 id="2-添加"><a href="#2-添加" class="headerlink" title="2.添加"></a>2.添加</h3><pre><code>// #{名称}：这个名称是实体类set后面的名称（首字母小写）  parameterType：要传入的实体类
+&lt;insert id=&quot;saveUser&quot; parameterType=&quot;xyz.zjy.domin.User&quot;&gt;
+    insert into user(username,birthday,sex,address)value(#{username},#{birthday},#{sex},#{address})
+&lt;/insert&gt;
+
+使用代理对象执行方法
+user.saveUser(user1);
+session.commit();
+</code></pre><h3 id="3-更新"><a href="#3-更新" class="headerlink" title="3.更新"></a>3.更新</h3><ul>
+<li>这个不像django那样，必须先查再改，mybatis可以自己创建个实体类再更新</li>
+</ul>
+<pre><code>&lt;update id=&quot;updateUser&quot; parameterType=&quot;xyz.zjy.domin.User&quot;&gt;
+    update user set username=#{username},address=#{address},sex=#{sex},birthday=#{birthday} where id=#{id}
+&lt;/update&gt;
+
+使用代理对象执行方法
+user.updateUser(user1);
+session.commit();
+</code></pre><h3 id="4-删除"><a href="#4-删除" class="headerlink" title="4.删除"></a>4.删除</h3><ul>
+<li><p>如果传的是基本类型或者包装类，这个里面#{}的名字不重要，都可以</p>
+<pre><code>&lt;!--  只要是基本类型和包装类，名字就可以随便取 --&gt;
+&lt;delete id=&quot;delete&quot; parameterType=&quot;Integer&quot;&gt;
+    delete from user where id = #{id}
+&lt;/delete&gt;
+
+使用代理对象执行方法
+user.delete(5);
+session.commit();
 </code></pre></li>
 </ul>
-<h3 id="存储"><a href="#存储" class="headerlink" title="存储"></a>存储</h3><ul>
-<li>语法： save()</li>
-<li>例子：</li>
+<h3 id="5-模糊查询："><a href="#5-模糊查询：" class="headerlink" title="5.模糊查询："></a>5.模糊查询：</h3><pre><code>&lt;select id=&quot;findByName&quot; parameterType=&quot;String&quot; resultType=&quot;xyz.zjy.domin.User&quot;&gt;
+select  * from user where username like #{name}
+&lt;/select&gt;
+
+User u = user.findByName(&quot;%家%&quot;);
+</code></pre><h3 id="6-组合查询："><a href="#6-组合查询：" class="headerlink" title="6.组合查询："></a>6.组合查询：</h3><ul>
+<li>通过id返回user实例</li>
 </ul>
-<pre><code>student = Student() # models中的实例类
-student.s_name = &apos;zjy&apos;
-student.save() 
-</code></pre><h3 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h3><ul>
-<li>基于查询</li>
-<li>查好的对象，修改属性，然后save()</li>
-</ul>
-<h3 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h3><ul>
-<li>基于查询</li>
-<li><p>调用 delete()</p>
-<pre><code>stu = Student.objects.get(pk=1)
-stu.delete()
-return HttpResponse(&quot;删除成功！&quot;) 
+<pre><code>&lt;select id=&quot;findById&quot; parameterType=&quot;Integer&quot; resultType=&quot;xyz.zjy.domin.User&quot;&gt;
+    select * from user where id = #{id}
+&lt;/select&gt; 
+</code></pre><h2 id="实体类属性与数据库属性不一致"><a href="#实体类属性与数据库属性不一致" class="headerlink" title="实体类属性与数据库属性不一致"></a>实体类属性与数据库属性不一致</h2><ul>
+<li><p>通过取别名方法</p>
+<pre><code>// 取别名，id属性自己取，用于调用
+&lt;resultMap id=&quot;userMap&quot; type=&quot;xyz.zjy.domin.User&quot;&gt;
+    &lt;!--  主键用id --&gt;
+    &lt;id property=&quot;userId&quot; column=&quot;id&quot;&gt;&lt;/id&gt;
+    &lt;!--  其他用result --&gt;
+    &lt;result property=&quot;userName&quot; column=&quot;name&quot;&gt;&lt;/result&gt;
+   &lt;/resultMap&gt;
+
+property:实体类的属性名
+column：对应数据库的列名
+
+// 调用结果映射，这里用的是resultMap
+&lt;select id=&quot;findAll&quot; resultMap=&quot;userMap&quot;&gt;
+    select * from user
+&lt;/select&gt;
 </code></pre></li>
+</ul>
+<h2 id="其他属性"><a href="#其他属性" class="headerlink" title="其他属性"></a>其他属性</h2><h3 id="properties属性（在configuration标签内）"><a href="#properties属性（在configuration标签内）" class="headerlink" title="properties属性（在configuration标签内）"></a>properties属性（在configuration标签内）</h3><ul>
+<li><p>用把属性都集合统一起来</p>
+<pre><code>&lt;properties&gt;
+    &lt;property name=&quot;driver&quot; value=&quot;com.mysql.cj.jdbc.Driver&quot;/&gt;
+&lt;/properties&gt;
+
+//调用
+&lt;dataSource type=&quot;POOLED&quot;&gt;
+            // ${name} 来获取值
+            &lt;property name=&quot;driver&quot; value=&quot;${driver}&quot;/&gt;
+
+&lt;/dataSource&gt;
+</code></pre></li>
+<li><p>外部调用properties文件</p>
+<ul>
+<li><p>同目录下的config.properties和主配置文件（SqlMapConfig.xml）</p>
+</li>
+<li><p>config.xml</p>
+<pre><code>sql.driver = com.mysql.cj.jdbc.Driver
+sql.url=jdbc:mysql://localhost:3306/mybatis
+sql.user=root
+sql.password = 117139
+</code></pre></li>
+<li><p>SqlMapConfig.xml</p>
+<pre><code>// 引入config.properties
+&lt;properties resource=&quot;config.properties&quot;&gt;
+
+&lt;/properties&gt;
+
+// 调用
+&lt;dataSource type=&quot;POOLED&quot;&gt;
+    &lt;property name=&quot;driver&quot; value=&quot;${sql.driver}&quot;/&gt;
+    &lt;property name=&quot;url&quot; value=&quot;${sql.url}&quot;/&gt;
+    &lt;property name=&quot;username&quot; value=&quot;${sql.user}&quot;/&gt;
+    &lt;property name=&quot;password&quot; value=&quot;${sql.password}&quot;/&gt;
+&lt;/dataSource&gt;
+</code></pre></li>
+</ul>
+</li>
+</ul>
+<h3 id="typeAliases属性和package属性"><a href="#typeAliases属性和package属性" class="headerlink" title="typeAliases属性和package属性"></a>typeAliases属性和package属性</h3><ul>
+<li><p>typeAliases属性是用来给类名取别名的</p>
+<ul>
+<li>typeAlias属性：用于单独给类设置别名，名字不区分大小写</li>
+<li><p>package属性：用于给包里面的所有实体类都设置别名，别名就是类名，名字不区分大小写</p>
+<pre><code>// 主配置文件里面
+&lt;typeAliases&gt;
+     // 用于单独给类设置别名
+     &lt;typeAlias type=&quot;xyz.zjy.domin.User&quot; alias=&quot;myuser&quot;&gt;&lt;/typeAlias&gt;
+     // 用于给包里面的实体类都设置别名
+    &lt;package name=&quot;xyz.zjy.domin&quot;/&gt;
+&lt;/typeAliases&gt;
+</code></pre></li>
+</ul>
+</li>
+</ul>
+<pre><code>&lt;resultMap id=&quot;userMap&quot; type=&quot;myuser&quot;&gt;
+        &lt;result property=&quot;userName&quot; column=&quot;name&quot;&gt;&lt;/result&gt;
+   &lt;/resultMap&gt;
+</code></pre><ul>
+<li><p>mapper里面的package属性</p>
+<ul>
+<li><p>package属性，用于指定dao接口所在的xml包，当指定之后就不需要写mapper以及resource或者class了</p>
+<pre><code>&lt;mappers&gt;
+    &lt;package name=&quot;xyz.zjy.dao&quot;/&gt;
+&lt;/mappers&gt;
+</code></pre></li>
+</ul>
+</li>
+</ul>
+<h2 id="联级查询"><a href="#联级查询" class="headerlink" title="联级查询"></a>联级查询</h2><ul>
+<li>user表：id  username  birthday  sex  address</li>
+<li>account表： id  uid（user表的id作为外键）  money</li>
+</ul>
+<h3 id="一对一查询"><a href="#一对一查询" class="headerlink" title="一对一查询"></a>一对一查询</h3><ul>
+<li><p>实体account类</p>
+<pre><code>public class Account implements Serializable {
+
+private Integer id;
+private Integer uid;
+private Double money;
+
+// 从表实体类应该包含一个主实体的对象引用
+private User user;
+</code></pre></li>
+</ul>
+<ul>
+<li>xml配置</li>
+</ul>
+<pre><code>&lt;resultMap id=&quot;accountMap&quot; type=&quot;account&quot; &gt;
+    &lt;id property=&quot;id&quot; column=&quot;id&quot;&gt;&lt;/id&gt;
+    &lt;result property=&quot;uid&quot; column=&quot;uid&quot;&gt;&lt;/result&gt;
+    &lt;result property=&quot;money&quot; column=&quot;money&quot;&gt;&lt;/result&gt;
+
+    // 通过外键来查找user，并封装
+    &lt;association property=&quot;user&quot; column=&quot;uid&quot;&gt;
+        &lt;id property=&quot;id&quot; column=&quot;id&quot;&gt;&lt;/id&gt;
+        &lt;result property=&quot;username&quot; column=&quot;username&quot;&gt;&lt;/result&gt;
+        &lt;result property=&quot;birthday&quot; column=&quot;birthday&quot;&gt;&lt;/result&gt;
+        &lt;result property=&quot;sex&quot; column=&quot;sex&quot;&gt;&lt;/result&gt;
+        &lt;result property=&quot;address&quot; column=&quot;address&quot;&gt;&lt;/result&gt;
+     &lt;/association&gt;
+&lt;/resultMap&gt;
+
+// 联级查询，通过account表来查找用户
+&lt;select id=&quot;findAll&quot; resultMap=&quot;accountMap&quot;&gt;
+    select u.*,a.id as aid, a.uid, a.money from account a, user u where u.id = a.uid
+&lt;/select&gt;
+</code></pre><h3 id="一对多查询"><a href="#一对多查询" class="headerlink" title="一对多查询"></a>一对多查询</h3><ul>
+<li><p>user表</p>
+<pre><code>private Integer id;
+private String username;
+private Date birthday;
+private String sex;
+private String address;
+// 查询多个账户就用list这里
+private List&lt;Account&gt; accounts;
+</code></pre></li>
+<li><p>xml配置</p>
+<pre><code>&lt;resultMap id=&quot;userAccount&quot; type=&quot;user&quot;&gt;
+    &lt;id property=&quot;id&quot; column=&quot;id&quot;&gt;&lt;/id&gt;
+    &lt;result property=&quot;username&quot; column=&quot;username&quot;&gt;&lt;/result&gt;
+    &lt;result property=&quot;address&quot; column=&quot;address&quot;&gt;&lt;/result&gt;
+    &lt;result property=&quot;sex&quot; column=&quot;sex&quot;&gt;&lt;/result&gt;
+    &lt;result property=&quot;birthday&quot; column=&quot;birthday&quot;&gt;&lt;/result&gt;
+    &lt;!-- 配置user对象中的account集合的映射，ofType是集合中的类型 --&gt;
+    &lt;collection property=&quot;accounts&quot; ofType=&quot;account&quot;&gt;
+        &lt;!-- 这里出现了俩个id，让a.id as aid 作为列名 --&gt;
+        &lt;id property=&quot;id&quot; column=&quot;aid&quot;&gt;&lt;/id&gt;
+        &lt;result property=&quot;uid&quot; column=&quot;uid&quot;&gt;&lt;/result&gt;
+        &lt;result property=&quot;money&quot; column=&quot;money&quot;&gt;&lt;/result&gt;
+    &lt;/collection&gt;
+&lt;/resultMap&gt;
+
+&lt;select id=&quot;findAll&quot; resultMap=&quot;userAccount&quot;&gt;
+    select u.*, a.id as aid, a.uid,a.money from user u left outer join account a on u.id = a.uid
+&lt;/select&gt;
+</code></pre></li>
+</ul>
+<h3 id="多对多查询"><a href="#多对多查询" class="headerlink" title="多对多查询"></a>多对多查询</h3><ul>
+<li>参考一对多，sql语句要改变，通过中间表来进行查询</li>
 </ul>
 
     </div>
@@ -386,7 +526,7 @@ return HttpResponse(&quot;删除成功！&quot;)
         
           本文作者 : Yi <br/>
         
-        原文链接 : <a href="">https://www.zhangjiayi.xyz/archives/2019/09/24/PYsql/</a><br>
+        原文链接 : <a href="">https://www.zhangjiayi.xyz/archives/2019/10/14/MbAnalyse/</a><br>
         版权声明 : 本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
         </blockquote>
       </div>
@@ -449,27 +589,6 @@ return HttpResponse(&quot;删除成功！&quot;)
     <div class="article-meta pull-left">
       <span>
         
-          <i class="iconfont icon-06tags"></i>标签: 
-          
-          <span class="span--tag">
-            <a href="/tags/mysql/">
-              #mysql
-            </a>
-          </span>
-          
-          <span class="span--tag">
-            <a href="/tags/python/">
-              #python
-            </a>
-          </span>
-          
-          <span class="span--tag">
-            <a href="/tags/django/">
-              #django
-            </a>
-          </span>
-          
-        
       </span>
     </div>
     <div class="article-meta pull-right">
@@ -490,13 +609,13 @@ return HttpResponse(&quot;删除成功！&quot;)
       <div class="nav-pre">
         <i class="iconfont icon-prev"></i>
         上一篇:
-        <a href="/2019/09/23/PYDgMTV/" target="_self">DjangoMTV</a>
+        <a href="/2019/10/10/MbEir/" target="_self">Mybatis</a>
       </div>
     
     
       <div class="nav-next">
         下一篇:
-        <a href="/2019/09/26/Mysql/" target="_self">Mysql联级操作</a>
+        <a href="/2019/10/15/MbPool/" target="_self">MyBatis中的连接池</a>
         <i class="iconfont icon-next"></i>
       </div>
     

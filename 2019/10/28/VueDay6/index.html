@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+  
+<head>
+  <meta charset="utf-8">
+  <meta name="author" content="董沅鑫, yuanxin.me@gmail.com" />
+  
+  
+  
+  <title>Vue资料day06 | Yi</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Spring,Vue," />
+  
+
+  <script>
+    console.log('\n%c Hexo-theme-bmw v4.0 ' + '%c 🎉 https://github.com/dongyuanxin/theme-bmw 🎉\n' + '\n%c View demo online ' + '%c 🔍 https://godbmw.com/ 🔍  \n' , 'color: #fadfa3; background: #030307; padding:3px 0;', '', 'color: #fadfa3; background: #030307; padding:3px 0;', '');
+  </script>
+
+  
+    <meta name="description" content="hello word">
+  
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/touch-icon.png">
+  
+
+  <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/icon/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+
+  <script src="/js/util.js"></script>
+<script src="/js/valine.min.js"></script>
+
+  
+
+  
+    <link href="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.js" async></script>
+  
+
+  
+    <link href="https://cdn.bootcss.com/social-share.js/1.0.16/css/share.min.css" rel="stylesheet">
+  
+  
+  <script src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js" async></script>
+  
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.0/dist/av-min.js"></script>
+  
+
+</head>
+
+  <body>
+
+    
+
+    <div id="app">
+
+      <div class="header-wrap">
+  <header>
+    <div class="site-brand">
+      <div class="site-title">
+        <a href="/">zhangjiayi.xyz</a>
+      </div>
+    </div>
+    <nav class="site-navigation">
+      <ul class="nav-menu">
+      
+        <li class="nav-item" data-path="/">
+          
+            <a 
+              href="/"
+              target="_self"
+            >
+              主页
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          
+            <a 
+              href="/archives/"
+              target="_self"
+            >
+              归档
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          
+            <a 
+              href="/categories/"
+              target="_self"
+            >
+              分类
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          
+            <a 
+              href="/tags/"
+              target="_self"
+            >
+              标签
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          
+            <a 
+              href="/friends/"
+              target="_self"
+            >
+              友链
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          
+            <a 
+              href="/about/"
+              target="_self"
+            >
+              关于
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="">
+          
+            <a href="javascript:void(0);" v-else>抓到我</a>
+            <ul class="nav-menu--dropdown">
+              
+                <li>
+                  <a 
+                    href="https://github.com/FrontEndZhang" 
+                    target="_blank"
+                  >
+                    Github
+                  </a>
+                </li>
+              
+                <li>
+                  <a 
+                    href="https://www.zhihu.com/people/sha-bai-xiao-tian-xin/activities" 
+                    target="_blank"
+                  >
+                    知乎
+                  </a>
+                </li>
+              
+            </ul>
+          
+        </li>
+      
+      </ul>
+    </nav>
+    <i class="iconfont icon-menu"></i>
+  </header>
+</div>
+
+<script>
+  let links = document.querySelectorAll('.nav-item');
+  for(let link of links){
+    let childrenLink = link.querySelector('ul');
+    link.addEventListener('mouseenter', () => {
+      if(childrenLink) {
+        childrenLink.className = "nav-menu--dropdown active";
+      }
+    })
+    link.addEventListener('mouseleave', () => {
+      if(childrenLink) {
+        childrenLink.className = "nav-menu--dropdown";
+      }
+    })
+  }
+  let rootRealPath = getRealPath(window.location.pathname, true);
+  for(let link of links) {
+    let linkPath = link.getAttribute("data-path");
+    if(linkPath && getRealPath(linkPath, true) === rootRealPath) {
+      link.className = "nav-item hover";
+    }
+  }
+
+  let iconMenu = document.querySelector("i.iconfont.icon-menu"),
+    iconMenuClicked = false;
+  let navDOM = document.querySelector("nav.site-navigation");
+  iconMenu.addEventListener("click", () => {
+    iconMenuClicked 
+      ? navDOM.className = "site-navigation active"
+      : navDOM.className = "site-navigation";
+    iconMenuClicked = !iconMenuClicked;
+  })
+</script>
+
+      
+
+
+
+
+
+
+
+
+<div class="container post-index">
+
+  
+
+<div class="post">
+  <h1 class="article-title">
+    <span>Vue资料day06</span>
+  </h1>
+  <div class="article-top-meta">
+    <span>
+      发布 : 
+      2019-10-28
+    </span>
+    
+      <span>
+        分类 : 
+          <a href="/categories/Spring/">
+            Spring
+          </a>
+      </span>
+    
+    
+      <span>
+        浏览 : <span class="article-timer" data-identity="VueDay6"></span>
+      </span>
+    
+  </div>
+
+  
+
+  <div class="article-content">
+    <div class="markdown-body">
+      <h2 id="注意："><a href="#注意：" class="headerlink" title="注意："></a>注意：</h2><p>有时候使用<code>npm i node-sass -D</code>装不上，这时候，就必须使用 <code>cnpm i node-sass -D</code></p>
+<h2 id="在普通页面中使用render函数渲染组件"><a href="#在普通页面中使用render函数渲染组件" class="headerlink" title="在普通页面中使用render函数渲染组件"></a>在普通页面中使用render函数渲染组件</h2><h2 id="在webpack中配置-vue组件页面的解析"><a href="#在webpack中配置-vue组件页面的解析" class="headerlink" title="在webpack中配置.vue组件页面的解析"></a>在webpack中配置.vue组件页面的解析</h2><ol>
+<li><p>运行<code>cnpm i vue -S</code>将vue安装为运行依赖；</p>
+</li>
+<li><p>运行<code>cnpm i vue-loader vue-template-compiler -D</code>将解析转换vue的包安装为开发依赖；</p>
+</li>
+<li><p>运行<code>cnpm i style-loader css-loader -D</code>将解析转换CSS的包安装为开发依赖，因为.vue文件中会写CSS样式；</p>
+</li>
+<li><p>在<code>webpack.config.js</code>中，添加如下<code>module</code>规则：</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">module: &#123;</span><br><span class="line"></span><br><span class="line">    rules: [</span><br><span class="line"></span><br><span class="line">      &#123; test: /\.css$/, use: [&apos;style-loader&apos;, &apos;css-loader&apos;] &#125;,</span><br><span class="line"></span><br><span class="line">      &#123; test: /\.vue$/, use: &apos;vue-loader&apos; &#125;</span><br><span class="line"></span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<ol start="5">
+<li>创建<code>App.js</code>组件页面：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&lt;template&gt;</span><br><span class="line"></span><br><span class="line">  &lt;!-- 注意：在 .vue 的组件中，template 中必须有且只有唯一的根元素进行包裹，一般都用 div 当作唯一的根元素 --&gt;</span><br><span class="line"></span><br><span class="line">  &lt;div&gt;</span><br><span class="line"></span><br><span class="line">    &lt;h1&gt;这是APP组件 - &#123;&#123;msg&#125;&#125;&lt;/h1&gt;</span><br><span class="line"></span><br><span class="line">    &lt;h3&gt;我是h3&lt;/h3&gt;</span><br><span class="line"></span><br><span class="line">  &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line"></span><br><span class="line">// 注意：在 .vue 的组件中，通过 script 标签来定义组件的行为，需要使用 ES6 中提供的 export default 方式，导出一个vue实例对象</span><br><span class="line"></span><br><span class="line">export default &#123;</span><br><span class="line"></span><br><span class="line">  data() &#123;</span><br><span class="line"></span><br><span class="line">    return &#123;</span><br><span class="line"></span><br><span class="line">      msg: &apos;OK&apos;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;style scoped&gt;</span><br><span class="line"></span><br><span class="line">h1 &#123;</span><br><span class="line"></span><br><span class="line">  color: red;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+<ol start="6">
+<li>创建<code>main.js</code>入口文件：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">// 导入 Vue 组件</span><br><span class="line"></span><br><span class="line">import Vue from &apos;vue&apos;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// 导入 App组件</span><br><span class="line"></span><br><span class="line">import App from &apos;./components/App.vue&apos;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// 创建一个 Vue 实例，使用 render 函数，渲染指定的组件</span><br><span class="line"></span><br><span class="line">var vm = new Vue(&#123;</span><br><span class="line"></span><br><span class="line">  el: &apos;#app&apos;,</span><br><span class="line"></span><br><span class="line">  render: c =&gt; c(App)</span><br><span class="line"></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="在使用webpack构建的Vue项目中使用模板对象？"><a href="#在使用webpack构建的Vue项目中使用模板对象？" class="headerlink" title="在使用webpack构建的Vue项目中使用模板对象？"></a>在使用webpack构建的Vue项目中使用模板对象？</h2><ol>
+<li>在<code>webpack.config.js</code>中添加<code>resolve</code>属性：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">resolve: &#123;</span><br><span class="line">    alias: &#123;</span><br><span class="line">      &apos;vue$&apos;: &apos;vue/dist/vue.esm.js&apos;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="ES6中语法使用总结"><a href="#ES6中语法使用总结" class="headerlink" title="ES6中语法使用总结"></a>ES6中语法使用总结</h2><ol>
+<li><p>使用 <code>export default</code> 和 <code>export</code> 导出模块中的成员; 对应ES5中的 <code>module.exports</code> 和 <code>export</code></p>
+</li>
+<li><p>使用 <code>import ** from **</code> 和 <code>import &#39;路径&#39;</code> 还有 <code>import {a, b} from &#39;模块标识&#39;</code> 导入其他模块</p>
+</li>
+<li><p>使用箭头函数：<code>(a, b)=&gt; { return a-b; }</code></p>
+</li>
+</ol>
+<h2 id="在vue组件页面中，集成vue-router路由模块"><a href="#在vue组件页面中，集成vue-router路由模块" class="headerlink" title="在vue组件页面中，集成vue-router路由模块"></a>在vue组件页面中，集成vue-router路由模块</h2><p><a href="https://router.vuejs.org/" target="_blank" rel="noopener">vue-router官网</a></p>
+<ol>
+<li>导入路由模块：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">import VueRouter from &apos;vue-router&apos;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>安装路由模块：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Vue.use(VueRouter);</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>导入需要展示的组件:</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">import login from &apos;./components/account/login.vue&apos;</span><br><span class="line"></span><br><span class="line">import register from &apos;./components/account/register.vue&apos;</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>创建路由对象:</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">var router = new VueRouter(&#123;</span><br><span class="line"></span><br><span class="line">  routes: [</span><br><span class="line"></span><br><span class="line">    &#123; path: &apos;/&apos;, redirect: &apos;/login&apos; &#125;,</span><br><span class="line"></span><br><span class="line">    &#123; path: &apos;/login&apos;, component: login &#125;,</span><br><span class="line"></span><br><span class="line">    &#123; path: &apos;/register&apos;, component: register &#125;</span><br><span class="line"></span><br><span class="line">  ]</span><br><span class="line"></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<ol start="5">
+<li>将路由对象，挂载到 Vue 实例上:</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">var vm = new Vue(&#123;</span><br><span class="line"></span><br><span class="line">  el: &apos;#app&apos;,</span><br><span class="line"></span><br><span class="line">  // render: c =&gt; &#123; return c(App) &#125;</span><br><span class="line"></span><br><span class="line">  render(c) &#123;</span><br><span class="line"></span><br><span class="line">    return c(App);</span><br><span class="line"></span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  router // 将路由对象，挂载到 Vue 实例上</span><br><span class="line"></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<ol start="6">
+<li>改造App.vue组件，在 template 中，添加<code>router-link</code>和<code>router-view</code>：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&lt;router-link to=&quot;/login&quot;&gt;登录&lt;/router-link&gt;</span><br><span class="line"></span><br><span class="line">&lt;router-link to=&quot;/register&quot;&gt;注册&lt;/router-link&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;router-view&gt;&lt;/router-view&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="组件中的css作用域问题"><a href="#组件中的css作用域问题" class="headerlink" title="组件中的css作用域问题"></a>组件中的css作用域问题</h2><h2 id="抽离路由为单独的模块"><a href="#抽离路由为单独的模块" class="headerlink" title="抽离路由为单独的模块"></a>抽离路由为单独的模块</h2><h2 id="使用-饿了么的-MintUI-组件"><a href="#使用-饿了么的-MintUI-组件" class="headerlink" title="使用 饿了么的 MintUI 组件"></a>使用 饿了么的 MintUI 组件</h2><p><a href="https://github.com/ElemeFE/mint-ui" target="_blank" rel="noopener">Github 仓储地址</a></p>
+<p><a href="http://mint-ui.github.io/#!/zh-cn" target="_blank" rel="noopener">Mint-UI官方文档</a></p>
+<ol>
+<li>导入所有MintUI组件：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">import MintUI from &apos;mint-ui&apos;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>导入样式表：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">import &apos;mint-ui/lib/style.css&apos;</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>在 vue 中使用 MintUI：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Vue.use(MintUI)</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>使用的例子：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&lt;mt-button type=&quot;primary&quot; size=&quot;large&quot;&gt;primary&lt;/mt-button&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="使用-MUI-组件"><a href="#使用-MUI-组件" class="headerlink" title="使用 MUI 组件"></a>使用 MUI 组件</h2><p><a href="http://dev.dcloud.net.cn/mui/" target="_blank" rel="noopener">官网首页</a></p>
+<p><a href="http://dev.dcloud.net.cn/mui/ui/" target="_blank" rel="noopener">文档地址</a></p>
+<ol>
+<li>导入 MUI 的样式表：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">import &apos;../lib/mui/css/mui.min.css&apos;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>在<code>webpack.config.js</code>中添加新的loader规则：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&#123; test: /\.(png|jpg|gif|ttf)$/, use: &apos;url-loader&apos; &#125;</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>根据官方提供的文档和example，尝试使用相关的组件</li>
+</ol>
+<h2 id="将项目源码托管到oschina中"><a href="#将项目源码托管到oschina中" class="headerlink" title="将项目源码托管到oschina中"></a>将项目源码托管到oschina中</h2><ol>
+<li><p>点击头像 -&gt; 修改资料 -&gt; SSH公钥 <a href="http://git.mydoc.io/?t=154712" target="_blank" rel="noopener">如何生成SSH公钥</a></p>
+</li>
+<li><p>创建自己的空仓储，使用 <code>git config --global user.name &quot;用户名&quot;</code> 和 <code>git config --global user.email ***@**.com</code> 来全局配置提交时用户的名称和邮箱</p>
+</li>
+<li><p>使用 <code>git init</code> 在本地初始化项目</p>
+</li>
+<li><p>使用 <code>touch README.md</code> 和 <code>touch .gitignore</code> 来创建项目的说明文件和忽略文件；</p>
+</li>
+<li><p>使用 <code>git add .</code> 将所有文件托管到 git 中</p>
+</li>
+<li><p>使用 <code>git commit -m &quot;init project&quot;</code> 将项目进行本地提交</p>
+</li>
+<li><p>使用 <code>git remote add origin 仓储地址</code>将本地项目和远程仓储连接，并使用origin最为远程仓储的别名</p>
+</li>
+<li><p>使用 <code>git push -u origin master</code> 将本地代码push到仓储中</p>
+</li>
+</ol>
+<h2 id="App-vue-组件的基本设置"><a href="#App-vue-组件的基本设置" class="headerlink" title="App.vue 组件的基本设置"></a>App.vue 组件的基本设置</h2><ol>
+<li><p>头部的固定导航栏使用 <code>Mint-UI</code> 的 <code>Header</code> 组件；</p>
+</li>
+<li><p>底部的页签使用 <code>mui</code> 的 <code>tabbar</code>;</p>
+</li>
+<li><p>购物车的图标，使用 <code>icons-extra</code> 中的 <code>mui-icon-extra mui-icon-extra-cart</code>，同时，应该把其依赖的字体图标文件 <code>mui-icons-extra.ttf</code>，复制到 <code>fonts</code> 目录下！</p>
+</li>
+<li><p>将底部的页签，改造成 <code>router-link</code> 来实现单页面的切换；</p>
+</li>
+<li><p>Tab Bar 路由激活时候设置高亮的两种方式：</p>
+<ul>
+<li>全局设置样式如下：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">.router-link-active&#123;</span><br><span class="line"></span><br><span class="line">    	color:#007aff !important;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>或者在 <code>new VueRouter</code> 的时候，通过 <code>linkActiveClass</code> 来指定高亮的类：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">// 创建路由对象</span><br><span class="line"></span><br><span class="line">  var router = new VueRouter(&#123;</span><br><span class="line"></span><br><span class="line">    routes: [</span><br><span class="line"></span><br><span class="line">      &#123; path: &apos;/&apos;, redirect: &apos;/home&apos; &#125;</span><br><span class="line"></span><br><span class="line">    ],</span><br><span class="line"></span><br><span class="line">    linkActiveClass: &apos;mui-active&apos;</span><br><span class="line"></span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="实现-tabbar-页签不同组件页面的切换"><a href="#实现-tabbar-页签不同组件页面的切换" class="headerlink" title="实现 tabbar 页签不同组件页面的切换"></a>实现 tabbar 页签不同组件页面的切换</h2><ol>
+<li><p>将 tabbar 改造成 <code>router-link</code> 形式，并指定每个连接的 <code>to</code> 属性；</p>
+</li>
+<li><p>在入口文件中导入需要展示的组件，并创建路由对象：</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">// 导入需要展示的组件</span><br><span class="line"></span><br><span class="line">import Home from &apos;./components/home/home.vue&apos;</span><br><span class="line"></span><br><span class="line">import Member from &apos;./components/member/member.vue&apos;</span><br><span class="line"></span><br><span class="line">import Shopcar from &apos;./components/shopcar/shopcar.vue&apos;</span><br><span class="line"></span><br><span class="line">import Search from &apos;./components/search/search.vue&apos;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// 创建路由对象</span><br><span class="line"></span><br><span class="line">var router = new VueRouter(&#123;</span><br><span class="line"></span><br><span class="line">  routes: [</span><br><span class="line"></span><br><span class="line">    &#123; path: &apos;/&apos;, redirect: &apos;/home&apos; &#125;,</span><br><span class="line"></span><br><span class="line">    &#123; path: &apos;/home&apos;, component: Home &#125;,</span><br><span class="line"></span><br><span class="line">    &#123; path: &apos;/member&apos;, component: Member &#125;,</span><br><span class="line"></span><br><span class="line">    &#123; path: &apos;/shopcar&apos;, component: Shopcar &#125;,</span><br><span class="line"></span><br><span class="line">    &#123; path: &apos;/search&apos;, component: Search &#125;</span><br><span class="line"></span><br><span class="line">  ],</span><br><span class="line"></span><br><span class="line">  linkActiveClass: &apos;mui-active&apos;</span><br><span class="line"></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="使用-mt-swipe-轮播图组件"><a href="#使用-mt-swipe-轮播图组件" class="headerlink" title="使用 mt-swipe 轮播图组件"></a>使用 mt-swipe 轮播图组件</h2><ol>
+<li>假数据：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">lunbo: [</span><br><span class="line"></span><br><span class="line">        &apos;http://www.itcast.cn/images/slidead/BEIJING/2017440109442800.jpg&apos;,</span><br><span class="line"></span><br><span class="line">        &apos;http://www.itcast.cn/images/slidead/BEIJING/2017511009514700.jpg&apos;,</span><br><span class="line"></span><br><span class="line">        &apos;http://www.itcast.cn/images/slidead/BEIJING/2017421414422600.jpg&apos;</span><br><span class="line"></span><br><span class="line">      ]</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>引入轮播图组件：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&lt;!-- Mint-UI 轮播图组件 --&gt;</span><br><span class="line"></span><br><span class="line">    &lt;div class=&quot;home-swipe&quot;&gt;</span><br><span class="line"></span><br><span class="line">      &lt;mt-swipe :auto=&quot;4000&quot;&gt;</span><br><span class="line"></span><br><span class="line">        &lt;mt-swipe-item v-for=&quot;(item, i) in lunbo&quot; :key=&quot;i&quot;&gt;</span><br><span class="line"></span><br><span class="line">          &lt;img :src=&quot;item&quot; alt=&quot;&quot;&gt;</span><br><span class="line"></span><br><span class="line">        &lt;/mt-swipe-item&gt;</span><br><span class="line"></span><br><span class="line">      &lt;/mt-swipe&gt;</span><br><span class="line"></span><br><span class="line">    &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">  &lt;/div&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="在-vue组件中使用vue-resource获取数据"><a href="#在-vue组件中使用vue-resource获取数据" class="headerlink" title="在.vue组件中使用vue-resource获取数据"></a>在<code>.vue</code>组件中使用<code>vue-resource</code>获取数据</h2><ol>
+<li><p>运行<code>cnpm i vue-resource -S</code>安装模块</p>
+</li>
+<li><p>导入 vue-resource 组件</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">import VueResource from &apos;vue-resource&apos;</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>在vue中使用 vue-resource 组件</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Vue.use(VueResource);</span><br></pre></td></tr></table></figure>
+    </div>
+  </div>
+  
+    <div class="copy-right">
+      <div class="markdown-body">
+        <blockquote>
+        
+        
+          本文作者 : Yi <br/>
+        
+        原文链接 : <a href="">https://www.zhangjiayi.xyz/archives/2019/10/28/VueDay6/</a><br>
+        版权声明 : 本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+        </blockquote>
+      </div>
+    </div>
+  
+  
+  
+    <div class="social-share"
+  style="margin-top: -2rem"
+  data-wechat-qrcode-title="<p>微信扫一扫</p>"
+  data-wechat-qrcode-helper="<p>微信右上角, 扫一扫分享</p>"
+   data-sites="qzone, qq, weibo, wechat, douban, google, facebook, twitter" 
+  
+>
+  <span style="color: #6b7487; font-size: 1.4rem;">分享到: </span>
+</div>
+<script src="https://cdn.bootcss.com/social-share.js/1.0.16/js/social-share.min.js" async>
+  
+
+  
+    <div id="reward">
+  
+    <p id="reward-meta">知识 & 情怀 | 二者兼得</p>
+  
+  <button id="reward-btn">
+    
+    <span>投食</span>
+  </button>
+  <div id="reward-qrcode">
+    
+      <div class="reward-qrcode--container">
+        <img class="qrcode-img" src="/images/wechat.png" alt="微信扫一扫, 向我投食">
+        <p class="qrcode-meta">微信扫一扫, 向我投食</p>
+      </div>
+    
+      <div class="reward-qrcode--container">
+        <img class="qrcode-img" src="/images/alipay.png" alt="支付宝扫一扫, 向我投食">
+        <p class="qrcode-meta">支付宝扫一扫, 向我投食</p>
+      </div>
+    
+  </div>
+
+</div>
+
+<script>
+  (() => {
+    let button = document.querySelector('#reward-btn'),
+      qrcode = document.querySelector('#reward-qrcode'),
+      display = false;
+    
+    button.addEventListener('click', () => {
+      qrcode.style.display = display ? 'none' : 'block'
+      display = !display
+    }, false)
+  })()
+</script>
+  
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+      <span>
+        
+          <i class="iconfont icon-06tags"></i>标签: 
+          
+          <span class="span--tag">
+            <a href="/tags/Vue/">
+              #Vue
+            </a>
+          </span>
+          
+        
+      </span>
+    </div>
+    <div class="article-meta pull-right">
+    </div>
+  </div>
+</div>
+
+
+  <aside id="sidebar">
+    <p id="sidebar-header"></p>
+    <ol id="sidebar-toc"></ol>
+  </aside>
+  <script async>setTimeout(generateToc, 10);</script>
+
+
+  <nav class="post-navigation">
+    
+      <div class="nav-pre">
+        <i class="iconfont icon-prev"></i>
+        上一篇:
+        <a href="/2019/10/22/ESMA-Strict/" target="_self">ESMA_Strict</a>
+      </div>
+    
+    
+      <div class="nav-next">
+        下一篇:
+        <a href="/2019/10/28/VueDay1/" target="_self">Vue资料day01</a>
+        <i class="iconfont icon-next"></i>
+      </div>
+    
+  </nav>
+
+  
+    <a href="#comment" class="comment-anchor"></a>
+<div class="comment-title"><i class="iconfont icon-footprint"></i> 留下足迹 <i class="iconfont icon-footprint"></i></div>
+<div id="vcomments"></div>
+
+<script defer>
+  if( true ) {
+    let path = getRealPath()
+    new Valine({
+      el: "#vcomments",
+      appId: "SCkREsFgT1mxprDxN243QYy6-gzGzoHsz",
+      appKey: "GJDLLfiOsJ6PV6u5jbg1dVk5",
+      notify: false,
+      verify: false,
+      avatar: "robohash",
+      placeholder: "正确填写邮箱, 才能及时收到回复哦♪(^∇^*)",
+      path
+    });
+  }
+</script>
+   
+
+  
+    <script defer>
+const valineAPI = (() => {
+  try {
+    AV.init("SCkREsFgT1mxprDxN243QYy6-gzGzoHsz", "GJDLLfiOsJ6PV6u5jbg1dVk5");
+  } catch(error) {}
+  const isExist = (identity) => {
+    identity = identity || getRealPath();
+    let query = new AV.Query('Timer');
+    return new Promise((resolve, reject) => {
+      query.equalTo("identity", identity);
+      query.find().then(results => {
+        resolve(results.length > 0);
+      }, error => reject(error));
+    })
+  }
+
+  const _get = (identity) => {
+    let query = null;
+    if(identity && identity instanceof Array){
+      let querys = [];
+      for(let i = 0; i < identity.length; ++i) {
+        querys[i] = new AV.Query('Timer');
+        querys[i].equalTo('identity', identity[i]);
+      }
+      query = AV.Query.or.apply(null ,querys);
+    } else {
+      identity = identity || getRealPath();
+      query = new AV.Query("Timer");
+      query.equalTo("identity", identity);
+    }
+
+    return new Promise((resolve, reject) => {
+      query.find()
+      .then(results => resolve(results))
+      .catch(error => reject(error))
+    })
+  }
+
+  const create = (identity) => {
+    identity = identity || getRealPath();
+    return new Promise((resolve, reject) => {
+      let Todo = AV.Object.extend('Timer');
+      let todo = new Todo();
+      todo.set("times", 1);
+      todo.set("identity", identity);
+      todo.save().then(res => resolve(true), error => reject(error));
+    })
+  }
+
+  const update = (identity) => {
+    identity = identity || getRealPath();
+    return new Promise((resolve, reject) => {
+      let query = new AV.Query('Timer');
+      query.equalTo("identity", identity);
+      query.find().then(todos => {
+        todos.forEach(todo => {
+          todo.set("times", todo.attributes.times + 1);
+        });
+        return AV.Object.saveAll(todos);
+      }).then(todos => resolve(true), error => reject(error));
+    })
+  }
+
+  return {
+    isExist,
+    _get,
+    update,
+    create
+  }
+})()
+
+const calcAndWriteTimes = () => {
+  let isPost = true;
+
+  let timerAllDOM = document.querySelectorAll(".article-timer");
+
+  if(isPost) {
+    let identity = timerAllDOM[0].getAttribute("data-identity");
+    valineAPI.isExist(identity)
+    .then(exist => {
+      if(exist) {
+        return valineAPI.update(identity);
+      }
+      return new Promise(resolve => resolve(true));
+    })
+    .then( succuess => valineAPI._get(identity))
+    .then( result => timerAllDOM[0].innerText = result[0].attributes.times)
+    .catch(error => console.log(error.message))
+    return ;
+  }
+
+  let timerDOMCache = {};
+
+  for(let timerDOM of timerAllDOM) {
+    let identity = timerDOM.getAttribute("data-identity");
+    if(timerDOMCache.hasOwnProperty(identity)){
+      timerDOMCache[identity].dom.push(timerDOM);
+    }else{
+      timerDOMCache[identity] = {
+        dom: [timerDOM],
+        times: undefined
+      };
+    }
+  }
+
+  let identities = Object.keys(timerDOMCache);
+  valineAPI._get(identities).then(results => {
+    for(let result of results) {
+      let {identity, times} = result.attributes;
+      timerDOMCache[identity].times = times;
+      timerDOMCache[identity].dom.map(item => item.innerText = times);
+    }
+    for(let identity of identities) {
+      if(timerDOMCache[identity].times){
+        continue;
+      }
+      timerDOMCache[identity].dom.map(item => item.innerText = 1);
+      valineAPI.create(identity);
+    }
+  }).catch(error => console.log(error.message))
+}
+
+if(true){
+  calcAndWriteTimes();
+}
+</script>
+   
+
+</div>
+
+
+      <footer>
+  <p class="site-info">
+    博客已萌萌哒运行<span id="time-to-now"></span><span class="my-face">(●'◡'●)ﾉ♥</span>
+    <br>
+    Theme - <a href="https://github.com/dongyuanxin/theme-bmw">BMW</a> | Made With 💗 | Powered by <a href="https://godbmw.com/">GodBMW</a>
+    <br>
+    
+  </p>
+</footer>
+
+
+
+<script>
+const timeToNowDOM = document.querySelector("#time-to-now");
+const startTimestamp = new Date(2019, 5, 2).getTime();
+
+const updateTimeStr = () => {
+  let offset = parseInt(
+      (new Date().getTime() - startTimestamp) / 1000,
+      10
+    ),
+    day = Math.floor(offset / 86400),
+    hour = Math.floor((offset % 86400) / 3600),
+    minute = Math.floor(((offset % 86400) % 3600) / 60),
+    second = Math.floor(((offset % 86400) % 3600) % 60);
+  timeToNowDOM.innerHTML =
+    day + "天" + hour + "小时" + minute + "分钟" + second + "秒";
+  setTimeout(updateTimeStr, 500);
+}
+
+setTimeout(updateTimeStr, 500);
+</script>
+
+
+      <div class="back-to-top hidden">
+  <span>
+    <i class="iconfont icon-60"></i><span></span>%
+  </span>
+</div>
+
+<script>
+const updateIconToTop = percent => {
+  let dom = document.querySelector(".back-to-top span span");
+  dom.innerText = percent;
+  if(percent < 1) {
+    document.querySelector(".back-to-top").className = "back-to-top hidden";
+  } else {
+    document.querySelector(".back-to-top").className = "back-to-top";
+  }
+}
+
+const handleScoll = () => {
+  let isRunning = false;
+  return () => {
+    if (isRunning) return;
+    isRunning = true;
+    window.requestAnimationFrame(timestamp => {
+      let scrollTop =
+          document.documentElement.scrollTop || document.body.scrollTop,
+        scrollHeight =
+          document.documentElement.scrollHeight ||
+          document.body.scrollHeight,
+        clientHeight =
+          document.documentElement.clientHeight ||
+          document.body.clientHeight;
+      isRunning = false;
+      if (scrollTop <= 1) {
+        updateIconToTop(0);
+        return;
+      }
+      if (scrollTop + clientHeight >= scrollHeight) {
+        updateIconToTop(100);
+      } else {
+        updateIconToTop(parseInt(
+          100 * scrollTop / (scrollHeight - clientHeight),
+          10
+        ));
+      }
+    });
+  };
+}
+
+const backToTop = () => {
+  let scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop,
+    delay = 10,
+    time = 200;
+  if (scrollTop <= 20) {
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    return;
+  }
+  let step = Math.ceil(scrollTop * delay / time);
+  let timer = setInterval(() => {
+    scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop;
+    if (scrollTop - step <= 0) {
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      clearInterval(timer);
+    } else {
+      document.documentElement.scrollTop = scrollTop - step;
+      document.body.scrollTop = scrollTop - step;
+    }
+  }, delay);
+}
+
+document.addEventListener("scroll", handleScoll(), false);
+
+document.querySelector(".back-to-top").addEventListener("click", backToTop, false);
+
+</script>
+
+    </div>
+
+    
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+<script>
+  (() => {
+    const mathjaxConfig = {
+      showProcessingMessages: false, //关闭js加载过程信息
+      messageStyle: "none", //不显示信息
+      jax: ["input/TeX", "output/HTML-CSS"],
+      tex2jax: {
+        inlineMath: [["$", "$"], ["\\(", "\\)"]], //行内公式选择符
+        displayMath: [["$$", "$$"], ["\\[", "\\]"]], //段内公式选择符
+        skipTags: ["script", "noscript", "style", "textarea", "pre", "code", "a"] //避开某些标签
+      },
+      "HTML-CSS": {
+        availableFonts: ["STIX", "TeX"], //可选字体
+        showMathMenu: false //关闭右击菜单显示
+      }
+    }
+
+    let mathjaxInterval = setInterval(() => {
+      if(!window.MathJax){
+        return;
+      }
+      window.MathJax.Hub.Config(mathjaxConfig)
+      window.MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById('app')])
+
+      clearInterval(mathjaxInterval)
+    }, 10)    
+  })()
+</script>
+    
+
+    <script src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js" async></script>
+<script async>
+  let fancyTimer = setInterval(function(){
+    if(!window.$){
+      return;
+    }
+    $(document).ready(function() {
+      $(".post img").each(function () {
+        if($(this).parent().get(0).tagName.toLowerCase() === "a") {
+          return;
+        }
+        // $(this).attr("data-fancybox", "gallery"); // if you add 'data-fancybox', img will display after showed
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "gallery");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      });
+      
+      clearInterval(fancyTimer);
+    });
+  }, 10);
+</script>
+
+    
+  </body>
+
+</html>
