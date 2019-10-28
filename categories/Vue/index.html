@@ -8,7 +8,7 @@
   
   
   
-  <title>分类: Vue | Yi</title>
+  <title>分类: vue | Yi</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -221,7 +221,7 @@
     <div class="collection-title">
       <h2>
         
-          <span>分类 : Vue</span>
+          <span>分类 : vue</span>
         
       </h2>
     </div>
@@ -231,12 +231,12 @@
   <article class="posts-collapse">
     <header>
       <h2>
-        <a href="/2019/06/04/602Vcpt1/">
-          <span>创建component组件和子父组件信息传递</span>
+        <a href="/2019/10/28/VueDay2/">
+          <span>Vue资料day02</span>
         </a>
       </h2>
       <div class="post-meta">
-        06-04
+        10-28
       </div>
     </header>
   </article>
@@ -375,6 +375,54 @@ document.querySelector(".back-to-top").addEventListener("click", backToTop, fals
         inlineMath: [["$", "$"], ["\\(", "\\)"]], //行内公式选择符
         displayMath: [["$$", "$$"], ["\\[", "\\]"]], //段内公式选择符
         skipTags: ["script", "noscript", "style", "textarea", "pre", "code", "a"] //避开某些标签
+      },
+      "HTML-CSS": {
+        availableFonts: ["STIX", "TeX"], //可选字体
+        showMathMenu: false //关闭右击菜单显示
+      }
+    }
+
+    let mathjaxInterval = setInterval(() => {
+      if(!window.MathJax){
+        return;
+      }
+      window.MathJax.Hub.Config(mathjaxConfig)
+      window.MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById('app')])
+
+      clearInterval(mathjaxInterval)
+    }, 10)    
+  })()
+</script>
+    
+
+    <script src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js" async></script>
+<script async>
+  let fancyTimer = setInterval(function(){
+    if(!window.$){
+      return;
+    }
+    $(document).ready(function() {
+      $(".post img").each(function () {
+        if($(this).parent().get(0).tagName.toLowerCase() === "a") {
+          return;
+        }
+        // $(this).attr("data-fancybox", "gallery"); // if you add 'data-fancybox', img will display after showed
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "gallery");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      });
+      
+      clearInterval(fancyTimer);
+    });
+  }, 10);
+</script>
+
+    
+  </body>
+
+</html>
+style", "textarea", "pre", "code", "a"] //避开某些标签
       },
       "HTML-CSS": {
         availableFonts: ["STIX", "TeX"], //可选字体
